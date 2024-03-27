@@ -18,7 +18,7 @@ if(!$conn){
 }else{
   echo  'connection with database is connected';
 }
-
+echo '<hr>' ;
 
 date_default_timezone_set('Asia/Taipei');
 ?>

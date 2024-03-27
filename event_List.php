@@ -11,8 +11,8 @@ include_once('config/db_connect.php');
  $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
  $eventHeaderImage = 'NULL';
  $eventBackgroundImage = 'NULL';
- $eventStart ='NULL';
- $eventEnd = 'NULL';
+ $eventStart = mysqli_real_escape_string($conn, $_POST['eventStart']);
+ $eventEnd = mysqli_real_escape_string($conn, $_POST['eventEnd']);
 
 
       $sql = "INSERT INTO event_list(eventName, eventHeaderImage, eventBackgroundImage, eventStart, eventEnd) 
@@ -21,7 +21,7 @@ include_once('config/db_connect.php');
       // save to db and check
       if(mysqli_query($conn, $sql)){
         //success
-  
+      
         header('Location: event_List.php');
       } else {
         // error
@@ -39,9 +39,13 @@ $sql = 'SELECT * FROM event_list ORDER BY created_At';
 
 // Get Result
 $result = mysqli_query($conn, $sql);
-
+ 
 // fetch 
 $eventLists= mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+
+mysqli_free_result($result);
+
 mysqli_close($conn);
 
 
@@ -49,7 +53,7 @@ mysqli_close($conn);
 
 <?php include('template/header.php')?>
  
-   
+    
     <form action="event_List.php" method="POST">
      <p>Create Event</p>
     Event Name: <input type="text" name="eventName"><br>
@@ -60,19 +64,27 @@ mysqli_close($conn);
     <br>
     <input type="submit"  value="submit" name="submit">
     </form>
-    <br>
+    <br>  
+    <?php if($eventLists):?>
+        <?php $orderNumber = 1; ?> 
+      <h>Event List</h>
     <table>
     <tr>
+      <th>#</th>
         <th>Event Name</th>
-        <th>Event Date</th>
-        <th></th>
+        <th>Start Date</th>
+        <th>End Date</th>
     </tr>
-    <?php if($eventLists):?>
+   
     <?php  echo '<tr>'; foreach( $eventLists as $events):?>
+      
+    <td><?php echo $orderNumber . ".";  ?></td>
     <td><?php echo htmlspecialchars($events['eventName']);  ?></td>
     <td><?php echo htmlspecialchars($events['eventStart']);  ?></td>
+    <td><?php echo htmlspecialchars($events['eventEnd']);  ?></td>
     <td><a href="attendance_List.php?id=<?php echo $events['event_id'];  ?>">List of Attendees</a></td>
     <td><a href="event_Details.php?id=<?php echo $events['event_id']; ?>">Event Details</a></td>
+    <?php $orderNumber++;?>
     <?php echo '<tr>';   endforeach;?>
     </table>
     <?php else: ?>

@@ -2,7 +2,7 @@
  
 include_once('config/db_connect.php');
  
-
+ 
 
 // GET ID 
 if(isset($_GET['id'])){
@@ -17,7 +17,12 @@ $eventLists = mysqli_fetch_assoc($result);
 
  
 //  SQL Query
-$AttendanceList_sql = "SELECT record_id, event_id, attendeesName, attendeesEmail, time_IN, time_OUT  FROM attendance_records WHERE event_id = $id ORDER BY time_IN ASC ";
+$AttendanceList_sql = 
+"SELECT record_id, event_id, attendeesName, attendeesEmail, time_IN, time_OUT  
+ FROM attendance_records 
+ WHERE event_id = $id 
+ ORDER BY time_IN ASC
+ ";
 // Get Result
 $AttendanceList_result = mysqli_query($conn, $AttendanceList_sql);
 // fetch 
@@ -40,11 +45,14 @@ $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
 $time_IN = $current_date = date('Y-m-d H:i'); // Format: YYYY-MM-DD;
 
 $total = "SELECT COUNT(*) as count FROM attendance_records WHERE event_id = $event_id";
-$result = mysqli_query($conn, $total);
-$count = mysqli_fetch_assoc($result)['count'];
-$current_date = date('Ymd');
+$submit_result = mysqli_query($conn, $total);
+$count = mysqli_fetch_assoc($submit_result)['count'];
+$currentDateTime = date('my');
 log($count);
-$record_id = $event_id . "000" .  $count + 1;
+$record_id =  $currentDateTime . $event_id  . $count + 1 ;
+
+
+mysqli_free_result($submit_result);
 
 $sql = "INSERT INTO attendance_records(record_id, event_id, attendeesName, attendeesEmail, time_IN) 
 VALUES ('$record_id','$event_id', '$attendeesName','$attendeesEmail','$time_IN' )";
@@ -111,14 +119,20 @@ if(mysqli_query($conn, $sql)){
 <?php if($Attendees_Records): ?>
 <table>
 <tr>
+    <th>ID</th>
     <th>name</th>
     <th>email</th>
+    <th>Time in</th>
+    <th>Time out</th>
     <th></th>
 </tr>
  
 <?php  echo '<tr>'; foreach( $Attendees_Records as $Attendees):?>
+<td><?php echo htmlspecialchars($Attendees['record_id']);  ?></td>
 <td><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>
 <td><?php echo htmlspecialchars($Attendees['attendeesEmail']);  ?></td>
+<td><?php echo htmlspecialchars($Attendees['time_IN']);  ?></td>
+<td><?php echo htmlspecialchars($Attendees['time_OUT']);  ?></td>
 <td>
 
 
