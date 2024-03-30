@@ -45,7 +45,7 @@ $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
  
 $time_IN = $current_date = date('Y-m-d H:i'); // Format: YYYY-MM-DD;
 
-$total = "SELECT COUNT(*) as count FROM attendance_records WHERE event_id = $event_id AND LAST_DAY(CURDATE()) >= time_IN AND DAYOFMONTH(CURDATE()) <= time_IN";
+$total = "SELECT COUNT(*) as count FROM attendance_records WHERE event_id = $event_id AND (LAST_DAY(CURDATE()) - LAST_DAY(CURDATE())+1) <= DAY(time_IN) AND DAYOFMONTH(CURDATE()) >= DAY(time_IN)";
 $submit_result = mysqli_query($conn, $total);
 $count = mysqli_fetch_assoc($submit_result)['count'];
  

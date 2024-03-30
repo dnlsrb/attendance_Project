@@ -1,6 +1,10 @@
-<?php
- 
 
+  
+ <?php
+// $a = 4;
+// if($a == 5):
+?>
+<?php
 
 // RECEIVE DATA
 
@@ -8,18 +12,18 @@
 if(isset($_POST['submit'])){
 include_once('config/db_connect.php');
 
- $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
- $eventHeaderImage = 'NULL';
- $eventBackgroundImage = 'NULL';
- $eventStart = mysqli_real_escape_string($conn, $_POST['eventStart']);
- $eventEnd = mysqli_real_escape_string($conn, $_POST['eventEnd']);
+  $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
+  $eventHeaderImage = 'NULL';
+  $eventBackgroundImage = 'NULL';
+  $eventStart = mysqli_real_escape_string($conn, $_POST['eventStart']);
+  $eventEnd = mysqli_real_escape_string($conn, $_POST['eventEnd']);
  
 
-$total = "SELECT COUNT(*) as count FROM event_list WHERE LAST_DAY(CURDATE()) >= created_At AND DAYOFMONTH(CURDATE()) <= created_At";
-$submit_result = mysqli_query($conn, $total);
-$count = mysqli_fetch_assoc($submit_result)['count'];
-$currentDateTime = date('my');
-$event_id = $currentDateTime . $event_id  . $count + 1;
+  $total = "SELECT COUNT(*) as count FROM event_list WHERE LAST_DAY(CURDATE()) >= created_At AND DAYOFMONTH(CURDATE()) <= created_At";
+  $submit_result = mysqli_query($conn, $total);
+  $count = mysqli_fetch_assoc($submit_result)['count'];
+  $currentDateTime = date('my');
+  $event_id = $currentDateTime . $event_id  . $count + 1;
 
       $sql = "INSERT INTO event_list(eventName, eventHeaderImage, eventBackgroundImage, eventStart, eventEnd, event_id) 
       VALUES ('$eventName', '$eventHeaderImage','$eventBackgroundImage','$eventStart','$eventEnd','$event_id')";
@@ -27,7 +31,6 @@ $event_id = $currentDateTime . $event_id  . $count + 1;
       // save to db and check
       if(mysqli_query($conn, $sql)){
         //success
-      
         header('Location: event_List.php');
       } else {
         // error
@@ -38,22 +41,14 @@ mysqli_close($conn);
 }
  
 
-// DISPLAY DATA
-include_once('config/db_connect.php');
+  // Display Event List Data
+  include_once('config/db_connect.php');
+  $sql = 'SELECT * FROM event_list ORDER BY created_At';
+  $result = mysqli_query($conn, $sql);
+  $eventLists= mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-// sql query
-$sql = 'SELECT * FROM event_list ORDER BY created_At';
-
-// Get Result
-$result = mysqli_query($conn, $sql);
- 
-// fetch 
-$eventLists= mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-
-mysqli_free_result($result);
-
-mysqli_close($conn);
+  mysqli_free_result($result);
+  mysqli_close($conn);
 
 
 ?>
@@ -102,6 +97,13 @@ mysqli_close($conn);
     <?php endif ?>
     <a href="index.php">go back</a>
 
+<?php 
+// else:
+//  header('Location: index.php');
+
+// endif;
+?>
+ 
     
 
 
