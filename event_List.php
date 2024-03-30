@@ -13,10 +13,16 @@ include_once('config/db_connect.php');
  $eventBackgroundImage = 'NULL';
  $eventStart = mysqli_real_escape_string($conn, $_POST['eventStart']);
  $eventEnd = mysqli_real_escape_string($conn, $_POST['eventEnd']);
+ 
 
+$total = "SELECT COUNT(*) as count FROM event_list WHERE LAST_DAY(CURDATE()) >= created_At AND DAYOFMONTH(CURDATE()) <= created_At";
+$submit_result = mysqli_query($conn, $total);
+$count = mysqli_fetch_assoc($submit_result)['count'];
+$currentDateTime = date('my');
+$event_id = $currentDateTime . $event_id  . $count + 1;
 
-      $sql = "INSERT INTO event_list(eventName, eventHeaderImage, eventBackgroundImage, eventStart, eventEnd) 
-      VALUES ('$eventName', '$eventHeaderImage','$eventBackgroundImage','$eventStart','$eventEnd' )";
+      $sql = "INSERT INTO event_list(eventName, eventHeaderImage, eventBackgroundImage, eventStart, eventEnd, event_id) 
+      VALUES ('$eventName', '$eventHeaderImage','$eventBackgroundImage','$eventStart','$eventEnd','$event_id')";
 
       // save to db and check
       if(mysqli_query($conn, $sql)){

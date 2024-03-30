@@ -48,9 +48,9 @@ $time_IN = $current_date = date('Y-m-d H:i'); // Format: YYYY-MM-DD;
 $total = "SELECT COUNT(*) as count FROM attendance_records WHERE event_id = $event_id AND LAST_DAY(CURDATE()) >= time_IN AND DAYOFMONTH(CURDATE()) <= time_IN";
 $submit_result = mysqli_query($conn, $total);
 $count = mysqli_fetch_assoc($submit_result)['count'];
-$currentDateTime = date('my');
-log($count);
-$record_id =  $currentDateTime . $event_id  . $count + 1 ;
+ 
+ 
+$record_id =  $event_id  . $count + 1 ;
 
 
 mysqli_free_result($submit_result);

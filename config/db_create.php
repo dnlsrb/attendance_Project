@@ -45,9 +45,7 @@ array_push($query, "CREATE TABLE `event_list` (
 
 array_push($query, "ALTER TABLE `event_list`
   ADD PRIMARY KEY (`event_id`);");
-
-array_push($query, "ALTER TABLE `event_list`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT;");
+ 
  
 if(isset($_GET['submit'])){
     $run = $_GET['run'];
