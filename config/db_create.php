@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-<p>This will be used only for development</p>
+<span>This will be used only for development </span><a  href="../index.php">go back</a>
 <form action="db_create.php" method="GET">
 <input type="text" name="run">
 <input type="submit" value="submit" name="submit">
