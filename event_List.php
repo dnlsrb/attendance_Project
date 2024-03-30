@@ -34,6 +34,7 @@ mysqli_close($conn);
 
 // DISPLAY DATA
 include_once('config/db_connect.php');
+
 // sql query
 $sql = 'SELECT * FROM event_list ORDER BY created_At';
 
@@ -71,6 +72,7 @@ mysqli_close($conn);
     <table>
     <tr>
       <th>#</th>
+      <th>Event ID</th>
         <th>Event Name</th>
         <th>Start Date</th>
         <th>End Date</th>
@@ -79,6 +81,7 @@ mysqli_close($conn);
     <?php  echo '<tr>'; foreach( $eventLists as $events):?>
       
     <td><?php echo $orderNumber . ".";  ?></td>
+    <td><?php echo htmlspecialchars($events['event_id']);  ?></td>
     <td><?php echo htmlspecialchars($events['eventName']);  ?></td>
     <td><?php echo htmlspecialchars($events['eventStart']);  ?></td>
     <td><?php echo htmlspecialchars($events['eventEnd']);  ?></td>

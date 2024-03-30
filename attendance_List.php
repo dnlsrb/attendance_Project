@@ -16,13 +16,14 @@ $result = mysqli_query($conn, $sql);
 $eventLists = mysqli_fetch_assoc($result);
 
  
-//  SQL Query
+//  SQL Query FOR DISPLAY
 $AttendanceList_sql = 
-"SELECT record_id, event_id, attendeesName, attendeesEmail, time_IN, time_OUT  
- FROM attendance_records 
- WHERE event_id = $id 
+"SELECT record_id, attendance_records.event_id, attendeesName, attendeesEmail, time_IN, time_OUT,  eventName
+ FROM attendance_records INNER JOIN event_list ON event_list.event_id = attendance_records.event_id 
+ WHERE attendance_records.event_id = $id AND archived = 0
  ORDER BY time_IN ASC
  ";
+
 // Get Result
 $AttendanceList_result = mysqli_query($conn, $AttendanceList_sql);
 // fetch 
@@ -44,7 +45,7 @@ $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
  
 $time_IN = $current_date = date('Y-m-d H:i'); // Format: YYYY-MM-DD;
 
-$total = "SELECT COUNT(*) as count FROM attendance_records WHERE event_id = $event_id";
+$total = "SELECT COUNT(*) as count FROM attendance_records WHERE event_id = $event_id AND LAST_DAY(CURDATE()) >= time_IN AND DAYOFMONTH(CURDATE()) <= time_IN";
 $submit_result = mysqli_query($conn, $total);
 $count = mysqli_fetch_assoc($submit_result)['count'];
 $currentDateTime = date('my');
@@ -73,23 +74,12 @@ if(mysqli_query($conn, $sql)){
 
 
 // DELETE
- 
-
-
-
- 
-
-
-
- 
- 
-
- if(isset($_POST['delete'])){
+if(isset($_POST['delete'])){
     
 
     $delete_record = mysqli_real_escape_string($conn, $_POST['delete_record']);
     $event_id= mysqli_real_escape_string($conn, $_POST['event_id']);
-    $sql = "DELETE FROM attendance_records WHERE record_id=$delete_record";
+    $sql = "UPDATE attendance_records SET archived = 1 WHERE record_id=$delete_record";
     if(mysqli_query($conn, $sql)){
         // success
         
