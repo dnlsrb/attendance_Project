@@ -93,6 +93,7 @@ mysqli_close($conn);
         <th scope="col">Event Name</th>
         <th scope="col">Start Date</th>
         <th scope="col">End Date</th>
+         
         <th scope="col"></th>
         <th scope="col"></th>
     </tr>
@@ -105,6 +106,7 @@ mysqli_close($conn);
     <td><?php echo htmlspecialchars($eventLists['eventName']);  ?></td>
     <td><?php echo htmlspecialchars($eventLists['eventStart']);  ?></td>
     <td><?php echo htmlspecialchars($eventLists['eventEnd']);  ?></td>
+    
     <td><a class="btn btn-primary "href="attendance_List.php?id=<?php echo $eventLists['event_id'];  ?>"><i class="bi bi-eye"></i> List</a> </td>
     <td><a class="btn btn-primary" href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>">
     <i class="bi bi-card-heading"> </i>Details</a></td>

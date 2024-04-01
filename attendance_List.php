@@ -12,7 +12,7 @@ include_once('config/db_connect.php');
 // GET ID 
 if(isset($_GET['id'])){
 
-
+$date = date("M d, Y h:i:s A");
 $id = mysqli_real_escape_string($conn, $_GET['id']);
 
 // FOR Event Name and To Get ID
@@ -20,6 +20,11 @@ $sql = "SELECT * FROM event_list WHERE event_id = $id";
 $result = mysqli_query($conn, $sql);
 $eventLists = mysqli_fetch_assoc($result);
 
+$count_Attendees = "SELECT COUNT(*) as count FROM attendance_records WHERE event_id = '$id' AND archived = 0";
+$count_result = mysqli_query($conn, $count_Attendees);
+$count_display = mysqli_fetch_assoc($count_result)['count'];
+
+mysqli_free_result($count_result);
 mysqli_free_result($result);
  
 //  SQL Query FOR DISPLAY at Table 
@@ -33,6 +38,8 @@ $AttendanceList_result = mysqli_query($conn, $AttendanceList_sql);
 $Attendees_Records = mysqli_fetch_all($AttendanceList_result, MYSQLI_ASSOC);
  
 mysqli_free_result($AttendanceList_result);
+ 
+ 
 
 
 // SUBMIT
@@ -40,11 +47,25 @@ if(isset($_POST['btnsubmit'])){
  
 
 $attendeesName = mysqli_real_escape_string($conn, $_POST['attendeesName']);
-$attendeesEmail = mysqli_real_escape_string($conn, $_POST['attendeesEmail']);
+// $attendeesEmail = mysqli_real_escape_string($conn, $_POST['attendeesEmail']);
 $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
-$time_IN = $current_date = date('Y-m-d H:i:s'); // Format: YYYY-MM-DD;
+ 
 
-$total = "SELECT COUNT(*) as count FROM attendance_records WHERE (LAST_DAY(CURDATE()) - LAST_DAY(CURDATE())+1) <= DAY(time_IN) AND DAY(LAST_DAY(CURDATE())) >= DAY(time_IN) AND MONTH(LAST_DAY(CURDATE())) = MONTH(time_IN) AND YEAR(LAST_DAY(CURDATE())) = YEAR(time_IN)";
+
+$timeOut_query = "SELECT * FROM attendance_records WHERE attendeesName = '$attendeesName' AND event_id = '$event_id'  AND time_OUT = '' AND archived = 0 ORDER BY created_At DESC";
+$timeOut_result = mysqli_query($conn, $timeOut_query);
+$timeOut_display = mysqli_fetch_assoc($timeOut_result);
+ 
+
+if(mysqli_num_rows($timeOut_result) === 1){
+    $sql_update = "UPDATE attendance_records SET time_OUT = '$date' WHERE attendeesName = '$attendeesName' AND event_id = '$event_id'";
+    $timeOut_update = mysqli_query($conn, $sql_update);
+    mysqli_free_result($timeOut_result);
+    header('Location: attendance_List.php?id='. $event_id);
+}else{ 
+$time_IN = date('Y-m-d H:i:s'); // Format: YYYY-MM-DD;
+
+$total = "SELECT COUNT(*) as count FROM attendance_records WHERE (LAST_DAY(CURDATE()) - LAST_DAY(CURDATE())+1) <= DAY(created_At) AND DAY(LAST_DAY(CURDATE())) >= DAY(created_At) AND MONTH(LAST_DAY(CURDATE())) = MONTH(created_At) AND YEAR(LAST_DAY(CURDATE())) = YEAR(created_At)";
 $submit_result = mysqli_query($conn, $total);
 $count = mysqli_fetch_assoc($submit_result)['count'];
 $currentDateTime = date('my');
@@ -54,8 +75,10 @@ $record_id = $currentDateTime  . $count + 1 ;
 
 mysqli_free_result($submit_result);
 
-$sql = "INSERT INTO attendance_records(record_id, event_id, attendeesName, attendeesEmail, time_IN) 
-VALUES ('$record_id','$event_id', '$attendeesName','$attendeesEmail','$time_IN' )";
+$sql = "INSERT INTO attendance_records(record_id, event_id, attendeesName,   time_IN) 
+VALUES ('$record_id','$event_id', '$attendeesName', '$date' )"   ;
+
+// DATE_FORMAT('$time_IN', '%Y-%m-%d %h:%i:%s %p'))
 
 // save to db and check
 if(mysqli_query($conn, $sql)){
@@ -64,6 +87,7 @@ if(mysqli_query($conn, $sql)){
 } else {
     // error
      echo 'query error: ' . mysqli_error($conn);
+}
 }
 
 }
@@ -98,69 +122,87 @@ if(isset($_POST['delete'])){
 <div class="container-fluid  "> 
  
  
-<div class="container d-flex justify-content-center align-items-center  ">
-    <div class="row">
-    <div class="col ">
+<div class="container-lg d-flex justify-content-center align-items-center  ">
+    <div class="row d-flex justify-content-center align-items-center  ">
+    <div class="col  text-center mt-5">
 
-    <video id="preview" width="100%" height="50%" style="border-radius:20px;"></video>
-
- 
+    <video id="preview" width="50%" height="20%"></video>
+<p id="waitMessage"></p>
     </div>
-    <div class="col">
+    <div class="col-20">
     
 <div class=" w-100">
 <br>
 <?php if($eventLists):?>
+    <div class="d-flex justify-content-between align-items-center">
     <a class="btn btn-primary mb-3" href="event_List.php">Go Back </a><br>
- 
+ <form action="exporttoexcel.php" method="GET">
+    <input type="submit" name="getsubmit" value="Download Excel">
+    <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
+</form>
+</div>
 <div class="d-flex justify-content-center align-items-center"> 
+
+<!-- EXPORT TO EXCEL -->
+ 
+
+
 <form class="card  p-3 mb-5 mt-3 d-flex"  id="scan_form"  action="attendance_List.php?id=<?php echo $id;  ?>" method="POST">
 <h3>Event Name: <?php echo htmlspecialchars($eventLists['eventName']);?></h3>
 <input type="text" name="attendeesName" id="attendeesName" placeholder="Attendees Name" value=""> 
 <!-- <input type="email" name="attendeesEmail" placeholder="Attendees Email">  -->
 <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
+ 
 <input type="submit" id="btnsubmit" name="btnsubmit" value="btnsubmit">
-
+ 
 <script>
+     document.getElementById('waitMessage').innerText = "Please wait...";
+    setTimeout(function() {
+      
 	let scanner = new Instascan.Scanner({ video: document.getElementById('preview')});
 	Instascan.Camera.getCameras().then(function(cameras){
 		if(cameras.length > 0){
 			scanner.start(cameras[0]);
 		}else{
-			alert('No se encontraron cámaras');
+			 
 		}
-
+    document.getElementById('waitMessage').innerText = "";
 	}).catch(function(e){
 		console.error(e);
 	});
 
 	scanner.addListener('scan',function(c){
 		document.getElementById('attendeesName').value=c;
- 
+        // 1 Sec Delay to Avoid Time in and Time out in the flash
         document.getElementById('btnsubmit').click();
-	 
-	});
+    
+	}); }, 1000);
 </script>
-
 </form>
-</div>
+ 
 
+</div>
+<p>Total Attendees: <?php echo $count_display?></p>
 <?php if($Attendees_Records): ?>
 <table class="table table-striped  ">
 <tr>
+    <th>#</th>
     <th>ID</th>
     <th>name</th>
-    <th>email</th>
+    <!-- <th>email</th> -->
     <th>Time in</th>
     <th>Time out</th>
     <th></th>
 </tr>
- 
+<?php $count = 1;?>
 <?php  echo '<tr>'; foreach( $Attendees_Records as $Attendees):?>
+<td><?php echo $count; ?></td>
 <td><?php echo htmlspecialchars($Attendees['record_id']); ?></td>
 <td><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>
-<td><?php echo htmlspecialchars($Attendees['attendeesEmail']);  ?></td>
-<td><?php echo htmlspecialchars($Attendees['time_IN']);  ?></td>
+<!-- <td><?php echo htmlspecialchars($Attendees['attendeesEmail']);  ?></td> -->
+<td><?php echo htmlspecialchars( $Attendees['time_IN']);?>
+ 
+</td>
 <td><?php echo htmlspecialchars($Attendees['time_OUT']);  ?></td>
 <td>
 
@@ -173,6 +215,7 @@ if(isset($_POST['delete'])){
 
 
 </td>
+<?php $count++;?>
 <?php echo '<tr>';   endforeach;?>
 </table>
 <?php else: ?>

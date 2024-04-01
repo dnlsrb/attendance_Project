@@ -2,14 +2,43 @@
 session_start();
 if($_SESSION['role'] === 'admin' && isset($_SESSION['username'])  && isset($_SESSION['password'])):
 ?>
+ 
+<?php
+include_once('config/db_connect.php');
+if(isset($_GET['getsubmit'])){
+	$event_id = mysqli_real_escape_string($conn, $_GET['event_id']);
+
+	// make sql
+	$sql = "SELECT * FROM event_list WHERE event_id = $event_id";
+
+	// get the query result
+	$result = mysqli_query($conn, $sql);
+	
+	$eventList = mysqli_fetch_assoc($result);
+
+	// FREE RESULT FROM MEMORY
+	mysqli_free_result($result);
+
+}
+
+?>
 <?php  
 include("config/db_connect.php");
-$filename = "PGH Attendance Record as of \t".date("M-d-Y");
+$filename = htmlspecialchars($eventList['eventName']) ." of \t".date("M-d-Y");
 header("Content-Type: application/xls");    
 header("Content-Disposition: attachment; filename=$filename.xls");
 
 ?>
-<?php include('template/header.php')?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	
+
  
 
 <style>
@@ -34,18 +63,21 @@ body {
 }
 </style>
  
+
 <?php
+
 $date = date("F j, Y");
  
-$searchSQL = 'SELECT * FROM attendance_records  ORDER BY record_id DESC';
+$searchSQL = "SELECT * FROM attendance_records WHERE event_id = '$event_id' AND archived = 0 ORDER BY record_id DESC";
 $result = mysqli_query($conn,$searchSQL);
 
 if(mysqli_num_rows($result)>0)
 {
 ?>
 <table width="50%" align="center" cellpadding="5" class="table2" >
-<th height="35" colspan="3" bgcolor="#CCCCFF">PRESENT TODAY</th>
+<th height="35" colspan="5" bgcolor="#CCCCFF">PRESENT TODAY : <?php echo htmlspecialchars($eventList['eventName']) ?></th>
 <tr>
+	<td><center><strong>#</strong></center></td>
 	<td><center><strong>ID</strong></center></td>
 <td><center><strong>Name</strong></center></td>
 <td width="15%"><center>
@@ -56,21 +88,26 @@ if(mysqli_num_rows($result)>0)
   <strong>OUT</strong>
 </center></td>
 
-<?php
+<?php $count = 1;  
 	while($row = mysqli_fetch_array($result))
 	{
-
+		$date_IN = strtotime(htmlspecialchars($row['time_IN'])); 
+		if($row['time_OUT'] != ""){ 
+		$date_OUT  = strtotime(htmlspecialchars($row['time_OUT'])); 	
+		}else{
+		 
+		}
 ?>
 	<tr style="font-weight:bold">
-	
-	<td width="20%" style="color:blue"><center><?php echo $row['record_id']; ?></center></td>
-	<td width="34%"><strong><?php echo $row['attendeesName']; ?></strong></td>
-	<td width="33%" style="color:blue"><center><?php echo $row['time_IN']; ?></center></td>
-	<td width="33%" style="color:red"><center><?php echo $row['time_OUT']; ?></center></td>
+	<td width="20%" style="color:blue"><center><?php echo $count; ?></center></td>
+	<td width="20%" style="color:blue"><center><?php echo htmlspecialchars($row['record_id']); ?></center></td>
+	<td width="34%"><strong><?php echo htmlspecialchars($row['attendeesName']); ?></strong></td>
+	<td width="33%" style="color:blue"><center><?php echo date('M d, Y h:i:s: A', $date_IN) ; ?></center></td>
+	<td width="33%" style="color:red"><center><?php if($row['time_OUT'] != ""){echo date('M d, Y h:i:s: A', $date_OUT);}else{ } ?></center></td>
 	
 	</tr>
 <?php
-		
+	$count++;
 	}
 }
 else
@@ -81,7 +118,8 @@ else
 }
 ?>
 </table>
-<?php include('template/footer.php')?>
+</body>
+</html>
  
 <?php 
 else:

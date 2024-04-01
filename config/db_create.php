@@ -24,8 +24,9 @@ array_push($query, "CREATE TABLE `attendance_records` (
   `event_id` int(11) NOT NULL,
   `attendeesName` varchar(255) NOT NULL,
   `attendeesEmail` varchar(255) NOT NULL,
-  `time_IN` datetime NOT NULL,
-  `time_OUT` date DEFAULT NULL,
+  `time_IN` varchar(255) NOT NULL,
+  `time_OUT` varchar(255) NOT NULL,
+   `created_At` datetime NOT NULL DEFAULT current_timestamp(),
   `archived` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
@@ -41,7 +42,7 @@ array_push($query, "CREATE TABLE `event_list` (
   `eventHeaderImage` varchar(255) NOT NULL,
   `eventStart` date NOT NULL,
   `eventEnd` date NOT NULL,
-  `created_At` date NOT NULL DEFAULT current_timestamp(),
+  `created_At` datetime NOT NULL DEFAULT current_timestamp(),
   `archived` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
