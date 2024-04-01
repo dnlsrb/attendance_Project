@@ -35,18 +35,36 @@ array_push($query, "ALTER TABLE `attendance_records` ADD PRIMARY KEY (`record_id
 
 array_push($query, "CREATE TABLE `event_list` (
   `event_id` int(11) NOT NULL,
+  `event_count` int(11) NOT NULL,
   `eventName` varchar(255) NOT NULL,
   `eventBackgroundImage` varchar(255) NOT NULL,
   `eventHeaderImage` varchar(255) NOT NULL,
   `eventStart` date NOT NULL,
   `eventEnd` date NOT NULL,
-  `created_At` date NOT NULL DEFAULT current_timestamp()
+  `created_At` date NOT NULL DEFAULT current_timestamp(),
+  `archived` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
 array_push($query, "ALTER TABLE `event_list`
   ADD PRIMARY KEY (`event_id`);");
  
+  
+array_push($query, "CREATE TABLE `user` (
+    `user_name` varchar(100) NOT NULL,
+    `user_password` varchar(255) NOT NULL,
+    `role` varchar(100) NOT NULL,
+    `user_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
+
+array_push($query, "ALTER TABLE `user`
+ADD PRIMARY KEY (`user_id`);");
+
+array_push($query, "ALTER TABLE `user`
+MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;");
  
+array_push($query, "INSERT INTO `user` (`user_name`, `user_password`, `role`, `user_id`) 
+VALUES ('admin', 'admin', 'admin', 'NULL');");
+
 if(isset($_GET['submit'])){
     $run = $_GET['run'];
    
@@ -108,7 +126,7 @@ echo '<br><b>query: </b> CREATE DATABASE attendance_records <br><span style="col
         echo '<br><b>Error with query: </b><span style="color:red;"> CREATE DATABASE attendance_records </span><br><b>Error Message: '. $e .' </b>' ;
     }
     finally{
-        echo "<br> Creating Database Finished ";
+        echo "<br> Creating Database Finished";
     }
 mysqli_close($override);      
 }
@@ -132,7 +150,7 @@ function sql_Query($query){
 
 
     $q = 0;
-    print_r($query);
+    // print_r($query);
 
     echo '<br/>';
      
@@ -148,7 +166,7 @@ function sql_Query($query){
         echo '<br><b>Error with query: </b><span style="color:red;">' . $query[$q] . "</span><br><b>Error Message: $e </b>" ;
     }
     finally{
-        echo "<br> Finished ";
+        
     }
   
     } 
@@ -163,5 +181,6 @@ function sql_Query($query){
 ?>
 </body>
 </html>
+
 
  

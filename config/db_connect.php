@@ -1,5 +1,7 @@
+ 
+
 <?php
-session_start();
+ 
 // GET DATA
 // hostname / username / password / database
 $conn = mysqli_connect(
@@ -16,9 +18,10 @@ $conn = mysqli_connect(
 if(!$conn){
   die( 'Connection' . mysqli_connect_error());
 }else{
-  echo  'connection with database is connected';
+ 
 }
-echo '<hr>' ;
+ 
 
 date_default_timezone_set('Asia/Taipei');
 ?>
+ 
