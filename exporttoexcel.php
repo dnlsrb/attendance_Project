@@ -1,29 +1,15 @@
-<?php
-session_start();
-if($_SESSION['role'] === 'admin' && isset($_SESSION['username'])  && isset($_SESSION['password'])):
-?>
+<?php include('authentication.php');?>
  
 <?php
-include_once('config/db_connect.php');
-if(isset($_GET['getsubmit'])){
+if(isset($_GET['getsubmit'])):
+include_once('config/db_connect.php');	 
+
 	$event_id = mysqli_real_escape_string($conn, $_GET['event_id']);
-
-	// make sql
 	$sql = "SELECT * FROM event_list WHERE event_id = $event_id";
-
-	// get the query result
 	$result = mysqli_query($conn, $sql);
-	
 	$eventList = mysqli_fetch_assoc($result);
-
-	// FREE RESULT FROM MEMORY
 	mysqli_free_result($result);
-
-}
-
-?>
-<?php  
-include("config/db_connect.php");
+ 
 $filename = htmlspecialchars($eventList['eventName']) ." of \t".date("M-d-Y");
 header("Content-Type: application/xls");    
 header("Content-Disposition: attachment; filename=$filename.xls");
@@ -65,7 +51,7 @@ body {
  
 
 <?php
-
+include_once('config/db_connect.php');
 $date = date("F j, Y");
  
 $searchSQL = "SELECT * FROM attendance_records WHERE event_id = '$event_id' AND archived = 0 ORDER BY record_id DESC";
@@ -120,10 +106,7 @@ else
 </table>
 </body>
 </html>
- 
-<?php 
-else:
-header('Location: index.php');
-
-endif;
-?>
+<?php else:
+	header("Location: index.php");
+	?>	
+<?php endif;?>

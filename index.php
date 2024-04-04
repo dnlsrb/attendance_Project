@@ -6,22 +6,24 @@ else:
 ?>
 <?php include('template/header.php')?>
 
+
+
  
-
  
-<div  class="container-fluid  justify-content-center align-items-center d-flex  " >
-<div   > 
-<form action="login.php" class="card p-3"  method="POST">
-
-
-<input type="text" class="form-control mb-3" name="username" placeholder="username">
-<input type="password" class="form-control mb-3" name="password" placeholder="password">
-<input type="submit" class="btn btn-primary mb-3"  value="Log in" >
-
+<form action="login.php"   method="POST">
+<?php 
+include('config/db_connect.php');
+if(isset( $_GET['error'])){
+$error = mysqli_real_escape_string($conn, $_GET['error']);
+echo $error . "<br/>";
+}
+?>
+<input type="text" name="username" placeholder="username">
+<input type="password" name="password" placeholder="password">
+<input type="submit"  value="Log in" >
 </form>
  
-</div>
-</div>
+ 
 
 
 

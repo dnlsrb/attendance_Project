@@ -14,11 +14,16 @@
     <!--  -->
 </head>
 <body>
-    <?php if(isset($_SESSION['username'])  && isset($_SESSION['password'])): ?>
-        <nav class="navbar bg-black ">
-  <div class="container-fluid  ">
-  <a class=""href="./logout.php">Logout</a> 
-  </div>
+<?php if(isset($_SESSION['username'])  && isset($_SESSION['password'])): ?>
+    
+<nav>
+<div>  
+    <a href="./logout.php">Logout</a>
+    <a href="./event_list.php">Event List</a>
+   <?php if($_SESSION['role'] = 'admin'):?> <a href="./user_management.php">User Management</a> <?php endif;?>
+</div>
+ <span>Username: <?php echo htmlspecialchars($_SESSION['username'])?> </span>
+ 
 </nav>
  
 <?php endif;?>

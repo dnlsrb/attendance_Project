@@ -53,8 +53,10 @@ array_push($query, "ALTER TABLE `event_list`
 array_push($query, "CREATE TABLE `user` (
     `user_name` varchar(100) NOT NULL,
     `user_password` varchar(255) NOT NULL,
-    `role` varchar(100) NOT NULL,
-    `user_id` int(11) NOT NULL
+    `user_role` varchar(100) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `created_At` datetime NOT NULL DEFAULT current_timestamp(),
+    `archived` tinyint(1) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
 array_push($query, "ALTER TABLE `user`
@@ -63,8 +65,8 @@ ADD PRIMARY KEY (`user_id`);");
 array_push($query, "ALTER TABLE `user`
 MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;");
  
-array_push($query, "INSERT INTO `user` (`user_name`, `user_password`, `role`, `user_id`) 
-VALUES ('admin', 'admin', 'admin', 'NULL');");
+array_push($query, "INSERT INTO `user` (`user_name`, `user_password`, `user_role`) 
+VALUES ('admin', 'admin', 'admin');");
 
 if(isset($_GET['submit'])){
     $run = $_GET['run'];

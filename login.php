@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('config/db_connect.php');
+include_once('config/db_connect.php');
 
  
 
@@ -16,7 +16,7 @@ if(mysqli_num_rows($login_result) === 1){
      
             $_SESSION['username'] = $row['user_name'];
             $_SESSION['password'] = $row['user_password'];
-            $_SESSION['role'] = $row['role'];
+            $_SESSION['role'] = $row['user_role'];
             header("Location: event_List.php");
             mysqli_free_result($login_result);
             mysqli_close($conn);
@@ -25,10 +25,10 @@ if(mysqli_num_rows($login_result) === 1){
        
     
 }else{
-    
+     
     mysqli_free_result($login_result);
     mysqli_close($conn);
-    header("Location: index.php");
+    header("Location: index.php?error=Wrong Input!");
 }
 
  
