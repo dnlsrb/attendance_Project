@@ -47,7 +47,6 @@ include_once('config/db_connect.php');
         }
         else{ 
             $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
-
             $timeOut_query = "SELECT * FROM attendance_records WHERE attendeesName = '$attendeesName' AND event_id = '$event_id'  AND time_OUT = '' AND archived = 0 ORDER BY created_At DESC";
             $timeOut_result = mysqli_query($conn, $timeOut_query);
             $timeOut_display = mysqli_fetch_assoc($timeOut_result);

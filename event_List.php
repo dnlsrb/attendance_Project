@@ -23,11 +23,31 @@ $required_fields =['eventName', 'eventHeaderImage', 'eventBackgroundImage', 'eve
 
 if(isset($_POST['submit'])){
 include_once('config/db_connect.php');
+  
+// Event Name
+  if(empty($_POST['eventName'])){
+    $errors['eventName'] = 'event name is required';
+  }
+  else{
+    $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);    
+  }
 
-  $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
-  $eventStart = mysqli_real_escape_string($conn, $_POST['eventStart']);
-  $eventEnd = mysqli_real_escape_string($conn, $_POST['eventEnd']);
+// Event Start
+  if(empty($_POST['eventStart'])){
+    $errors['eventStart'] = 'event start is required';
+  }else{
+    $eventStart = mysqli_real_escape_string($conn, $_POST['eventStart']);
+  }
 
+// Event End
+  if(empty($_POST['eventEnd'])){
+    $errors['eventEnd'] = 'event start is required';
+  }else{
+    $eventEnd = mysqli_real_escape_string($conn, $_POST['eventEnd']);
+  }
+
+  if(!array_filter($errors)){
+    
   $eventHeaderImage_Name =$_FILES['eventHeaderImage']['name'];
   $eventHeaderImage_Size =$_FILES['eventHeaderImage']['size'];
   $eventHeaderImage_Tmp = $_FILES['eventHeaderImage']['tmp_name'];
@@ -78,6 +98,10 @@ include_once('config/db_connect.php');
         // error
         echo 'query error: ' . mysqli_error($conn);
       }
+
+  }
+   
+  
  
 } 
 
@@ -96,12 +120,14 @@ include_once('config/db_connect.php');
 
     <form action="event_List.php"   method="POST" enctype="multipart/form-data">
      
-    <?php echo $errors['eventName']?>
-     Event Name: <input type="text" name="eventName"><br>
+    <p style="color:red;"> <?php echo $errors['eventName'] ?? '' ;?><p>
+     Event Name: <input type="text" name="eventName" value="<?php echo $eventName ?? ''?>"><br>
      Background image: <input type="file" name="eventBackgroundImage" accept=".jpg, .png, .jpeg, .gif," > <br>
      Header Image: <input type="file" name="eventHeaderImage" accept=".jpg, .png, .jpeg, .gif,"> <br>
-     Event Start: <input type="date" name="eventStart" ><br>
-     Event End <input type="date" name="eventEnd" >
+     <p style="color:red;"> <?php echo  $errors['eventStart'] ?? '' ;?> </p> 
+     Event Start: <input type="date" name="eventStart" min="<?php echo date('Y-m-d'); ?>"><br>
+     <p style="color:red;"><?php echo  $errors['eventEnd'] ?? '' ;?></p>
+     Event End <input type="date" name="eventEnd" min="<?php echo date('Y-m-d'); ?>">
      <br>
      <input type="submit"  value="submit" name="submit">
      </form>
