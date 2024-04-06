@@ -1,8 +1,8 @@
-<?php include('authentication.php');?>
+<?php include('../auth/auth_all.php');?>
  
 <?php
 if(isset($_GET['getsubmit'])):
-include_once('config/db_connect.php');	 
+include_once('../database/db_connect.php');	 
 
 	$event_id = mysqli_real_escape_string($conn, $_GET['event_id']);
 	$sql = "SELECT * FROM event_list WHERE event_id = $event_id";
@@ -51,10 +51,10 @@ body {
  
 
 <?php
-include_once('config/db_connect.php');
+include_once('../database/db_connect.php');
 $date = date("F j, Y");
  
-$searchSQL = "SELECT * FROM attendance_records WHERE event_id = '$event_id' AND archived = 0 ORDER BY record_id DESC";
+$searchSQL = "SELECT * FROM attendance_records WHERE event_id = '$event_id' AND archived = 0 ORDER BY created_At DESC";
 $result = mysqli_query($conn,$searchSQL);
 
 if(mysqli_num_rows($result)>0)
@@ -107,6 +107,6 @@ else
 </body>
 </html>
 <?php else:
-	header("Location: index.php");
+	header("Location: ../../index.php");
 	?>	
 <?php endif;?>
