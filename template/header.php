@@ -24,7 +24,7 @@ window.addEventListener('unload', function () {
 <nav>
 <div>  
     <a href="./config/Controller/logout.php">Logout</a>
-    <a href="./event_List.php">Event List</a>
+    <a href="event_List.php">Event List</a>
    <?php if($_SESSION['role'] = 'admin'):?> <a href="./user_management.php">User Management</a> <?php endif;?>
 </div>
  <span>Username: <?php echo htmlspecialchars($_SESSION['username'])?> </span>

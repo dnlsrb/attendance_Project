@@ -54,7 +54,7 @@ body {
 include_once('../database/db_connect.php');
 $date = date("F j, Y");
  
-$searchSQL = "SELECT * FROM attendance_records WHERE event_id = '$event_id' AND archived = 0 ORDER BY record_id DESC";
+$searchSQL = "SELECT * FROM attendance_records WHERE event_id = '$event_id' AND archived = 0 ORDER BY created_At DESC";
 $result = mysqli_query($conn,$searchSQL);
 
 if(mysqli_num_rows($result)>0)

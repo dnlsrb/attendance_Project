@@ -1,3 +1,8 @@
+<?php 
+ 
+
+ 
+?>
 
 <?php
 include_once('config/database/db_connect.php');
@@ -52,7 +57,7 @@ include_once('config/database/db_connect.php');
             $timeOut_display = mysqli_fetch_assoc($timeOut_result);
             
             if(mysqli_num_rows($timeOut_result) === 1){
-
+                // TIME OUT
                 $sql_update = "UPDATE attendance_records SET time_OUT = '$date' WHERE attendeesName = '$attendeesName' AND event_id = '$event_id'";
                 $timeOut_update = mysqli_query($conn, $sql_update);
                 mysqli_free_result($timeOut_result);
@@ -60,26 +65,35 @@ include_once('config/database/db_connect.php');
                 header('Location: attendance_List.php?id='. $event_id);
             }
             else{ 
-
+                // TIME IN
                 $time_IN = date('Y-m-d H:i:s'); // Format: YYYY-MM-DD;
                 $total = "SELECT COUNT(*) as count FROM attendance_records WHERE (LAST_DAY(CURDATE()) - LAST_DAY(CURDATE())+1) <= DAY(created_At) AND DAY(LAST_DAY(CURDATE())) >= DAY(created_At) AND MONTH(LAST_DAY(CURDATE())) = MONTH(created_At) AND YEAR(LAST_DAY(CURDATE())) = YEAR(created_At)";
                 $submit_result = mysqli_query($conn, $total);
                 $count = mysqli_fetch_assoc($submit_result)['count'];
                 $currentDateTime = date('my');
                 
+                // IF SIMILAR
                 $record_id = $currentDateTime  . $count + 1 ;
 
+                $sql_similar = "SELECT * FROM attendance_records WHERE record_id = '$record_id' ";
+                $sql_similar_result = mysqli_query($conn, $sql_similar);
 
-            mysqli_free_result($submit_result);
+                if(mysqli_num_rows($sql_similar_result) === 1){
+                $record_id = $currentDateTime  .'0'. $count + 1 ;
+                }
+                
+                mysqli_free_result($sql_similar_result);
+                mysqli_free_result($submit_result);
 
-            $sql = "INSERT INTO attendance_records(record_id, event_id, attendeesName, time_IN) 
-            VALUES ('$record_id','$event_id', '$attendeesName', '$date' )"   ;
+                $sql = "INSERT INTO attendance_records(record_id, event_id, attendeesName, time_IN) 
+                VALUES ('$record_id','$event_id', '$attendeesName', '$date' )"   ;
 
                     if(mysqli_query($conn, $sql)){
                         mysqli_close($conn);
                         header('Location: attendance_List.php?id='. $event_id);
                     } else {
                         // error
+                        mysqli_close($conn);
                         echo 'query error: ' . mysqli_error($conn);
                     }
                     }

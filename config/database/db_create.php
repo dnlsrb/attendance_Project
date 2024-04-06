@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-<span>This will be used only for development </span><a  href=".../index.php">go back</a>
+<span>This will be used only for development </span><a  href="../../index.php">go back</a>
 <form action="db_create.php" method="GET">
 <input type="text" name="run">
 <input type="submit" value="submit" name="submit">
@@ -16,8 +16,6 @@
  
 
 $query = [];
- 
-
 
 array_push($query, "CREATE TABLE `attendance_records` (
   `record_id` int(11) NOT NULL,
@@ -125,7 +123,9 @@ mysqli_query($override,
 mysqli_query($override, 'GRANT ALL PRIVILEGES ON `mysql`.* TO `ojt`@`localhost`');
 
 try {
+  
 mysqli_query($override, 'CREATE DATABASE attendanceproject' );
+
 echo '<br><b>query: </b> CREATE DATABASE attendance_records <br><span style="color:green;">executed successfully</span>';
     }
     catch(mysqli_sql_exception $e){
