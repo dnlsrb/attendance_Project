@@ -13,13 +13,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!--  -->
 </head>
+<script>
+window.addEventListener('unload', function () {
+    document.documentElement.innerHTML = '';
+});
+</script>
 <body>
 <?php if(isset($_SESSION['username'])  && isset($_SESSION['password'])): ?>
     
 <nav>
 <div>  
-    <a href="./logout.php">Logout</a>
-    <a href="./event_list.php">Event List</a>
+    <a href="./config/Controller/logout.php">Logout</a>
+    <a href="./event_List.php">Event List</a>
    <?php if($_SESSION['role'] = 'admin'):?> <a href="./user_management.php">User Management</a> <?php endif;?>
 </div>
  <span>Username: <?php echo htmlspecialchars($_SESSION['username'])?> </span>

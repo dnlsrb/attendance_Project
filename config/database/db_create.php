@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-<span>This will be used only for development </span><a  href="../index.php">go back</a>
+<span>This will be used only for development </span><a  href=".../index.php">go back</a>
 <form action="db_create.php" method="GET">
 <input type="text" name="run">
 <input type="submit" value="submit" name="submit">
@@ -61,7 +61,7 @@ array_push($query, "CREATE TABLE `user` (
 
 array_push($query, "ALTER TABLE `user`
 ADD PRIMARY KEY (`user_id`);");
-
+  
 array_push($query, "ALTER TABLE `user`
 MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;");
 
