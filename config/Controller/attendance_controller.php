@@ -118,7 +118,11 @@ include_once('config/database/db_connect.php');
 
     
     }
-
+    
+unset($date);
+unset($time_IN);
+unset($currentDateTime );
+unset($record_id);
 mysqli_close($conn);
 ?>
  

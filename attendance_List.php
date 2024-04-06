@@ -98,7 +98,11 @@
 
 </td>
 <?php $count++;?>
-<?php echo '<tr>';   endforeach;?>
+<?php 
+echo '<tr>';   
+endforeach;
+unset($count);
+?>
 </table>
 <?php else: ?>
 <h3>No Attendees Yet</h3><br>
