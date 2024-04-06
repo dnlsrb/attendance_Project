@@ -49,8 +49,10 @@ if(isset($_POST['createSubmit'])){
     if(!array_filter($errors)){
       
         include('config/db_connect.php');
+
+            $hashedPassword = password_hash($user_password, PASSWORD_DEFAULT);
             $sql = "INSERT INTO user(user_name, user_password, user_role) 
-            VALUES('$user_name', '$user_password', '$user_role')";
+            VALUES('$user_name', '$hashedPassword', '$user_role')";
         
             if(mysqli_query($conn, $sql)){
                 mysqli_close($conn);

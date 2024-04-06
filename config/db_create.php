@@ -64,9 +64,12 @@ ADD PRIMARY KEY (`user_id`);");
 
 array_push($query, "ALTER TABLE `user`
 MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;");
- 
+
+$password = "admin";
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
 array_push($query, "INSERT INTO `user` (`user_name`, `user_password`, `user_role`) 
-VALUES ('admin', 'admin', 'admin');");
+VALUES ('admin', '$hashedPassword', 'admin');");
 
 if(isset($_GET['submit'])){
     $run = $_GET['run'];
