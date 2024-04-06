@@ -17,9 +17,7 @@ $conn = mysqli_connect(
 
 if(!$conn){
   die( 'Connection' . mysqli_connect_error());
-}else{
- 
-}
+} 
  
 
 date_default_timezone_set('Asia/Taipei');

@@ -7,38 +7,45 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- SCRIPT -->
 
+<!-- TIME -->
+<script language="javascript">
 
-<?php include('template/header.php')?>
-<style>
-  table {
-    background-image:url("Image/Background/<?php echo htmlspecialchars($eventLists['eventBackgroundImage']);?>");
-    background-size: cover;
-    /* Adjust other background properties as needed */
-  }
-</style>
  
- <video id="preview" width="50%" height="50%"></video>
-<p id="waitMessage"></p>
- 
-<br>
-<?php if($eventLists):?>
- 
-    <a href="event_List.php">Go Back </a><br>
+function startTime()
+{
+	var today=new Date();
+	var h=today.getHours();
+	var m=today.getMinutes();
+	var s=today.getSeconds();
 
- <form action="config/Controller/exporttoexcel.php" method="GET">
-    <input type="submit" name="getsubmit" value="Download Excel">
-    <input type="hidden" name="authentication" value="allowed">
-    <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
-</form>
- 
-<form  id="scan_form"  action="attendance_List.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
-    <?php if(isset($name_error)): echo $name_error; endif;?>
-    <h3>Event Name: <?php echo htmlspecialchars($eventLists['eventName']);?></h3>
-    <input type="text" name="attendeesName" id="attendeesName" placeholder="Attendees Name" value=""> 
-    <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
-    <input type="submit" id="btnsubmit" name="submit" value="submit">
-</form>
- 
+	
+	var time_ampm = today.toLocaleTimeString();
+	m=checkTime(m);
+	s=checkTime(s);
+	
+	if(h>12)
+	{
+		h=h-12;
+	}
+	document.getElementById('time').innerHTML=time_ampm;
+	document.getElementById('time').innerHTML=time_ampm;
+	t=setTimeout(function(){startTime()},500);
+}
+function checkTime(i)   
+{
+	if (i<10)
+	{
+	  i="0" + i;
+	}
+	return i;
+}
+</script>
+<script>
+    window.onload = function() {
+        startTime();
+    };
+</script>
+<!-- TIME -->
 <!-- SCRIPT -->
 <script>
     document.getElementById('waitMessage').innerText = "Please wait...";
@@ -65,6 +72,51 @@
 </script>
 <!-- SCRIPT -->
 
+
+<?php include('template/header.php')?>
+<style>
+  table {
+    background-image:url("Image/Background/<?php echo htmlspecialchars($eventLists['eventBackgroundImage']);?>");
+    background-size: cover;
+ 
+  }
+</style>
+ 
+
+
+
+
+    <div onLoad="startTime()"> 
+        <strong>
+        <time id="time">00:00:00</time><br>
+        <?php echo "Today is ".date("l F d, Y");?>
+        </strong>
+    </div>
+ 
+    
+ <video id="preview" width="50%" height="50%"></video>
+<p id="waitMessage"></p>
+ 
+<br>
+<?php if($eventLists):?>
+ 
+    <a href="event_List.php">Go Back </a><br>
+
+ <form action="config/Controller/exporttoexcel.php" method="GET">
+    <input type="submit" name="getsubmit" value="Download Excel">
+    <input type="hidden" name="authentication" value="allowed">
+    <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
+</form>
+ 
+<form  id="scan_form"  action="attendance_List.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
+    <?php if(isset($name_error)): echo $name_error; endif;?>
+    <h3>Event Name: <?php echo htmlspecialchars($eventLists['eventName']);?></h3>
+    <input type="text" name="attendeesName"  id="attendeesName" placeholder="Attendees Name" value=""> 
+    <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
+    <input type="hidden" id="btnsubmit" name="submit" value="submit">
+</form>
+ 
+ 
 <p>Total Attendees: <?php echo $count_display?></p>
 <?php if($Attendees_Records): ?>
 <table  >

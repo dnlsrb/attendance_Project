@@ -25,18 +25,18 @@ Role:
 <table>
 <tr>
 <th>Username</th>
-<th>Password</th>
+<!-- <th>Password</th> -->
 </tr>
 
 <?php foreach($userList as $user):?>
 <tr>
 <td><?php echo htmlspecialchars($user['user_name']);?></td>
-<td><?php $count = strlen(htmlspecialchars($user['user_password']));
+<!-- <td><?php $count = strlen(htmlspecialchars($user['user_password']));
      for ($x = 0; $x <= $count; $x++) {
         echo "*";
         }
 ?>
-</td>
+</td> -->
 </tr>
 <?php endforeach; ?>
 </table>

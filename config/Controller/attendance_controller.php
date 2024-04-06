@@ -90,12 +90,20 @@ include_once('config/database/db_connect.php');
 
                     if(mysqli_query($conn, $sql)){
                         mysqli_close($conn);
+                        unset($date);
+                        unset($time_IN);
+                        unset($currentDateTime );
+                        unset($record_id);
                         header('Location: attendance_List.php?id='. $event_id);
                     } else {
                         // error
                         mysqli_close($conn);
                         echo 'query error: ' . mysqli_error($conn);
                     }
+                    unset($date);
+                    unset($time_IN);
+                    unset($currentDateTime );
+                    unset($record_id);
                     }
             }
     }
@@ -118,11 +126,8 @@ include_once('config/database/db_connect.php');
 
     
     }
-    
-unset($date);
-unset($time_IN);
-unset($currentDateTime );
-unset($record_id);
+
+ 
 mysqli_close($conn);
 ?>
  

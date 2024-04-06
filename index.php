@@ -5,11 +5,13 @@ if(isset($_SESSION['username'])  && isset($_SESSION['password'])):
     header('Location: event_List.php');
 else:
 ?>
-
+<!-- AUTH LOGGED IN -->
 
 <?php 
 include('template/header.php')
 ?>
+ 
+
  
 <form action="index.php"  method="POST">
 <span style="color:red;"><?php 
