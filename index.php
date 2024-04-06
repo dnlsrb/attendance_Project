@@ -1,12 +1,9 @@
-<?php require('config/Controller/login_controller.php');?> 
- 
-<?php
+ <?php require('config/Controller/login_controller.php');?> 
+ <?php
 if(isset($_SESSION['username'])  && isset($_SESSION['password'])):
     header('Location: event_List.php');
 else:
 ?>
-
-
 <?php 
 include('template/header.php')
 ?>

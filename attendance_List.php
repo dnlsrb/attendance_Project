@@ -6,9 +6,9 @@
 <script src="js/instascan.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <!-- SCRIPT -->
-
-
 <?php include('template/header.php')?>
+
+
 <style>
   table {
     background-image:url("Image/Background/<?php echo htmlspecialchars($eventLists['eventBackgroundImage']);?>");
@@ -32,7 +32,7 @@
 </form>
  
 <form  id="scan_form"  action="attendance_List.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
-    <?php if(isset($name_error)): echo $name_error; endif;?>
+    <?php if(isset($name_error)): echo $name_error; unset($name_error); endif;?>
     <h3>Event Name: <?php echo htmlspecialchars($eventLists['eventName']);?></h3>
     <input type="text" name="attendeesName" id="attendeesName" placeholder="Attendees Name" value=""> 
     <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
@@ -98,7 +98,12 @@
 
 </td>
 <?php $count++;?>
-<?php echo '<tr>';   endforeach;?>
+<?php 
+echo '<tr>';   
+endforeach;
+unset($count);
+?>
+ 
 </table>
 <?php else: ?>
 <h3>No Attendees Yet</h3><br>
@@ -114,12 +119,10 @@
     </div>
     </div>
  
+</div>
+</div>
+</div>
 
-
- 
-</div>
-</div>
-</div>
 <?php include('template/footer.php')?>
 
  

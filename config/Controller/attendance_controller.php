@@ -35,6 +35,7 @@ include_once('config/database/db_connect.php');
         $Attendees_Records = mysqli_fetch_all($AttendanceList_result, MYSQLI_ASSOC);
         
         mysqli_free_result($AttendanceList_result);
+  
     }
  
 
@@ -84,12 +85,13 @@ include_once('config/database/db_connect.php');
                 
                 mysqli_free_result($sql_similar_result);
                 mysqli_free_result($submit_result);
-
+                    
                 $sql = "INSERT INTO attendance_records(record_id, event_id, attendeesName, time_IN) 
                 VALUES ('$record_id','$event_id', '$attendeesName', '$date' )"   ;
-
+                       
                     if(mysqli_query($conn, $sql)){
                         mysqli_close($conn);
+                       
                         header('Location: attendance_List.php?id='. $event_id);
                     } else {
                         // error
@@ -118,7 +120,10 @@ include_once('config/database/db_connect.php');
 
     
     }
-
+unset($date);
+unset($time_IN);
+unset($currentDateTime );
+unset($record_id);
 mysqli_close($conn);
 ?>
  
