@@ -24,9 +24,6 @@
 
  
 
-
-
-
 <div onLoad="startTime()"> 
     <strong>
         <time id="time">00:00:00</time><br>
@@ -35,7 +32,7 @@
 </div>
  
     
- <video id="preview" width="50%" height="50%"></video>
+<video id="preview" width="50%" height="50%"></video>
 <p id="waitMessage"></p>
  <script src="js/camera.js"></script>
 <br>
