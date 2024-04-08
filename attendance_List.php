@@ -3,77 +3,13 @@
 
 
 <!-- SCRIPT -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script> -->
 <script src="js/instascan.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="js/time.js"></script>
+ 
 <!-- SCRIPT -->
-
-<!-- TIME -->
-<script language="javascript">
 
  
-function startTime()
-{
-	var today=new Date();
-	var h=today.getHours();
-	var m=today.getMinutes();
-	var s=today.getSeconds();
-
-	
-	var time_ampm = today.toLocaleTimeString();
-	m=checkTime(m);
-	s=checkTime(s);
-	
-	if(h>12)
-	{
-		h=h-12;
-	}
-	document.getElementById('time').innerHTML=time_ampm;
-	document.getElementById('time').innerHTML=time_ampm;
-	t=setTimeout(function(){startTime()},500);
-}
-function checkTime(i)   
-{
-	if (i<10)
-	{
-	  i="0" + i;
-	}
-	return i;
-}
-</script>
-<script>
-    window.onload = function() {
-        startTime();
-    };
-</script>
-<!-- TIME -->
-<!-- SCRIPT -->
-<script>
-    document.getElementById('waitMessage').innerText = "Please wait...";
-    setTimeout(function() {
-      
-	let scanner = new Instascan.Scanner({ video: document.getElementById('preview')});
-	Instascan.Camera.getCameras().then(function(cameras){
-		if(cameras.length > 0){
-			scanner.start(cameras[0]);
-		}else{
-			 
-		}
-    document.getElementById('waitMessage').innerText = "";
-	}).catch(function(e){
-		console.error(e);
-	});
-
-	scanner.addListener('scan',function(c){
-		document.getElementById('attendeesName').value=c;
-        // 1 Sec Delay to Avoid Time in and Time out in the flash
-        document.getElementById('btnsubmit').click();
-    
-	}); }, 1000);
-</script>
-<!-- SCRIPT -->
-
-
-<?php include('template/header.php')?>
 <style>
   table {
     background-image:url("Image/Background/<?php echo htmlspecialchars($eventLists['eventBackgroundImage']);?>");
@@ -84,19 +20,24 @@ function checkTime(i)
  
 
 
+<?php include('template/header.php')?>
+
+ 
 
 
-    <div onLoad="startTime()"> 
-        <strong>
+
+
+<div onLoad="startTime()"> 
+    <strong>
         <time id="time">00:00:00</time><br>
         <?php echo "Today is ".date("l F d, Y");?>
-        </strong>
-    </div>
+    </strong>
+</div>
  
     
  <video id="preview" width="50%" height="50%"></video>
 <p id="waitMessage"></p>
- 
+ <script src="js/camera.js"></script>
 <br>
 <?php if($eventLists):?>
  
@@ -156,19 +97,17 @@ endforeach;
 unset($count);
 ?>
 </table>
-<?php else: ?>
-<h3>No Attendees Yet</h3><br>
-<?php endif ?>
- 
 
-<?php else: ?>
 
-    
-<h>no data found</h><br>
-<?php endif; ?>
+    <?php else: ?>
+    <h3>No Attendees Yet</h3><br>
+    <?php endif ?>
+    <?php else: ?>
+    <h>no data found</h><br>
+    <?php endif; ?>
 
     </div>
-    </div>
+</div>
  
 
 
