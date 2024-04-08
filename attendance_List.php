@@ -12,7 +12,7 @@
  
 <style>
   table {
-    background-image:url("Image/Background/<?php echo htmlspecialchars($eventLists['eventBackgroundImage']);?>");
+    background-image:url("image/background/<?php echo htmlspecialchars($eventLists['eventBackgroundImage']);?>");
     background-size: cover;
  
   }

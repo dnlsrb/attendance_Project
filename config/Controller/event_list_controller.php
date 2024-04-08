@@ -75,12 +75,12 @@ include_once('config/database/db_connect.php');
   // IMAGE - HEADER 
   $image_header = strtolower(pathinfo($eventHeaderImage_Name, PATHINFO_EXTENSION));
   $eventHeaderImage = "HD".$event_id.'.'.$image_header;
-  $header_uploadpath ='Image/Header/'.$eventHeaderImage;
+  $header_uploadpath ='image/header/'.$eventHeaderImage;
 
   // IMAGE - BACKGROUND
   $image_background = strtolower(pathinfo($eventBackgroundImage_Name, PATHINFO_EXTENSION));
   $eventBackgroundImage = "BG".$event_id.'.'.$image_background;
-  $Background_uploadpath ='Image/Background/'.$eventBackgroundImage;
+  $Background_uploadpath ='image/background/'.$eventBackgroundImage;
 
   move_uploaded_file($eventHeaderImage_Tmp, $header_uploadpath);
   move_uploaded_file($eventBackgroundImage_Tmp, $Background_uploadpath);
