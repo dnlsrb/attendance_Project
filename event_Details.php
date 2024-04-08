@@ -1,4 +1,4 @@
-A<?php include('config/auth/auth_all.php');?>
+<?php include('config/auth/auth_all.php');?>
 <?php require('config/Controller/event_details_controller.php');?>
 
 
