@@ -15,40 +15,12 @@
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create_event">
                 Create Event
             </button>
-            <a href="" class="btn btn-secondary">User Management</a>
+             <?php if ($_SESSION['role'] = 'admin'): ?>
+            <a href="user_management.php" class="btn btn-secondary">User Management</a>
+            <?php endif; ?>
         </div>
 
-        <!-- right side -->
-        <div class="d-flex align-items-center p-1">
-            <!-- searchbar -->
-            <input type="text" placeholder="search" class="pr-1">
-
-            <!-- Dropdown menu -->
-            <div class="dropdown shadow ">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    filter
-                </button>
-                <ul class="dropdown-menu">
-                    <li class="d-flex justify-content-start align-items-center">
-                    <div class="m-2"> 
-                    <input type="checkbox" class="dropdown-item" id="ongoing" name="ongoing">
-                    </div>
-                    <label for="ongoing">Ongoing</label>
-                    </li>
-                    <li class="d-flex justify-content-start align-items-center">
-                    <div class="m-2"> 
-                    <input type="checkbox" class="dropdown-item" id="ongoing" name="ongoing">
-                    </div>
-                    <label for="ongoing">Ongoing</label>
-                    </li>
-                    <li class="d-flex justify-content-end align-items-center">
-                    <a href="#" class="btn btn-primary mx-1 mt-5">Confirm</a>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
+       
     </div>
 </nav>
 
