@@ -38,7 +38,7 @@ if(isset($_POST['createSubmit'])){
         $result_user = mysqli_query($conn, $query);
         mysqli_close($conn);
         if(mysqli_num_rows($result_user) != 0){
-            $errors['user_name'] = "user already matched";
+            $errors['user_name'] = "user already existed";
         }
     }
 
@@ -63,8 +63,29 @@ if(isset($_POST['createSubmit'])){
 
 
 }
+
+
+// ARCHIVE DATA
+// ------------------------------------------------------------------------------------------
+    if(isset($_POST['delete_user'])){
+            
+
+        $delete_user_id = mysqli_real_escape_string($conn, $_POST['delete_user_id']);
+        $event_id= mysqli_real_escape_string($conn, $_POST['event_id']);
+        $sql = "UPDATE user SET archived = 1 WHERE user_id = $delete_user_id";
+        if(mysqli_query($conn, $sql)){
+            mysqli_close($conn);
+            header('Location: user_management.php');
+        }else{
+            echo 'query error: ' . mysqli_error($conn);
+        }
+
+
+    }
+
+    
 include('config/database/db_connect.php');
-$sqlDisplay = "SELECT * FROM user WHERE user_id > 1";
+$sqlDisplay = "SELECT * FROM user WHERE user_id > 1 && archived = 0";
 $result = mysqli_query($conn, $sqlDisplay);
 $userList = mysqli_fetch_all($result, MYSQLI_ASSOC);
 mysqli_free_result($result);

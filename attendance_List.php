@@ -1,4 +1,6 @@
 <?php include('config/auth/auth_all.php');?>
+
+
 <?php require('config/Controller/attendance_controller.php');?>
 
 
@@ -18,10 +20,18 @@
   }
 </style>
  
-
+<div class="position-relative"> 
 
 <?php include('template/header.php')?>
-
+<?php if(isset($name_error)):
+        echo '<div class="alert alert-danger position-absolute top-0 end-0 m-3 " role="alert">';
+        echo $name_error;
+        echo ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>';
+     ?>
+ 
+     
+<?php endif;?>
  
 
 <div onLoad="startTime()"> 
@@ -34,7 +44,7 @@
     
 <video id="preview" width="50%" height="50%"></video>
 <p id="waitMessage"></p>
- <script src="js/camera.js"></script>
+ 
 <br>
 <?php if($eventLists):?>
  
@@ -42,18 +52,18 @@
 
  <form action="config/Controller/exporttoexcel.php" method="GET">
     <input type="submit" name="getsubmit" value="Download Excel">
-    <input type="hidden" name="authentication" value="allowed">
+    <!-- <input type="hidden" name="authentication" value="allowed"> -->
     <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
 </form>
  
 <form  id="scan_form"  action="attendance_List.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
-    <?php if(isset($name_error)): echo $name_error; endif;?>
+    
     <h3>Event Name: <?php echo htmlspecialchars($eventLists['eventName']);?></h3>
     <input type="text" name="attendeesName"  id="attendeesName" placeholder="Attendees Name" value=""> 
     <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
-    <input type="hidden" id="btnsubmit" name="submit" value="submit">
+    <input type="submit" id="btnsubmit" name="submit" value="submit">
 </form>
- 
+<script src="js/camera.js"></script>
  
 <p>Total Attendees: <?php echo $count_display?></p>
 <?php if($Attendees_Records): ?>
@@ -108,7 +118,7 @@ unset($count);
  
 
 
- 
+</div>
 </div>
 </div>
 </div>

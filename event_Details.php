@@ -1,20 +1,33 @@
 <?php include('config/auth/auth_all.php');?>
+
 <?php require('config/Controller/event_details_controller.php');?>
 
 
 <?php include('template/header.php');?>
         <h4>Edit Event</h4>
-<form action="event_Details.php" method="POST"> 
-
+<form action="event_Details.php" method="POST" enctype="multipart/form-data"> 
+ 
+    <input type="hidden" name="old_header_path" value="<?php echo htmlspecialchars($eventList['eventHeaderImage']) ?? ''; ?>">
+    <input type="hidden" name="old_background_path" value="<?php echo htmlspecialchars($eventList['eventBackgroundImage']) ?? ''; ?>">
+    
+    
+    <p style="color:red;"> <?php echo $errors['eventName'] ?? '' ;?><p>
     <label for="eventName">Event Name</label><br>
-    <input name="eventName"  value="<?php echo  htmlspecialchars($eventList['eventName']); ?> " type="text"><br> 
-    Background image: <input type="file" name="eventBackgroundImage" accept=".jpg, .png, .jpeg, .gif," > <br>
-     Header Image: <input type="file" name="eventHeaderImage" accept=".jpg, .png, .jpeg, .gif,"> <br>
-     <p style="color:red;"> <?php echo  $errors['eventStart'] ?? '' ;?> </p> 
-     Event Start: <input type="date" name="eventStart" min="<?php echo date('Y-m-d'); ?>" value="<?php echo htmlspecialchars($eventList['eventStart']); ?> " ><br>
-     <p style="color:red;"><?php echo  $errors['eventEnd'] ?? '' ;?></p>
-     Event End <input type="date" name="eventEnd" min="<?php echo date('Y-m-d'); ?>" value="<?php echo htmlspecialchars($eventList['eventEnd']); ?> " >
-     <br>       
+
+    <input name="eventName"  value="<?php echo  htmlspecialchars($eventList['eventName']) ?? ''; ?>" type="text"><br>
+
+    <img src="image/background/<?php echo htmlspecialchars($eventList['eventBackgroundImage']) ?? ''; ?>" width="30%"><br> 
+     Background image: <input type="file" name="eventBackgroundImage" accept=".jpg, .png, .jpeg, .gif," > <br>
+
+    <img src="image/header/<?php echo htmlspecialchars($eventList['eventHeaderImage']) ?? '';?>" width="30%"><br>
+    Header Image: <input type="file" name="eventHeaderImage" accept=".jpg, .png, .jpeg, .gif,"><br>
+    
+    <p style="color:red;"> <?php echo  $errors['eventStart'] ?? '' ;?> </p> 
+    Event Start: <input type="date" name="eventStart" min="<?php echo date('Y-m-d'); ?>" value="<?php echo htmlspecialchars($eventList['eventStart']); ?>" ><br>
+
+    <p style="color:red;"><?php echo  $errors['eventEnd'] ?? '' ;?></p>
+    Event End <input type="date" name="eventEnd" min="<?php echo date('Y-m-d'); ?>" value="<?php echo htmlspecialchars($eventList['eventEnd']); ?>" ><br>
+
     <input type="hidden" name="event_id"  value="<?php echo htmlspecialchars($eventList['event_id']); ?>">
     <input type="submit"   value="submit" name="submit">
 

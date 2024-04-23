@@ -49,10 +49,11 @@ array_push($query, "ALTER TABLE `event_list`
  
   
 array_push($query, "CREATE TABLE `user` (
+    `user_id` int(11) NOT NULL,
     `user_name` varchar(100) NOT NULL,
     `user_password` varchar(255) NOT NULL,
     `user_role` varchar(100) NOT NULL,
-    `user_id` int(11) NOT NULL,
+    `user_remark` varchar(255) NULL,
     `created_At` datetime NOT NULL DEFAULT current_timestamp(),
     `archived` tinyint(1) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");

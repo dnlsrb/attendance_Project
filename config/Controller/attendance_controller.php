@@ -1,11 +1,42 @@
 <?php 
- 
+include('config/database/db_connect.php');
 
+ 
+ if(isset($_GET['id']) && preg_match('/^\d+$/', $_GET['id'])){
+
+    
+    $event_id = mysqli_real_escape_string($conn, $_GET['id']);
+    $validated = "SELECT archived FROM event_list WHERE event_id = $event_id" ;
+    $result = mysqli_query($conn, $validated);
+    
+    if(mysqli_num_rows($result) === 0){
+        mysqli_close($conn);
+        mysqli_free_result($result);
+        header('Location: error/404.php');
+    }
+
+    $archived = mysqli_fetch_assoc($result);
+    $validating = $archived['archived'];
+
+    if($validating == 1){
+        mysqli_close($conn);
+        mysqli_free_result($result);
+        header('Location: error/404.php');
+    }
+    else{
+        mysqli_close($conn);
+        mysqli_free_result($result);
+    }
+
+ }else{
+   
+    header('Location: error/404.php');
+ }
  
 ?>
 
 <?php
-include_once('config/database/db_connect.php');
+include('config/database/db_connect.php');
 
 // DISPLAY DATA
 // ------------------------------------------------------------------------------------------
@@ -43,15 +74,27 @@ include_once('config/database/db_connect.php');
     if(isset($_POST['submit'])){
     $name_error = "";
     $attendeesName = mysqli_real_escape_string($conn, $_POST['attendeesName']);
+    $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
 
+    $user_existed = "SELECT * FROM attendance_records WHERE event_id  =  $event_id  && attendeesName = '$attendeesName'
+    && time_IN != '' && time_OUT != '' && archived = 0 ";
+    $user_existed_result = mysqli_query($conn, $user_existed);
+
+     
+        
         if(preg_match('/[0-9]/', $attendeesName)) {
-            echo $name_error = "No Numbers Allowed";
+            $name_error = "No Numbers Allowed";
         } 
         elseif(empty($attendeesName)){
-            echo $name_error = "Name is empty";
+            $name_error = "Name is empty";
+        }
+        elseif(mysqli_num_rows($user_existed_result) >= 1){
+        
+            mysqli_free_result($user_existed_result);
+            $name_error = "Attendee Already existed in this event.";
         }
         else{ 
-            $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
+             
             $timeOut_query = "SELECT * FROM attendance_records WHERE attendeesName = '$attendeesName' AND event_id = '$event_id'  AND time_OUT = '' AND archived = 0 ORDER BY created_At DESC";
             $timeOut_result = mysqli_query($conn, $timeOut_query);
             $timeOut_display = mysqli_fetch_assoc($timeOut_result);
@@ -78,7 +121,7 @@ include_once('config/database/db_connect.php');
                 $sql_similar = "SELECT * FROM attendance_records WHERE record_id = '$record_id' ";
                 $sql_similar_result = mysqli_query($conn, $sql_similar);
 
-                if(mysqli_num_rows($sql_similar_result) === 1){
+                if(mysqli_num_rows($sql_similar_result) > 1){
                 $record_id = $currentDateTime  .'0'. $count + 1 ;
                 }
                 
