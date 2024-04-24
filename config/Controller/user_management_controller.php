@@ -2,7 +2,7 @@
 <?php 
 include_once('config/database/db_connect.php');
 
-class UserManager {
+class UserManagementController {
     private $conn;
 
     public function __construct($conn) {
@@ -90,7 +90,7 @@ class UserManager {
 }
 
 // Usage
-$userManager = new UserManager($conn);
+$userManager = new UserManagementController($conn);
 
 if(isset($_POST['createSubmit'])){
     $userData = [
@@ -102,8 +102,7 @@ if(isset($_POST['createSubmit'])){
     ];
 
     $errors = $userManager->createUser($userData);
-
-    // Handle errors as needed
+ 
 }
 
 if(isset($_POST['delete_user'])){

@@ -1,11 +1,10 @@
 <?php include('config/auth/auth_all.php');?>
-
 <?php require('config/Controller/event_details_controller.php');?>
 
 
 <?php include('template/header.php');?>
         <h4>Edit Event</h4>
-<form action="event_Details.php" method="POST" enctype="multipart/form-data"> 
+<form action="event_Details.php?id=<?php echo $event_id?>" method="POST" enctype="multipart/form-data"> 
  
     <input type="hidden" name="old_header_path" value="<?php echo htmlspecialchars($eventList['eventHeaderImage']) ?? ''; ?>">
     <input type="hidden" name="old_background_path" value="<?php echo htmlspecialchars($eventList['eventBackgroundImage']) ?? ''; ?>">

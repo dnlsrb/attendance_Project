@@ -1,5 +1,4 @@
 <?php include ('config/auth/auth_all.php'); ?>
-
 <?php require ('config/Controller/event_list_controller.php'); ?>
 
 
@@ -38,8 +37,8 @@
 
                     <p style="color:red;"> <?php echo htmlspecialchars($errors['eventName'] ?? ''); ?>
                     <p>
-                        Event Name: <input type="text" name="eventName" value="<?php echo $eventName ?? '' ?>"><br>
-                        Background image: <input type="file" name="eventBackgroundImage"
+                    Event Name: <input type="text" name="eventName" value="<?php echo  htmlspecialchars($eventData['eventName'] ?? '') ?>"><br>
+                    Background image: <input type="file" name="eventBackgroundImage"
                             accept=".jpg, .png, .jpeg, .gif,"> <br>
                         Header Image: <input type="file" name="eventHeaderImage" accept=".jpg, .png, .jpeg, .gif,"> <br>
                     <p style="color:red;"> <?php echo htmlspecialchars($errors['eventStart'] ?? ''); ?> </p>

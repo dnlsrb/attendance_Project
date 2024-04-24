@@ -1,6 +1,4 @@
 <?php include('config/auth/auth_all.php');?>
-
-
 <?php require('config/Controller/attendance_controller.php');?>
 
 
@@ -25,7 +23,7 @@
 <?php include('template/header.php')?>
 <?php if(isset($name_error)):
         echo '<div class="alert alert-danger position-absolute top-0 end-0 m-3 " role="alert">';
-        echo $name_error;
+        echo $name_error['attendeesError'];
         echo ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>';
      ?>
@@ -50,7 +48,7 @@
  
     <a href="event_List.php">Go Back </a><br>
 
- <form action="config/Controller/exporttoexcel.php" method="GET">
+ <form action="export_to_excel.php" method="GET">
     <input type="submit" name="getsubmit" value="Download Excel">
     <!-- <input type="hidden" name="authentication" value="allowed"> -->
     <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($id);  ?>">
@@ -66,7 +64,7 @@
 <script src="js/camera.js"></script>
  
 <p>Total Attendees: <?php echo $count_display?></p>
-<?php if($Attendees_Records): ?>
+<?php if($attendees_Records): ?>
 <table  >
 <tr>
     <th>#</th>
@@ -76,9 +74,9 @@
     <th>Time in</th>
     <th>Time out</th>
     <th></th>
-</tr>
+</tr>   
 <?php $count = 1;?>
-<?php  echo '<tr>'; foreach( $Attendees_Records as $Attendees):?>
+<?php  echo '<tr>'; foreach( $attendees_Records as $Attendees):?>
 <td><?php echo $count; ?></td>
 <td><?php echo htmlspecialchars($Attendees['record_id']); ?></td>
 <td><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>
@@ -88,7 +86,7 @@
 <td>
 
 
-<form action="attendance_List.php" method="POST">
+<form   action="attendance_List.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
 <input type="hidden" name="delete_record" value="<?php echo $Attendees['record_id'];?>">
 <input type="hidden" name="event_id" value="<?php echo $Attendees['event_id'];?>">
 <input type="submit" name="delete" value="delete" >  

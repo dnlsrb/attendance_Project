@@ -1,108 +1,128 @@
 
 <?php
-if(isset($_GET['id'])){
-    include_once('config/database/db_connect.php');
-    $event_id = mysqli_real_escape_string($conn, $_GET['id']);
- 
-    $sql = "SELECT * FROM event_list WHERE event_id = $event_id";
-    $result = mysqli_query($conn, $sql);
-    $eventList = mysqli_fetch_assoc($result);
-    
-    mysqli_free_result($result);
-    mysqli_close($conn);
+include_once('config/database/db_connect.php');
 
-}
+class eventDetailsController{
 
-if(isset($_POST['delete'])){
-    include_once('config/database/db_connect.php');
-    $event_id= mysqli_real_escape_string($conn, $_POST['event_id']);
-    $sql = "UPDATE event_list SET archived = 1 WHERE event_id = $event_id";
-    if(mysqli_query($conn, $sql)){
-        mysqli_close($conn);  
-        header('Location: event_List.php?id='.$event_id);
-    }else{
-        echo 'query error: ' . mysqli_error($conn);
-        mysqli_close($conn);  
+    private $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
     }
 
-}
+    public function getList($event_id){
  
-
-if(isset($_POST['submit'])){
-    include_once('config/database/db_connect.php');
-    $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
-    $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
-    $eventStart = mysqli_real_escape_string($conn, $_POST['eventStart']);
-    $eventEnd = mysqli_real_escape_string($conn, $_POST['eventEnd']);
-
-
-    if(!empty($_FILES['eventHeaderImage']['name'])){
-        $old_header_path = 'image/header/'.mysqli_real_escape_string($conn, $_POST['old_header_path']);
+ 
+        $sql = "SELECT * FROM event_list WHERE event_id = $event_id";
+        $result = mysqli_query($this->conn, $sql);
+        if(mysqli_query($this->conn, $sql)){
+            $eventList = mysqli_fetch_assoc($result);
+        }else{ 
+            echo 'query error: ' . mysqli_error($this->conn);
+        }
        
-        if (file_exists($old_header_path)) {
-           unlink($old_header_path);
-        }  
+
+        return $eventList;
+    }
+
+    public function deleteList($event_id){
          
-        $eventHeaderImage_Name =$_FILES['eventHeaderImage']['name'];
-        $eventHeaderImage_Tmp = $_FILES['eventHeaderImage']['tmp_name'];
+        $sql = "UPDATE event_list SET archived = 1 WHERE event_id = $event_id";
+        if(mysqli_query($this->conn, $sql)){
+            mysqli_close($this->conn);  
+            header('Location: event_List.php?id='.$event_id);
+            exit();
+        }else{
+            echo 'query error: ' . mysqli_error($this->conn);
+            
+        }
+    
+    }
+    public function uploadBanner($oldpath,$category,$imageName, $imageTemp, $event_id, $SET){
+  
+        if (file_exists($oldpath)) {
+           unlink($oldpath);
+        }  
         
         // IMAGE - HEADER 
-        $image_header_path = strtolower(pathinfo($eventHeaderImage_Name, PATHINFO_EXTENSION));
-        $eventHeaderImage = "HD".$event_id.'.'.$image_header_path;
-        $header_uploadpath ='image/header/'.$eventHeaderImage;
-        move_uploaded_file($eventHeaderImage_Tmp, $header_uploadpath);
+        $pathExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+        $bannerNewName = "$category".$event_id.'.'.$pathExtension;
+        $uploadpath ="image/$category/".$bannerNewName;
+        move_uploaded_file($imageTemp, $uploadpath);
 
         $sql = 
         "UPDATE event_list 
-            SET eventHeaderImage = '$eventHeaderImage'
+            SET {$SET} = '$bannerNewName'
             WHERE event_id = $event_id";
-        $update_query = mysqli_query($conn, $sql);
-    
+        $update_query = mysqli_query($this->conn, $sql);
     }
-    
-    if(!empty($_FILES['eventBackgroundImage']['name'])){
-        $old_background_path = 'image/background/'.mysqli_real_escape_string($conn, $_POST['old_background_path']);
-        if (file_exists($old_background_path)) {
-            unlink($old_background_path);
-         } 
+
+
+    public function eventUpdate($eventData){
+        // HEADER
+        if(!empty($eventData['imageName_header'])){
+        $this->uploadBanner(
+        $eventData['oldpath_header'], 
+        'header', 
+        $eventData['imageName_header'], 
+        $eventData['imageTemp_header'], 
+        $eventData['event_id'], 
+        'eventHeaderImage');
+        }
+        if(!empty($eventData['imageName_background'])){
+        // BACKGROUND
+        $this->uploadBanner(
+         $eventData['oldpath_background'], 
+        'background', 
+        $eventData['imageName_background'], 
+        $eventData['imageTemp_background'], 
+        $eventData['event_id'], 
+        'eventBackgroundImage');
+        }
+
+        $sql = "UPDATE event_list 
+        SET 
+        eventName = '{$eventData['eventName']}',
+        eventStart = '{$eventData['eventStart']}', 
+        eventEnd = '{$eventData['eventEnd']}'
+        WHERE event_id = '{$eventData['event_id']}'";
+
+        $update_query = mysqli_query($this->conn, $sql);
         
-        $eventBackgroundImage_Name =$_FILES['eventBackgroundImage']['name'];
-        $eventBackgroundImage_Tmp = $_FILES['eventBackgroundImage']['tmp_name'];
-
-        // IMAGE - BACKGROUND
-        $image_background_path = strtolower(pathinfo($eventBackgroundImage_Name, PATHINFO_EXTENSION));
-        $eventBackgroundImage = "BG".$event_id.'.'.$image_background_path;
-        $Background_uploadpath ='image/background/'.$eventBackgroundImage;
-        move_uploaded_file($eventBackgroundImage_Tmp, $Background_uploadpath);
-
-        $sql = 
-        "UPDATE event_list 
-            SET eventBackgroundImage = '$eventBackgroundImage'
-            WHERE event_id = $event_id";
-        $update_query = mysqli_query($conn, $sql);
-         
+        header('Location: event_Details.php?id='.$eventData['event_id']);
     }
-     
-    $sql = "UPDATE event_list 
-            SET 
-            eventName = '$eventName',
-            eventStart = '$eventStart', 
-            eventEnd = '$eventEnd'
-            WHERE event_id = $event_id";
 
-    $update_query = mysqli_query($conn, $sql);
-    mysqli_close($conn);
-    header('Location: event_Details.php?id='.$event_id);
- 
+    public function closeConnection() {
+        mysqli_close($this->conn);
+    }
 }
 
- 
+$eventManager = new eventDetailsController($conn);
+$event_id = mysqli_real_escape_string($conn, $_GET['id']);
+$eventList = $eventManager->getList($event_id);
 
-// $eventName
-// $eventBackgroundImage
-// $eventHeaderImage
-// $eventStart
-// $eventEnd
-// $archived 
+if(isset($_POST['delete'])){
+    $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
+$eventManager->deleteList($event_id); 
+}
+if(isset($_POST['submit'])){
+    $eventData = [
+        'event_id' => mysqli_real_escape_string($conn, $_POST['event_id']),
+        'oldpath_header' => 'image/header/'.mysqli_real_escape_string($conn, $_POST['old_header_path']),
+        'imageName_header' => $_FILES['eventHeaderImage']['name'],
+        'imageTemp_header' => $_FILES['eventHeaderImage']['tmp_name'],
+        'oldpath_background' => 'image/background/'.mysqli_real_escape_string($conn, $_POST['old_background_path']),
+        'imageName_background' => $_FILES['eventBackgroundImage']['name'],
+        'imageTemp_background' => $_FILES['eventBackgroundImage']['tmp_name'],
+        'eventName' => mysqli_real_escape_string($conn, $_POST['eventName']),
+        'eventStart' => mysqli_real_escape_string($conn, $_POST['eventStart']),
+        'eventEnd' => mysqli_real_escape_string($conn, $_POST['eventEnd'])
+    ];
+  
+    $eventManager->eventUpdate($eventData);
+}
+$eventManager->closeConnection();
+
+
 
 ?>
