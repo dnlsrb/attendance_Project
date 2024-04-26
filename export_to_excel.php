@@ -47,12 +47,13 @@ $result = mysqli_query($conn,$searchSQL);
 if(mysqli_num_rows($result)>0)
 {
 ?>
+
 <table width="50%" align="center" cellpadding="5" class="table2" >
-<th height="35" colspan="5" bgcolor="#CCCCFF">PRESENT TODAY : <?php echo htmlspecialchars($eventList['eventName']) ?></th>
+<th height="35" colspan="4" bgcolor="#CCCCFF">PRESENT TODAY : <?php echo htmlspecialchars($eventList['eventName']) ?></th>
 <tr>
 	<td><center><strong>#</strong></center></td>
-	<td><center><strong>ID</strong></center></td>
-<td><center><strong>Name</strong></center></td>
+ 
+<td ><center><strong>Name</strong></center></td>
 <td width="15%"><center>
   <strong>IN</strong>
 </center></td>
@@ -73,7 +74,7 @@ if(mysqli_num_rows($result)>0)
 ?>
 	<tr style="font-weight:bold">
 	<td width="20%" style="color:blue"><center><?php echo $count; ?></center></td>
-	<td width="20%" style="color:blue"><center><?php echo htmlspecialchars($row['record_id']); ?></center></td>
+	 
 	<td width="34%"><strong><?php echo htmlspecialchars($row['attendeesName']); ?></strong></td>
 	<td width="33%" style="color:blue"><center><?php echo date('M d, Y h:i:s: A', $date_IN) ; ?></center></td>
 	<td width="33%" style="color:red"><center><?php if($row['time_OUT'] != ""){echo date('M d, Y h:i:s: A', $date_OUT);}else{ } ?></center></td>

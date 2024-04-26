@@ -55,7 +55,8 @@ array_push($query, "CREATE TABLE `user` (
     `user_role` varchar(100) NOT NULL,
     `user_remark` varchar(255) NULL,
     `created_At` datetime NOT NULL DEFAULT current_timestamp(),
-    `archived` tinyint(1) NOT NULL
+    `archived` tinyint(1) NOT NULL,
+    `remember_token` varchar(255) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
 
 array_push($query, "ALTER TABLE `user`

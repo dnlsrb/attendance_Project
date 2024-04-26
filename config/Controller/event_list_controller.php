@@ -8,8 +8,8 @@ class eventListController{
       $this->conn = $conn;
   }
 
-  public function displayEventList(){
-    $sql = 'SELECT * FROM event_list WHERE archived = 0 ORDER BY created_At';
+  public function displayEventList($searchSql){
+    $sql = "SELECT * FROM event_list WHERE $searchSql archived = 0 ORDER BY created_At";
     $result = mysqli_query($this->conn, $sql);
     if($result){
       $eventLists= mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -24,7 +24,6 @@ class eventListController{
 
 
   public function uploadBanner($category,$imageName, $imageTemp, $event_id, $SET){
-
     // IMAGE - HEADER 
     $pathExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
     $bannerNewName = "$category".$event_id.'.'.$pathExtension;
@@ -42,7 +41,7 @@ class eventListController{
 
 
   private function validateCreatedEvent($eventData){
-      $errors = [];
+        $errors = [];
 
       if(empty($eventData['eventName'])){
           $errors['eventName'] = 'event name is required';
@@ -98,6 +97,8 @@ class eventListController{
     return $errors;
   }
 
+ 
+
   public function closeConnection() {
     mysqli_close($this->conn);
   }
@@ -105,7 +106,29 @@ class eventListController{
 }
 
 $eventListManager = new eventListController($conn);
-$eventLists = $eventListManager->displayEventList();
+if(!isset($_POST['search'])){ 
+$eventLists = $eventListManager->displayEventList('');
+}
+
+
+if(isset($_POST['search'])){
+  $searchSql = '';
+  $eventStartSearch =  mysqli_real_escape_string($conn, $_POST['eventStartSearch']);
+  $eventEndSearch =  mysqli_real_escape_string($conn, $_POST['eventEndSearch']);
+  $eventNameSearch =  mysqli_real_escape_string($conn, $_POST['eventNameSearch']);
+  
+if(!empty($_POST['eventStartSearch'])){ 
+  $searchSql .= " eventStart >= '" . $eventStartSearch . "' AND ";
+}
+if(!empty( $_POST['eventEndSearch'])){
+  $searchSql .= " eventEnd <= '" . $eventEndSearch . "' AND ";
+}
+if(!empty($_POST['eventNameSearch'])){ 
+  $searchSql .= "eventName LIKE '%" . $eventNameSearch . "%' AND ";
+} 
+ 
+$eventLists = $eventListManager->displayEventList($searchSql);
+}
 
 if(isset($_POST['submit'])){
   include_once('config/database/db_connect.php');
@@ -128,97 +151,4 @@ if(isset($_POST['submit'])){
     $errors = $eventListManager->createdEvent($eventData);
   }  
 $eventListManager->closeConnection();
-
- 
- 
-
-// eventName	eventHeaderImage	eventBackgroundImage	eventStart	eventEnd
-
-// $errors = array(
-//   'eventName' => '',
-//   'eventHeaderImage' => '', 
-//   'eventBackgroundImage' => '', 
-//   'eventStart	' => '',
-//   'eventEnd	' => ''
-// );
-
-// $required_fields =['eventName', 'eventHeaderImage', 'eventBackgroundImage', 'eventStart', 'eventEnd'];
-
-// if(isset($_POST['submit'])){
-// include_once('config/database/db_connect.php');
-//   $eventData[
-//     $eventHeaderImage_Name =$_FILES['eventHeaderImage']['name'];
-//     $eventHeaderImage_Size =$_FILES['eventHeaderImage']['size'];
-//     $eventHeaderImage_Tmp = $_FILES['eventHeaderImage']['tmp_name'];
-//     $eventHeaderImage_error = $_FILES['eventHeaderImage']['error']; 
-   
-//     $eventBackgroundImage_Name =$_FILES['eventBackgroundImage']['name'];
-//     $eventBackgroundImage_Size =$_FILES['eventBackgroundImage']['size'];
-//     $eventBackgroundImage_Tmp = $_FILES['eventBackgroundImage']['tmp_name'];
-//     $eventBackgroundImage_error = $_FILES['eventBackgroundImage']['error']; 
-//   ];
- 
- 
-// if(!array_filter($errors)){
-    
-  // $eventHeaderImage_Name =$_FILES['eventHeaderImage']['name'];
-  // $eventHeaderImage_Size =$_FILES['eventHeaderImage']['size'];
-  // $eventHeaderImage_Tmp = $_FILES['eventHeaderImage']['tmp_name'];
-  // $eventHeaderImage_error = $_FILES['eventHeaderImage']['error']; 
- 
-  // $eventBackgroundImage_Name =$_FILES['eventBackgroundImage']['name'];
-  // $eventBackgroundImage_Size =$_FILES['eventBackgroundImage']['size'];
-  // $eventBackgroundImage_Tmp = $_FILES['eventBackgroundImage']['tmp_name'];
-  // $eventBackgroundImage_error = $_FILES['eventBackgroundImage']['error']; 
-  
-  // $event_id_query = "SELECT COUNT(*) as count_id FROM event_list WHERE (LAST_DAY(CURDATE()) - LAST_DAY(CURDATE())+1) <= DAY(created_At) AND DAY(LAST_DAY(CURDATE())) >= DAY(created_At) AND MONTH(LAST_DAY(CURDATE())) = MONTH(created_At) AND YEAR(LAST_DAY(CURDATE())) = YEAR(created_At)";
-  // $event_count_query = "SELECT COUNT(*) as count_event FROM event_list";
-
-  // $event_count_result = mysqli_query($conn, $event_count_query);
-  // $event_count_total = mysqli_fetch_assoc($event_count_result)['count_event'];
-  // mysqli_free_result($event_count_result);
-
-  // $event_id_result = mysqli_query($conn, $event_id_query);
-  // $event_id_total = mysqli_fetch_assoc($event_id_result)['count_id'];
-  // mysqli_free_result($event_id_result);
-  
-  // $currentDateTime = date('my');
-  // $event_count = $event_count_total + 1;
-  // $event_id = $currentDateTime . $event_id_total + 1;
-
-
-  // // IMAGE - HEADER 
-  // $image_header = strtolower(pathinfo($eventHeaderImage_Name, PATHINFO_EXTENSION));
-  // $eventHeaderImage = "HD".$event_id.'.'.$image_header;
-  // $header_uploadpath ='image/header/'.$eventHeaderImage;
-
-  // // IMAGE - BACKGROUND
-  // $image_background = strtolower(pathinfo($eventBackgroundImage_Name, PATHINFO_EXTENSION));
-  // $eventBackgroundImage = "BG".$event_id.'.'.$image_background;
-  // $Background_uploadpath ='image/background/'.$eventBackgroundImage;
-
-  // move_uploaded_file($eventHeaderImage_Tmp, $header_uploadpath);
-  // move_uploaded_file($eventBackgroundImage_Tmp, $Background_uploadpath);
-
-  // $sql = "INSERT INTO event_list(eventName, eventHeaderImage, eventBackgroundImage, eventStart, eventEnd, event_id, event_count) 
-  // VALUES ('$eventName', '$eventHeaderImage','$eventBackgroundImage','$eventStart','$eventEnd','$event_id', '$event_count')";
-
-  //     // save to db and check
-  //     if(mysqli_query($conn, $sql)){
-  //       mysqli_close($conn);
-  //       header('Location: event_List.php');
-  //     } else {
-  //       // error
-  //       echo 'query error: ' . mysqli_error($conn);
-  //     }
-
-  // }
-   
-  
- 
-// } 
-
-// }
-
-
 ?>

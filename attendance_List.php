@@ -27,8 +27,6 @@
         echo ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>';
      ?>
- 
-     
 <?php endif;?>
  
 
@@ -63,54 +61,12 @@
 </form>
 <script src="js/camera.js"></script>
  
-<p>Total Attendees: <?php echo $count_display?></p>
-<?php if($attendees_Records): ?>
-<table  >
-<tr>
-    <th>#</th>
-    <th>ID</th>
-    <th>name</th>
-    <!-- <th>email</th> -->
-    <th>Time in</th>
-    <th>Time out</th>
-    <th></th>
-</tr>   
-<?php $count = 1;?>
-<?php  echo '<tr>'; foreach( $attendees_Records as $Attendees):?>
-<td><?php echo $count; ?></td>
-<td><?php echo htmlspecialchars($Attendees['record_id']); ?></td>
-<td><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>
-<!-- <td><?php echo htmlspecialchars($Attendees['attendeesEmail']);  ?></td> -->
-<td><?php echo htmlspecialchars( $Attendees['time_IN']);?></td>
-<td><?php echo htmlspecialchars($Attendees['time_OUT']);  ?></td>
-<td>
-
-
-<form   action="attendance_List.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
-<input type="hidden" name="delete_record" value="<?php echo $Attendees['record_id'];?>">
-<input type="hidden" name="event_id" value="<?php echo $Attendees['event_id'];?>">
-<input type="submit" name="delete" value="delete" >  
-</form>
  
+<iframe src="iframe_attendance.php?id=<?php echo htmlspecialchars($id); ?>"  scrolling="yes" width="100%" height="300px" frameborder="0"></iframe>
 
-
-</td>
-<?php $count++;?>
-<?php 
-echo '<tr>';   
-endforeach;
-unset($count);
-?>
-</table>
-
-
-    <?php else: ?>
-    <h3>No Attendees Yet</h3><br>
-    <?php endif ?>
-    <?php else: ?>
+<?php else: ?>
     <h>no data found</h><br>
     <?php endif; ?>
-
     </div>
 </div>
  

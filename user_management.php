@@ -10,7 +10,7 @@
 <a href="event_List.php" class="btn">Back</a>
 <form action="user_management.php" method="POST">
   <span style="color:red;"><?php echo htmlspecialchars($errors['user_name'] ?? ''  ); ?></span><br>
-  <input type="text"  class="form-control" name="user_name" placeholder="username" value="<?php echo $user_name ?? '' ?>"><br>
+  <input type="text"  class="form-control" name="user_name" placeholder="username" value="<?php echo $userData['user_name'] ?? '' ?>"><br>
   <span style="color:red;"><?php echo htmlspecialchars($errors['user_password']  ?? '' ); ?></span><br>
   <input type="password"  class="form-control" name="user_password" placeholder="password"><br><br>
   <input type="password"  class="form-control" name="confirm_password" placeholder="confirm password"><br><br>

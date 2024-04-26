@@ -44,29 +44,14 @@ class attendanceController{
         $result = mysqli_query($this->conn, $sql);
         $data = mysqli_fetch_assoc($result);
         mysqli_free_result($result);
-
+    
         return $data;
          
     }
 
-    public function getCount($sql){
-        
-        $result = mysqli_query($this->conn, $sql);
-        $data = mysqli_fetch_assoc($result)['count'];
-        mysqli_free_result($result);
+    
+ 
 
-        return $data;
-         
-    }
-
-    public function getList($sql){
-
-        $result = mysqli_query($this->conn, $sql);
-        $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        mysqli_free_result($result);
-
-        return $data;
-    }
 
     public function createAttendees($attendeesData){
         $name_error = $this->validateAttendees($attendeesData);
@@ -159,18 +144,7 @@ class attendanceController{
 
         return $name_error;
     }
-
-    public function archiveAttendees($delete_record, $event_id){
-    
-    $sql = "UPDATE attendance_records SET archived = 1 WHERE record_id=$delete_record";
-    if(mysqli_query($this->conn, $sql)){
-        mysqli_close($this->conn);
-        header('Location: attendance_List.php?id='. $event_id);
-        exit();
-    }else{
-        echo 'query error: ' . mysqli_error($this->conn);
-    }
-    }
+ 
 
 
 
@@ -185,12 +159,9 @@ class attendanceController{
     $date = date("M d, Y h:i:s A");
     $attendanceController->validator($_GET['id']);
     $id= mysqli_real_escape_string($conn, $_GET['id']);
-
-    if(isset($_POST['delete'])){
-    $delete_record = mysqli_real_escape_string($conn, $_POST['delete_record']);
-    $event_id= mysqli_real_escape_string($conn, $_POST['event_id']);
-    $attendanceController->archiveAttendees($delete_record, $event_id);
-    }
+   
+    $eventLists = $attendanceController->getEvent("SELECT * FROM event_list WHERE event_id = $id");
+    
 
     if(isset($_POST['submit'])){
         $attendeesData = [
@@ -201,13 +172,7 @@ class attendanceController{
         $name_error = $attendanceController->createAttendees($attendeesData);
  
     }
-    $eventLists = $attendanceController->getEvent("SELECT * FROM event_list WHERE event_id = $id");
-    $count_display = $attendanceController->getCount("SELECT COUNT(*) as count FROM attendance_records WHERE event_id = '$id' AND archived = 0");
-    $attendees_Records = $attendanceController->getList(
-        "SELECT record_id, attendance_records.event_id, attendeesName, attendeesEmail, time_IN, time_OUT,  eventName
-        FROM attendance_records INNER JOIN event_list ON event_list.event_id = attendance_records.event_id 
-        WHERE attendance_records.event_id = $id AND attendance_records.archived = 0
-        ORDER BY time_IN DESC");
+ 
     $attendanceController->closeConnection();
  
  

@@ -5,22 +5,23 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])):
     header('Location: event_List.php');
 else:
     ?>
-    <!-- AUTH LOGGED IN -->
+ 
 
     <?php
     include ('template/header.php')
         ?>
 
 
-    <!-- parent container -->
+  
     <div class="d-flex justify-content-center align-items-center position-relative"
-        style="height:100vh; background-image: linear-gradient(315deg, #ff0203 0%, #1850f5 50%, #04049a 75%);">
-
+        style="height:100vh; background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 2px,transparent 2px, transparent 4px),linear-gradient(135deg, rgb(165, 230, 235),rgb(29, 32, 232)); ">
+ 
+         
         <?php
         include ('config/database/db_connect.php');
         if (isset($_GET['error'])) {
             $error = mysqli_real_escape_string($conn, $_GET['error']);
-            // this is a Alert for incorrect user info
+ 
             echo '<div class="alert alert-danger position-absolute top-0 end-0 m-3 " role="alert">';
             echo $error;
             echo ' <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -32,41 +33,33 @@ else:
 
 
 
-        <!-- child container -->
-        <form action="index.php" method="POST" class=" bg-light rounded-4 p-5">
-
-
-            <!-- THIS IS AN INITIAL STAGE OF CSS -->
-            <!-- TO DO:
-            - Grid layout the design on login forms
-            - Check for responsiveness of the elements
-            - check for states in the input elements  -->
-
-
-            <!-- logo and title -->
+ 
+        <form action="index.php" method="POST" class="bg-light p-5">
+    
             <div class="d-flex align-items-center justify-content-center">
-                <!-- lipat yung inline css sa external css later -->
-                <img src="storage/logo2.png" alt="gx-i logo" style="height: 65px; width: 55px; margin-right:5px">
-                <h3 class="text-primary fw-semibold fs-2">Login</h3>
+                <img src="storage/logo2.png" alt="gx-i logo"   style=" width: 55px;  ">
             </div>
-
-            <!-- forms params -->
-            <div class="d-flex flex-column align-items-center justify-content-center p-2">
+ 
+            <div class="d-flex flex-column align-items-start justify-content-center p-2">
                 <input type="text" placeholder="Username" name="username"
-                    class="my-2 border-0 border-bottom border-2 border-primary-subtle">
-                <input type="password" placeholder="Password" name="password"
-                    class="mb-2 border-0 border-bottom border-2 border-primary-subtle">
-                <div>
-                    <input type="checkbox" id="remember_me" name="remember_me">
+                    class="my-2 form-control border-0 border-bottom rounded-0 border-2 border-primary-subtle">
+                <input type="password" placeholder="Password"  name="password"
+                    class="mb-2 form-control border-0 border-bottom rounded-0 border-2 border-primary-subtle">
+                <div >
+                    <input type="checkbox" id="remember_me" name="remember_me" checked>
                     <label for="remember_me">Remember Me</label>
                 </div>
+               
+               
+            </div>
+
+            <div class="d-flex justify-content-center">
                 <input type="submit" value="Login" name="submit" class="btn btn-primary mt-2">
             </div>
         </form>
 
     </div>
 
-
-
-    <?php include ('template/footer.php') ?>
+</body>
+</html>
 <?php endif; ?>

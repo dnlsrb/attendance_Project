@@ -1,4 +1,6 @@
 <?php
+ 
+ 
 session_start();
 class UserAuthenticator {
     private $conn;
@@ -30,7 +32,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     $authenticator = new UserAuthenticator($conn);
     
     if ($authenticator->authenticate($_SESSION['username'], $_SESSION['password'])) {
-        echo "authenticated successfully";
+     
     } else {
         header("Location: config/Controller/logout.php");
         exit(); // Stop further execution
