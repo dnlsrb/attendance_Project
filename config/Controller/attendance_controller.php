@@ -127,7 +127,7 @@ class attendanceController{
         $name_error = [];
         
         $user_existed = "SELECT * FROM attendance_records WHERE event_id  =  '{$attendeesData['event_id']}'  
-        && attendeesName = '{$attendeesData['attendeesName']}' && time_IN != '' && time_OUT != '' && archived = 0 ";
+        && attendeesName = '{$attendeesData['attendeesName']}' && time_IN != '' && time_OUT != '' && archived = 0 && DATE(created_At) = CURDATE();";
         $user_existed_result = mysqli_query($this->conn, $user_existed);
         
         if(preg_match('/[0-9]/', $attendeesData['attendeesName'])) {
@@ -139,7 +139,7 @@ class attendanceController{
         elseif(mysqli_num_rows($user_existed_result) >= 1){
         
             mysqli_free_result($user_existed_result);
-            $name_error['attendeesError'] = "Attendee Already existed in this event.";
+            $name_error['attendeesError'] = "Attendee Already existed in this event to this day.";
         }
 
         return $name_error;
