@@ -111,20 +111,20 @@ $eventLists = $eventListManager->displayEventList('');
 }
 
 
-if(isset($_POST['search'])){
+if(isset($_GET['search'])){
   $searchSql = '';
-  $eventStartSearch =  mysqli_real_escape_string($conn, $_POST['eventStartSearch']);
-  $eventEndSearch =  mysqli_real_escape_string($conn, $_POST['eventEndSearch']);
-  $eventNameSearch =  mysqli_real_escape_string($conn, $_POST['eventNameSearch']);
+  $startRange =  mysqli_real_escape_string($conn, $_GET['startRange']);
+  $endRange =  mysqli_real_escape_string($conn, $_GET['endRange']);
+  $name =  mysqli_real_escape_string($conn, $_GET['name']);
   
-if(!empty($_POST['eventStartSearch'])){ 
-  $searchSql .= " eventStart >= '" . $eventStartSearch . "' AND ";
+if(!empty($_GET['startRange'])){ 
+  $searchSql .= " eventStart >= '" . $startRange . "' AND ";
 }
-if(!empty( $_POST['eventEndSearch'])){
-  $searchSql .= " eventEnd <= '" . $eventEndSearch . "' AND ";
+if(!empty( $_GET['endRange'])){
+  $searchSql .= " eventEnd <= '" . $endRange . "' AND ";
 }
-if(!empty($_POST['eventNameSearch'])){ 
-  $searchSql .= "eventName LIKE '%" . $eventNameSearch . "%' AND ";
+if(!empty($_GET['name'])){ 
+  $searchSql .= "eventName LIKE '%" . $name . "%' AND ";
 } 
  
 $eventLists = $eventListManager->displayEventList($searchSql);

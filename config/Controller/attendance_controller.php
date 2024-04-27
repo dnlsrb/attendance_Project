@@ -139,7 +139,7 @@ class attendanceController{
         elseif(mysqli_num_rows($user_existed_result) >= 1){
         
             mysqli_free_result($user_existed_result);
-            $name_error['attendeesError'] = "Attendee Already existed in this event to this day.";
+            $name_error['attendeesError'] = "Attendee Already existed in this day event.";
         }
 
         return $name_error;
