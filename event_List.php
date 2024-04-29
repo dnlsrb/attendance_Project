@@ -2,6 +2,7 @@
 <?php require 'config/Controller/event_list_controller.php'; ?>
 
 
+<?php $title ="Event List"?>
 <?php include 'template/header.php'; ?>
 
 

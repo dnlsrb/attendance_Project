@@ -15,7 +15,7 @@ class UserManagementController {
         if (!array_filter($errors)) {
             $hashedPassword = password_hash($userData['user_password'], PASSWORD_DEFAULT);
             $sql = "INSERT INTO user(user_name, user_password, user_role, user_remark) 
-                    VALUES('{$userData['user_name']}', '$hashedPassword', '{$userData['user_role']}', '{$userData['user_remark']}')";
+                    VALUES('{$userData['user_name']}', '$hashedPassword', '0', '{$userData['user_remark']}')";
         
             if(mysqli_query($this->conn, $sql)){
                 header('Location: user_management.php');
@@ -48,11 +48,19 @@ class UserManagementController {
         return $userList;
     }
 
+    public function getUser($data){
+        $sqlDisplay = "SELECT * FROM user WHERE user_id = {$data} ";
+        $result = mysqli_query($this->conn, $sqlDisplay);
+        $selectedUser = mysqli_fetch_assoc($result);
+        mysqli_free_result($result);
+         
+        return $selectedUser;
+    }
     private function validateUserData($userData) {
         $errors = [];
 
         // REMARK
-        if(strlen($userData['user_remark']) > 255){
+        if(strlen($userData['user_remark']) > 254){
             $errors['user_remark'] = "max is 255 letters";
         }
 
@@ -84,6 +92,18 @@ class UserManagementController {
         return $errors;
     }
 
+    public function UpdateUser($sql){
+
+        if (mysqli_query($this->conn, $sql)) {
+            mysqli_close($this->conn);
+            
+            // header('Location: user_management.php');
+            exit();
+        } else {
+            echo 'query error: ' . mysqli_error($this->conn);
+        }
+    }
+
     public function closeConnection() {
         mysqli_close($this->conn);
     }
@@ -97,7 +117,7 @@ if(isset($_POST['createSubmit'])){
         'user_name' => mysqli_real_escape_string($conn, $_POST['user_name']),
         'user_password' => mysqli_real_escape_string($conn, $_POST['user_password']),
         'confirm_password' => mysqli_real_escape_string($conn, $_POST['confirm_password']),
-        'user_role' => mysqli_real_escape_string($conn, $_POST['user_role']),
+        'user_role' => 0,
         'user_remark' => mysqli_real_escape_string($conn, $_POST['user_remark'])
     ];
 
@@ -108,6 +128,50 @@ if(isset($_POST['createSubmit'])){
 if(isset($_POST['delete_user'])){
     $userManager->deleteUser($_POST['delete_user_id']);
 }
+
+if (isset($_POST['editSubmit'])) {
+    echo '<br>User id: ';
+    print_r($_POST['user_id']);
+    echo '<br>User Remark: ';
+    print_r($_POST['user_remark']);
+    echo '<br>User Role: ';
+    print_r($_POST['user_role']);
+    echo '<br>User Archive: ';
+    print_r($_POST['isArchive']);
+ 
+            foreach($_POST['user_id'] as $userCount => $userUpdate){
+               
+                if(isset($_POST['user_remark'][$userCount])){
+                    $user_remark = mysqli_escape_string($conn, $_POST['user_remark'][$userCount]);
+                    
+                    $sql = "UPDATE user SET user_remark = '$user_remark' WHERE user_id = $userUpdate";
+                    
+                    $userManager->UpdateUser($sql);
+                }
+                if (isset($_POST['user_role'][$userCount])) {
+                    $user_role = mysqli_escape_string($conn, $_POST['user_role'][$userCount]);
+                    echo $user_role;
+
+                    $sql = "UPDATE user SET user_role = $user_role WHERE user_id = $userUpdate";
+                    $userManager->UpdateUser($sql);
+                     
+                }
+                if (isset($_POST['isArchive'][$userCount])) {
+                    $isArchive = mysqli_escape_string($conn, $_POST['isArchive'][$userCount]);
+                    echo  "Archived? ". $isArchive;
+
+                    $sql = "UPDATE user SET archived = 1 WHERE user_id = $userUpdate";
+                    $userManager->UpdateUser($sql);
+                }
+         
+            }
+    // user_remark[] user_role[] isArchive []
+
+
+ 
+     
+} 
+ 
 
 $userList = $userManager->getAllUsers();
 $userManager->closeConnection();

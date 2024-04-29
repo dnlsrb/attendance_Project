@@ -98,7 +98,8 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     <th></th>
 </tr>   
 <?php $count = 1;?>
-<?php  echo '<tr>'; foreach( $attendees_Records as $Attendees):?>
+<?php foreach( $attendees_Records as $Attendees):?>
+<?php echo '<tr>';?>
 <td><?php echo $count; ?></td>
 <!-- <td><?php echo htmlspecialchars($Attendees['record_id']); ?></td> -->
 <td><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>

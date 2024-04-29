@@ -52,7 +52,7 @@ array_push($query, "CREATE TABLE `user` (
     `user_id` int(11) NOT NULL,
     `user_name` varchar(100) NOT NULL,
     `user_password` varchar(255) NOT NULL,
-    `user_role` varchar(100) NOT NULL,
+    `user_role` tinyint(1) NOT NULL,
     `user_remark` varchar(255) NULL,
     `created_At` datetime NOT NULL DEFAULT current_timestamp(),
     `archived` tinyint(1) NOT NULL,
@@ -68,8 +68,11 @@ MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;");
 $password = "admin";
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+//  1 = admin
+//  0 = user
+
 array_push($query, "INSERT INTO `user` (`user_name`, `user_password`, `user_role`) 
-VALUES ('admin', '$hashedPassword', 'admin');");
+VALUES ('admin', '$hashedPassword', 1);");
 
 if(isset($_GET['submit'])){
     $run = $_GET['run'];

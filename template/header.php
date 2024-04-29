@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><?php echo $title ?? 'Attendance System';?></title>
     <link href="css/style.css" rel="stylesheet">
     <!-- BOOTSTRAP CSS  -->
     <link rel="stylesheet" href="css/bootstrapcss/bootstrap.min.css">
@@ -54,14 +54,15 @@
                 </div>
             </div>
         </nav>
-
+        <?php if($_SESSION['role'] == '1'): ?>
         <nav class="bg-secondary px-3">
-        <?php if ($_SESSION['role'] = 'admin'): ?>
+         
             <a href="event_List.php" class="px-1 link-light   link-opacity-75-hover ">Events</a>
                         <a href="user_management.php" class="px-1 link-light   link-opacity-75-hover "> User Management</a>
-                       <a href="user_management.php" class="px-1 link-light   link-opacity-75-hover">Archived</a>
-                       <?php endif; ?>
+                       <a href="archive_list.php" class="px-1 link-light   link-opacity-75-hover">Archived</a>
+     
         </nav>
+        <?php else: endif; ?>
 
     <?php endif; ?>
 

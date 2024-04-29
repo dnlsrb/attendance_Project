@@ -20,6 +20,8 @@
  
 <div class="position-relative"> 
 
+
+<?php $title = htmlspecialchars($eventLists['eventName']);?>
 <?php include('template/header.php')?>
 <?php if(isset($name_error)):
         echo '<div class="alert alert-danger position-absolute top-0 end-0 m-3 " role="alert">';
