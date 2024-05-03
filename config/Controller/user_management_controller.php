@@ -94,14 +94,7 @@ class UserManagementController {
 
     public function UpdateUser($sql){
 
-        if (mysqli_query($this->conn, $sql)) {
-            mysqli_close($this->conn);
-            
-            // header('Location: user_management.php');
-            exit();
-        } else {
-            echo 'query error: ' . mysqli_error($this->conn);
-        }
+        return(mysqli_query($this->conn, $sql));             
     }
 
     public function closeConnection() {
@@ -130,14 +123,7 @@ if(isset($_POST['delete_user'])){
 }
 
 if (isset($_POST['editSubmit'])) {
-    echo '<br>User id: ';
-    print_r($_POST['user_id']);
-    echo '<br>User Remark: ';
-    print_r($_POST['user_remark']);
-    echo '<br>User Role: ';
-    print_r($_POST['user_role']);
-    echo '<br>User Archive: ';
-    print_r($_POST['isArchive']);
+ 
  
             foreach($_POST['user_id'] as $userCount => $userUpdate){
                
@@ -150,7 +136,7 @@ if (isset($_POST['editSubmit'])) {
                 }
                 if (isset($_POST['user_role'][$userCount])) {
                     $user_role = mysqli_escape_string($conn, $_POST['user_role'][$userCount]);
-                    echo $user_role;
+ 
 
                     $sql = "UPDATE user SET user_role = $user_role WHERE user_id = $userUpdate";
                     $userManager->UpdateUser($sql);
@@ -158,9 +144,10 @@ if (isset($_POST['editSubmit'])) {
                 }
                 if (isset($_POST['isArchive'][$userCount])) {
                     $isArchive = mysqli_escape_string($conn, $_POST['isArchive'][$userCount]);
-                    echo  "Archived? ". $isArchive;
-
-                    $sql = "UPDATE user SET archived = 1 WHERE user_id = $userUpdate";
+  
+                    
+                    $sql = "UPDATE user SET archived = 1 WHERE user_id = $isArchive";
+                    
                     $userManager->UpdateUser($sql);
                 }
          

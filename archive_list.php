@@ -3,33 +3,31 @@
 <?php require('config/Controller/archive_controller.php');?>
 
 
-<?php $title ="archive list"?>
+<?php $title ="Archive"?>
 <?php include('template/header.php')?>
 
 <div class="container-fluid"> 
-<h3>Events</h3>
+<h3 class="mt-3">Archive</h3>
 <hr>
-<?php if ($archiveEvent): ?>
+ 
         <?php $orderNumber = 1; ?>
         <div class="overflow-x-auto"> 
         <table class="table">
-            <tr>
-                <th scope="col">#</th>
-                <th>ID</th>
+        <tr>
+                
+                <th>#</th>
                 <th>Name</th>
-                <th>Date</th>
-                <th>Unarchive</th>
+                <th>Designation</th>
+                <th>Action</th>
             </tr>
 
 
-             
+            <?php if ($archiveEvent): ?>     
         <?php foreach ($archiveEvent as $Event): ?>
             <?php echo '<tr>';?>
-            
-            <th scope="row"><?php echo $orderNumber . '.'; ?></th>
-             <td><?php echo htmlspecialchars($Event['event_id']); ?></td> 
+            <td><?php echo $orderNumber;?></td>
             <td> <?php echo htmlspecialchars($Event['eventName']); ?></td>
-            <td><?php echo htmlspecialchars($Event['eventStart']); ?> <b>-</b> <?php echo htmlspecialchars($Event['eventEnd']); ?></td>
+            <td>Events</td>
             <td>
 
             <form   action="archive_list.php" method="POST">
@@ -43,36 +41,25 @@
             <?php echo '<tr>'; 
             
         endforeach; ?>
-        </table>
-        </div>
-<?php else:?>
-    No Archive User Data Found
-<?php endif;?>
+         <?php else:?>
+ 
+        <?php endif;?>
+ 
+
+ 
+ 
+       
+        
+           
 
 
-<h3>User</h3>
-<hr>
-<?php if ($archiveUser): ?>
-        <?php $orderNumber = 1; ?>
-        <div class="overflow-x-auto"> 
-        <table class="table">
-            <tr>
-                <th scope="col">#</th>
-                <th>ID</th>
-                <th>Name</th>
-          
-                <th>Unarchive</th>
-            </tr>
-
-
-             
+            <?php if ($archiveUser): ?>     
         <?php foreach ($archiveUser as $User): ?>
             <?php echo '<tr>';?>
             
-            <th scope="row"><?php echo $orderNumber . '.'; ?></th>
-             <td><?php echo htmlspecialchars($User['user_name']); ?></td> 
-            <td> <?php echo htmlspecialchars($User['user_role']); ?></td>
- 
+            <td><?php echo $orderNumber;?></td>
+            <td> <?php echo htmlspecialchars($User['user_name']); ?></td>
+            <td>Account</td>
             <td>
 
             <form   action="archive_list.php" method="POST">
@@ -86,13 +73,13 @@
             <?php echo '<tr>'; 
             
         endforeach; ?>
-        </table>
-        </div>
-<?php else:?>
-    No Archive User Data Found
-<?php endif;?>
-
-
+     
+        
+        <?php else:?>
+        
+        <?php endif;?>
+</table>
+</div>
 </div>
 
 

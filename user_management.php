@@ -1,16 +1,16 @@
 <?php include('config/auth/auth_all.php'); ?>
 <?php require('config/Controller/user_management_controller.php'); ?>
 
-
+<?php $title = "User Management";?>
 <?php include('template/header.php'); ?>
 
 
 
 
-<div class="container-fluid bg-light mt-5">
+<div class="container-fluid  mt-5">
   <div class="row d-flex align-items-start  ">
     <div class="col-md-3 col-12  my-auto ">
-      <div class="card rounded-0">
+      <div class="card rounded-0  ">
         <div class="card-header">
           <div class="card-title">Create User</div>
         </div>
@@ -31,7 +31,7 @@
             </div>
 
             <br>
-            <input type="submit" class="  form-control" name="createSubmit" value="Create User ">
+            <input type="submit" class="  form-control" name="createSubmit" value="Confirm">
           </form>
         </div>
       </div>
@@ -43,11 +43,11 @@
       <?php if ($userList) : ?>
         <form action="user_management.php" method="POST">
           <div class="d-flex  ">
-            <input type="submit" name="editSubmit" value="Save" class="btn btn-primary mb-3 rounded-0">
+            <input type="submit" name="editSubmit" value="Save" class="btn btn-primary mb-3 rounded-0  ">
           </div>
 
           <div class="overflow-x-auto">
-            <table class="table">
+            <table class="table border border-1   rounded ">
               <tr>
                 <th>Username</th>
                 <th class="text-center">Remark</th>
@@ -59,19 +59,23 @@
                   <td><?php echo htmlspecialchars($user['user_name']); ?></td>
         
                   <td class="text-center">
-                    <textarea class="form-control" name="user_remark[]"><?php echo htmlspecialchars($user['user_remark'] ?? ''); ?> </textarea>
+                    <textarea class="form-control" name="user_remark[]"><?php echo htmlspecialchars($user['user_remark'] ?? ''); ?></textarea>
                   </td>
                   <td class="text-center">
                     <select class="form-control" name="user_role[]">
                       <option <?php if ($user['user_role'] == 0) echo 'selected'; ?> value="0">User</option>
                       <option <?php if ($user['user_role'] == 1) echo 'selected'; ?> value="1">Admin</option>
 
-                    </select>
+                    </select> 
                   </td>
 
-                  <td class="text-center"> <input type="checkbox" name="isArchive[]" value="1"> </td>
+                  <td class="text-center"> 
+             
+                  <input type="checkbox" name="isArchive[]"    value="<?php echo $user['user_id']; ?>"> 
+                    
+                  </td>
 
-                  <input type="hidden" name="user_id[]" value="<?php echo $user['user_id']; ?>">
+                  <input type="hidden" name="user_id[]" value="<?php echo $user['user_id']; ?>"  >
                 </tr>
               <?php endforeach; ?>
             </table>

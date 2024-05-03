@@ -1,16 +1,23 @@
- <footer class="d-flex flex-wrap   bottom-0 w-100 bg-white justify-content-between align-items-center py-3 my-4 border-top">
-    <div class="col-md-4 d-flex align-items-center">
-      <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-      </a>
-      <span class="mb-3 mb-md-0 text-body-secondary">© 2024 Company, Inc</span>
-    </div>
+ <footer class="d-flex flex-wrap   bottom-0 w-100  justify-content-center align-items-center py-3 my-4 border-top">
+ 
+ 
+       
+      <div class="text-center"> 
+      <!-- <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+      <img src="storage/logo2.png" alt="GXII" width="30"   >
+      </a> -->
+      <figure>
+      <blockquote class="blockquote">
+      <p>"A vision to seek for options so that quality medical treatment may not have to be expensive"</p>
+      </blockquote>
+        <figcaption class="blockquote-footer">
+        Rodolfo I. Gracia
+      </figcaption>
+      </figure>
+      </div>
+ 
 
-    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-      <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-      <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-      <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-    </ul>
+   
   </footer>
 </body>
 </html>

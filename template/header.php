@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
 
+        $url = $_SERVER['REQUEST_URI'];
+
+        // Now you can use $url in your condition
+        
+        $desired_url = basename(parse_url($url, PHP_URL_PATH));
+
+        ?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,34 +26,34 @@
     <link rel="stylesheet" href="css/icon/fontawesome-free-6.5.2-web/css/solid.css" rel="stylesheet">
     <link rel="stylesheet" href="css/icon/fontawesome-free-6.5.2-web/css/regular.css" rel="stylesheet">
 </head>
-<!-- <script>
-    window.addEventListener('unload', function () {
-        document.documentElement.innerHTML = '';
-    });
-</script> -->
+ 
 
-<body>
+<body class=" bg-light">
     <script src="js//bootstrapjs/bootstrap.min.js"></script>
  
 
     <?php if (isset($_SESSION['username']) && isset($_SESSION['password'])): ?>
 
-        <nav >
-            <div class="container-fluid" style="background-color: #001658;  ">
-                <div class="d-flex justify-content-between flex-row d-flex align-items-center p-3">
+        <nav  >
+            <div class="container-fluid" style="<?php echo $header ?? "background-color: #001658;  ";?>">
+                <div class="d-flex justify-content-between flex-row d-flex align-items-center p-5">
                     <div class="d-flex align-items-center">
                         <div>
                         <a class="navbar-brand" href="#">
-                        <img src="storage/logo2.png" alt="Bootstrap" width="30"   >
+                        <img src="storage/logo2.png" alt="GXII" width="30"   >
                         </a>             
                         </div>
                     </div>
                 <div> 
             </div>
             
-            <div>
+            <div  class="
+            <?php  if ( $desired_url  == "attendance_List.php") {
+                echo "d-none";
+            }  ?>
+            ">
             <span class="text-light fs-8 m-2">Logged in:
-                <?php echo htmlspecialchars($_SESSION['username']) ?>
+                <?php echo htmlspecialchars($_SESSION['username']); ?>
             </span> 
                     <a href="./config/Controller/logout.php" class="btn btn-sm btn-danger">
                         <i class="fa-solid fa-right-from-bracket"></i>
@@ -54,18 +62,25 @@
                 </div>
             </div>
         </nav>
-        <?php if($_SESSION['role'] == '1'): ?>
-        <nav class="bg-secondary px-3">
          
+       
+        <nav id="hidden-class-2" class="bg-secondary px-3  <?php  if ( $desired_url  == "attendance_List.php"): echo 'd-none'; else:  endif; ?>  "> 
+        
+            <?php if(isset($_SESSION['role']) == '1' && $desired_url != "attendance_List.php"): ?>
             <a href="event_List.php" class="px-1 link-light   link-opacity-75-hover ">Events</a>
                         <a href="user_management.php" class="px-1 link-light   link-opacity-75-hover "> User Management</a>
                        <a href="archive_list.php" class="px-1 link-light   link-opacity-75-hover">Archived</a>
-     
-        </nav>
-        <?php else: endif; ?>
+                 <?php else: endif; ?>
 
-    <?php endif; ?>
+
+
+                 <?php if ( $desired_url  == "attendance_List.php"): ?>
+                       <a href="event_list.php" class="px-1 link-light   link-opacity-75-hover">Back</a>
+                <?php else: endif;?>
+        </nav>
+        
+ 
 
  
   
-  
+        <?php else: endif;?>

@@ -2,7 +2,7 @@
 <?php require 'config/Controller/event_list_controller.php'; ?>
 
 
-<?php $title ="Event List"?>
+<?php $title ="Events"?>
 <?php include 'template/header.php'; ?>
 
 
@@ -97,16 +97,16 @@
         foreach ($eventLists as $eventLists): ?>
 
             <th scope="row"><?php echo $orderNumber . '.'; ?></th>
-            <!-- <td><?php echo htmlspecialchars($eventLists['event_id']); ?></td> -->
+         
             <td><a target="_blank" href="attendance_List.php?id=<?php echo $eventLists['event_id']; ?>"><?php echo htmlspecialchars($eventLists['eventName']); ?></a></td>
             <td><?php echo htmlspecialchars($eventLists['eventStart']); ?> <b>-</b> <?php echo htmlspecialchars($eventLists['eventEnd']); ?></td>
-            <!-- <td> </td> -->
+        
 
 
             <td>
 
-                <a href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i
-                        class="bi bi-pencil-fill"></i></a>
+                <a href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-pencil-fill"></i></a>
+                <a href="view_list.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-eye-fill"></i></a>
             </td>
             <?php $orderNumber++; ?>
             <?php echo '<tr>'; endforeach; ?>
@@ -120,15 +120,25 @@
                         <li class="page-item"><a class="page-link" href="#">1</a></li>
                         <li class="page-item"><a class="page-link" href="#">2</a></li>
                         <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        
                         <li class="page-item"><a class="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
             </div>
 
 
-            <div class="col">
-                <div class="card card-header p-0 px-2 rounded-1">
-                    <form action="event_List.php" method="GET" class="d-md-flex  align-items-center"
+            
+
+
+
+
+        <?php else: ?>
+        <h1>No Data Found</h1>
+
+        <?php endif ?>
+        <div class="col">
+                <div class="card card-header p-0 px-2 rounded-1 bg-white">
+                    <form action="event_List.php" method="GET" class="d-md-flex   align-items-center"
                         role="search">
 
 
@@ -158,15 +168,6 @@
             </div>
 
         </div>
-
-
-
-
-
-        <?php else: ?>
-        <h1>No Data Found</h1>
-
-        <?php endif ?>
 
         <!--  -->
 

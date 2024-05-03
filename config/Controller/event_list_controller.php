@@ -9,7 +9,7 @@ class eventListController{
   }
 
   public function displayEventList($searchSql){
-    $sql = "SELECT * FROM event_list WHERE $searchSql archived = 0 ORDER BY created_At";
+    $sql = "SELECT * FROM event_list WHERE $searchSql archived = 0 ORDER BY created_At ASC";
     $result = mysqli_query($this->conn, $sql);
     if($result){
       $eventLists= mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -76,11 +76,18 @@ class eventListController{
     $currentDateTime = date('my');
     $event_count = $event_count_total + 1;
     $event_id = $currentDateTime . $event_id_total + 1;
-  
+    
+    if($eventData['eventHeaderImage_Name'] != ''){ 
     $eventHeaderImage = $this->uploadBanner('header',$eventData['eventHeaderImage_Name'], $eventData['eventHeaderImage_Tmp'], $event_id, 'eventHeaderImage');
-    // IMAGE - HEADER 
+    } else{
+      $eventHeaderImage = 'default.jpg';
+    }
+
+    if($eventData['eventBackgroundImage_Name'] != ''){ 
     $eventBackgroundImage = $this->uploadBanner('background',$eventData['eventBackgroundImage_Name'], $eventData['eventBackgroundImage_Tmp'], $event_id, 'eventBackgroundImage');
-  
+    } else{
+      $eventBackgroundImage = 'default.jpg';
+    }
     $sql = "INSERT INTO event_list(eventName, eventHeaderImage, eventBackgroundImage, eventStart, eventEnd, event_id, event_count) 
     VALUES ('{$eventData['eventName']}', '$eventHeaderImage','$eventBackgroundImage','{$eventData['eventStart']}','{$eventData['eventEnd']}','$event_id', '$event_count')";
   

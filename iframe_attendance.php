@@ -50,7 +50,9 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
  
 
  
-
+<style>
+    
+</style>
 
 
 
@@ -64,8 +66,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     <link href="css/style.css" rel="stylesheet">
     <!-- BOOTSTRAP CSS  -->
     <link rel="stylesheet" href="css/bootstrapcss/bootstrap.min.css">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
+ 
     <!-- BOOTSTRAP ICON -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -80,44 +81,43 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
         document.documentElement.innerHTML = '';
     });
 </script>
-
-<body>
+ 
+<body  class="bg-transparent">
     <!-- BOOTSTRAP JS-->
     <script src="js//bootstrapjs/bootstrap.min.js"></script>
 
 <?php if(isset($attendees_Records)): ?>
-  <p>Total Attendees: <?php echo $count_display?></p>
-<table  >
-<tr>
+<!--  
+  <p>Total Attendees: <?php echo $count_display?></p> -->
+<table class=" no-background table table-transparent shadow-sm">
+<tr >
     <th>#</th>
-      <!--<th>ID</th> -->
-    <th>name</th>
-    <!-- <th>email</th> -->
-    <th>Time in</th>
-    <th>Time out</th>
-    <th></th>
+    <th>NAME</th>
+    <th>TIME IN</th>
+    <th>TIME OUT</th>
+    <!-- <th></th> -->
 </tr>   
 <?php $count = 1;?>
 <?php foreach( $attendees_Records as $Attendees):?>
 <?php echo '<tr>';?>
 <td><?php echo $count; ?></td>
 <!-- <td><?php echo htmlspecialchars($Attendees['record_id']); ?></td> -->
-<td><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>
+<td class="fw-bold"><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>
 <!-- <td><?php echo htmlspecialchars($Attendees['attendeesEmail']);  ?></td> -->
-<td><?php echo htmlspecialchars( $Attendees['time_IN']);?></td>
-<td><?php echo htmlspecialchars($Attendees['time_OUT']);  ?></td>
-<td>
+<td class="fw-bold text-success"><?php echo htmlspecialchars( $Attendees['time_IN']);?></td>
+<td class="fw-bold text-primary  "><?php echo htmlspecialchars($Attendees['time_OUT']);  ?></td>
+<!-- <td>
 
 
 <form   action="iframe_attendance.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
 <input type="hidden" name="delete_record" value="<?php echo $Attendees['record_id'];?>">
-<input type="hidden" name="event_id" value="<?php echo $Attendees['event_id'];?>">
+<input type="hidden" name="event_id"  value="<?php echo $Attendees['event_id'];?>">
 <input type="submit" name="delete" value="delete" >  
 </form>
  
 
 
-</td>
+</td> -->
 <?php $count++;?>
 <?php 
 echo '<tr>';   

@@ -1,14 +1,15 @@
 <?php include 'config/auth/auth_all.php'; ?>
 <?php require 'config/Controller/event_details_controller.php'; ?>
 
-
+<?php $title = "DETAILS | 
+" . htmlspecialchars($eventList['eventName']);?>
 <?php include 'template/header.php'; ?>
 <div class="container-fluid  ">
 
 
 
     <div class="card border-0 rounded-0 mt-2">
-        <div class="card card-header rounded-0">
+        <div class="card card-header rounded-0 border-0 bg-white">
             <h2><?php echo htmlspecialchars($eventList['eventName']); ?></h2>
 
 
@@ -16,7 +17,7 @@
 
 
         </div>
-        <div class="card card-footer order-2">
+        <div class="card card-footer order-2 bg-white border-0">
             <div class="d-flex justify-content-end">
                 <div>
                     <a href="event_List.php" type="input" class="  me-3">Back</a>
@@ -84,9 +85,9 @@
             </form>
             <h3>Action</h3>
             <hr>
-            <div class="row mb-3 d-flex align-items-center">
+            <div class="row mb-3 d-flex align-items-center ">
                 <div class="col-sm-5 col-5">Cancel Event</div>
-                <div class="col-sm-7 col-5">
+                <div class="col-sm-7 col-5 ">
 
                     <form action="event_Details.php?id='<?php echo htmlspecialchars($eventList['event_id']); ?>'" method="POST">
                         <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($eventList['event_id']); ?>">

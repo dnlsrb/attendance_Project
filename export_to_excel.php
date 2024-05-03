@@ -49,7 +49,8 @@ if(mysqli_num_rows($result)>0)
 ?>
 
 <table width="50%" align="center" cellpadding="5" class="table2" >
-<th height="35" colspan="4" bgcolor="#CCCCFF">PRESENT TODAY : <?php echo htmlspecialchars($eventList['eventName']) ?></th>
+<th height="35" colspan="4" bgcolor="#CCCCFF">PRESENT : <?php echo htmlspecialchars($eventList['eventName']) ?><br>
+<?php echo htmlspecialchars($eventList['eventStart']) ?> - <?php echo htmlspecialchars($eventList['eventEnd']) ?></th>
 <tr>
 	<td><center><strong>#</strong></center></td>
  

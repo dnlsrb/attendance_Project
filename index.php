@@ -5,9 +5,10 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])):
     header('Location: event_List.php');
 else:
     ?>
- 
+    
 
     <?php
+    $title = "Login";
     include ('template/header.php')
         ?>
 

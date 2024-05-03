@@ -45,6 +45,7 @@ public function closeConnection() {
 $id= mysqli_real_escape_string($conn, $_GET['id']); 
  
 $attendanceController = new attendanceController($conn);
+$Banner = $attendanceController->getList("SELECT * FROM event_list WHERE event_id = '$id' AND archived = 0");
 $count_display = $attendanceController->getCount("SELECT COUNT(*) as count FROM attendance_records WHERE event_id = '$id' AND archived = 0");
 if(isset($_POST['delete'])){
     $delete_record = mysqli_real_escape_string($conn, $_POST['delete_record']);
@@ -55,7 +56,7 @@ $attendees_Records = $attendanceController->getList(
     "SELECT record_id, attendance_records.event_id, attendeesName, attendeesEmail, time_IN, time_OUT,  eventName
     FROM attendance_records INNER JOIN event_list ON event_list.event_id = attendance_records.event_id 
     WHERE attendance_records.event_id = $id AND attendance_records.archived = 0
-    ORDER BY time_IN DESC");
+    ORDER BY attendance_records.created_At DESC");
 $attendanceController->closeConnection();
 
 ?>
