@@ -26,18 +26,7 @@ class attendanceController{
          
     }
 
-    public function archiveAttendees($delete_record, $event_id){
-        
-        $sql = "UPDATE attendance_records SET archived = 1 WHERE record_id=$delete_record";
-        if(mysqli_query($this->conn, $sql)){
-            mysqli_close($this->conn);
-            header('Location: iframe_attendance.php?id='. $event_id);
-            exit();
-        }else{
-            echo 'query error: ' . mysqli_error($this->conn);
-        }
-    }
-
+ 
 public function closeConnection() {
     mysqli_close($this->conn);
 }
@@ -47,11 +36,7 @@ $id= mysqli_real_escape_string($conn, $_GET['id']);
 $attendanceController = new attendanceController($conn);
 $Banner = $attendanceController->getList("SELECT * FROM event_list WHERE event_id = '$id' AND archived = 0");
 $count_display = $attendanceController->getCount("SELECT COUNT(*) as count FROM attendance_records WHERE event_id = '$id' AND archived = 0");
-if(isset($_POST['delete'])){
-    $delete_record = mysqli_real_escape_string($conn, $_POST['delete_record']);
-    $event_id= mysqli_real_escape_string($conn, $_POST['event_id']);
-    $attendanceController->archiveAttendees($delete_record, $event_id);
-}
+ 
 $attendees_Records = $attendanceController->getList(
     "SELECT record_id, attendance_records.event_id, attendeesName, attendeesEmail, time_IN, time_OUT,  eventName
     FROM attendance_records INNER JOIN event_list ON event_list.event_id = attendance_records.event_id 

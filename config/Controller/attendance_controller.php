@@ -1,3 +1,4 @@
+
 <?php 
 include('config/database/db_connect.php');
 class attendanceController{
@@ -38,6 +39,7 @@ class attendanceController{
         header('Location: error/404.php');
     }
     }
+    
 
     public function getEvent($sql){
         

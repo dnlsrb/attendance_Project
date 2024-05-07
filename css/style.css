@@ -7,6 +7,11 @@
   border: none; /* Optionally remove border */
 }
  
-table tr td, table tr th{
-    background-color: rgba(255, 255, 255, 0.3) !important;
-}
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  }::-webkit-scrollbar {
+  width: 3px;
+  }
+  ::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  }

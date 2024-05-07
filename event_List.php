@@ -1,4 +1,5 @@
 <?php include 'config/auth/auth_all.php'; ?>
+ 
 <?php require 'config/Controller/event_list_controller.php'; ?>
 
 
@@ -53,7 +54,7 @@
 </div>
 
 
-<div class="container-fluid   my-5">
+<div class="container-fluid   ">
     <div>
         <?php if (isset($errors)):
             echo "<script>
@@ -69,7 +70,7 @@
                 <div class="col-md col-6  p-1 ">
                     <h3>Events</h3>
                 </div>
-
+                <?php if( $_SESSION['role'] == 1   ): ?>
                 <div class=" col-md col-6 d-flex justify-content-end order-1 order-md-2  p-1 ">
                     <div>
                         <button type="button" class="btn btn-primary w-100 " data-bs-toggle="modal"
@@ -77,67 +78,13 @@
                             <i class="bi bi-plus-lg"></i> Create Event </button>
                     </div>
                 </div>
+                <?php endif;?>
 
             </div>
 
         </div>
-        <?php if ($eventLists): ?>
-        <?php $orderNumber = 1; ?>
-
-        <table class="table">
-            <tr>
-                <th scope="col">#</th>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Action</th>
-            </tr>
-
-
-            <?php echo '<tr>';
-        foreach ($eventLists as $eventLists): ?>
-
-            <th scope="row"><?php echo $orderNumber . '.'; ?></th>
-         
-            <td><a target="_blank" href="attendance_List.php?id=<?php echo $eventLists['event_id']; ?>"><?php echo htmlspecialchars($eventLists['eventName']); ?></a></td>
-            <td><?php echo htmlspecialchars($eventLists['eventStart']); ?> <b>-</b> <?php echo htmlspecialchars($eventLists['eventEnd']); ?></td>
-        
-
-
-            <td>
-
-                <a href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-pencil-fill"></i></a>
-                <a href="view_list.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-eye-fill"></i></a>
-            </td>
-            <?php $orderNumber++; ?>
-            <?php echo '<tr>'; endforeach; ?>
-        </table>
-        <div class="row">
-
-            <div class="col  ">
-                <nav aria-label="Page navigation example" class="d-flex align-items-center">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
-            </div>
-
-
-            
-
-
-
-
-        <?php else: ?>
-        <h1>No Data Found</h1>
-
-        <?php endif ?>
-        <div class="col">
-                <div class="card card-header p-0 px-2 rounded-1 bg-white">
+        <div class="row mx-1">
+        <div class="card card-header p-0 px-2 rounded-1 border-0 bg-white">
                     <form action="event_List.php" method="GET" class="d-md-flex   align-items-center"
                         role="search">
 
@@ -165,6 +112,59 @@
 
                     </form>
                 </div>
+        </div>
+        <?php if ($eventLists): ?>
+        <?php $orderNumber = 1; ?>
+
+        <table class="table">
+            <tr>
+                <th scope="col">#</th>
+                <th>Name</th>
+                <th>Date</th>
+                <?php if( $_SESSION['role'] == 1   ): ?>
+                <th>Action</th>
+                <?php endif;?>
+            </tr>
+
+
+            <?php echo '<tr>';
+        foreach ($eventLists as $eventLists): ?>
+
+            <th scope="row"><?php echo $orderNumber . '.'; ?></th>
+         
+            <td><a target="_blank" href="attendance_List.php?id=<?php echo $eventLists['event_id']; ?>"><?php echo htmlspecialchars($eventLists['eventName']); ?></a></td>
+            <td><?php echo htmlspecialchars($eventLists['eventStart']); ?> <b>-</b> <?php echo htmlspecialchars($eventLists['eventEnd']); ?></td>
+        
+
+            <?php if( $_SESSION['role'] == 1   ): ?>
+            <td>
+          
+                <a href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-pencil-fill"></i></a>
+                <a href="view_list.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-eye-fill"></i></a>
+           
+            </td>
+            <?php endif;?>
+            <?php $orderNumber++; ?>
+            <?php echo '<tr>'; endforeach; ?>
+        </table>
+        <div class="row">
+ 
+ 
+        <?php else: ?>
+ 
+            <div class=" text-center  my-5">
+            <div class="spinner-border mx-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+            </div>  
+            <h class="display-6">No Data Found</h>
+             <div>
+             <small class="text-primary">Create new event</small>
+            </div>
+            </div>
+ 
+        <?php endif ?>
+        <div class="col">
+              
             </div>
 
         </div>

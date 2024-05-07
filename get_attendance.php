@@ -1,6 +1,8 @@
+<?php include('config/auth/auth_all.php');?>
  <?php
+ 
 include('config/database/db_connect.php');
-class attendanceController{
+class AjaxAttendanceController{
     private $conn;
 
     public function __construct($conn) {
@@ -108,15 +110,18 @@ class attendanceController{
 }
  
 
-$attendanceController = new attendanceController($conn);
+$AjaxAttendanceController = new AjaxAttendanceController($conn);
  
     $attendeesData = [
         'attendeesName' => mysqli_real_escape_string($conn, $_POST['attendeesName']),
         'event_id' => mysqli_real_escape_string($conn, $_POST['event_id']),
     ];
 
-    $name_error = $attendanceController->createAttendees($attendeesData);
+    $name_error = $AjaxAttendanceController->createAttendees($attendeesData);
 
- 
+    header('Content-Type: application/json');
+    echo json_encode(array(
+    'name_error' => $name_error,
+    )); 
 
 ?>

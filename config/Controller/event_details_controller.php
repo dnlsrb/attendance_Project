@@ -169,6 +169,7 @@ class eventDetailsController{
 
  
 $eventManager = new eventDetailsController($conn);
+ 
 $eventManager ->validator($_GET['id']);
 
 if(isset($_POST['delete'])){

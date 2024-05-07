@@ -76,19 +76,14 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     <link rel="stylesheet" href="css/icon/fontawesome-free-6.5.2-web/css/solid.css" rel="stylesheet">
     <link rel="stylesheet" href="css/icon/fontawesome-free-6.5.2-web/css/regular.css" rel="stylesheet">
 </head>
-<script>
-    window.addEventListener('unload', function () {
-        document.documentElement.innerHTML = '';
-    });
-</script>
+ 
  
 <body  class="bg-transparent">
     <!-- BOOTSTRAP JS-->
     <script src="js//bootstrapjs/bootstrap.min.js"></script>
 
-<?php if(isset($attendees_Records)): ?>
-<!--  
-  <p>Total Attendees: <?php echo $count_display?></p> -->
+<?php if(!empty($attendees_Records) ): ?>
+ 
 <table class=" no-background table table-transparent shadow-sm">
 <tr >
     <th>#</th>
@@ -101,23 +96,10 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
 <?php foreach( $attendees_Records as $Attendees):?>
 <?php echo '<tr>';?>
 <td><?php echo $count; ?></td>
-<!-- <td><?php echo htmlspecialchars($Attendees['record_id']); ?></td> -->
 <td class="fw-bold"><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>
-<!-- <td><?php echo htmlspecialchars($Attendees['attendeesEmail']);  ?></td> -->
 <td class="fw-bold text-success"><?php echo htmlspecialchars( $Attendees['time_IN']);?></td>
 <td class="fw-bold text-primary  "><?php echo htmlspecialchars($Attendees['time_OUT']);  ?></td>
-<!-- <td>
-
-
-<form   action="iframe_attendance.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
-<input type="hidden" name="delete_record" value="<?php echo $Attendees['record_id'];?>">
-<input type="hidden" name="event_id"  value="<?php echo $Attendees['event_id'];?>">
-<input type="submit" name="delete" value="delete" >  
-</form>
  
-
-
-</td> -->
 <?php $count++;?>
 <?php 
 echo '<tr>';   
@@ -128,7 +110,12 @@ unset($count);
 
 
 <?php else: ?>
-<h3>No Attendees Yet</h3><br>
+
+    <div class="text-center my-5 rounded-1 ">
+      
+            <h class="display-6">Waiting for Attendees</h>
+             
+            </div>
 <?php endif ?>
  
 

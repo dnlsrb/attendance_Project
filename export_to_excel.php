@@ -1,4 +1,5 @@
 <?php include('config/auth/auth_all.php');?>
+<?php include('config/auth/auth_admin.php');?>
 <?php require('config/Controller/export_to_excel_controller.php');?>
 
 

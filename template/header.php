@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <?php
 
         $url = $_SERVER['REQUEST_URI'];
@@ -28,7 +28,7 @@
 </head>
  
 
-<body class=" bg-light">
+<body class="  ">
     <script src="js//bootstrapjs/bootstrap.min.js"></script>
  
 
@@ -65,18 +65,21 @@
          
        
         <nav id="hidden-class-2" class="bg-secondary px-3  <?php  if ( $desired_url  == "attendance_List.php"): echo 'd-none'; else:  endif; ?>  "> 
-        
-            <?php if(isset($_SESSION['role']) == '1' && $desired_url != "attendance_List.php"): ?>
-            <a href="event_List.php" class="px-1 link-light   link-opacity-75-hover ">Events</a>
-                        <a href="user_management.php" class="px-1 link-light   link-opacity-75-hover "> User Management</a>
-                       <a href="archive_list.php" class="px-1 link-light   link-opacity-75-hover">Archived</a>
-                 <?php else: endif; ?>
+
+            <?php if( $_SESSION['role'] == 1   ): 
+                if($desired_url != "attendance_List.php"):?>
+
+            <a href="event_List.php" class="px-1 link-light text-decoration-none   link-opacity-75-hover ">Events</a>
+                        <a href="user_management.php" class="px-1 link-light text-decoration-none   link-opacity-75-hover "> User Management</a>
+                       <a href="archive_list.php" class="px-1 link-light text-decoration-none   link-opacity-75-hover">Archive</a>
+                       
+                 <?php  endif; endif; ?>
 
 
 
                  <?php if ( $desired_url  == "attendance_List.php"): ?>
                        <a href="event_list.php" class="px-1 link-light   link-opacity-75-hover">Back</a>
-                <?php else: endif;?>
+                <?php   endif;?>
         </nav>
         
  

@@ -5,7 +5,7 @@ setTimeout(function() {
         if(cameras.length > 0){
             scanner.start(cameras[0]);
         } else {
-            // Handle no cameras
+            document.getElementById('waitMessage').innerText = "No Camera Found";
         }
         document.getElementById('waitMessage').innerText = "";
     }).catch(function(e){
