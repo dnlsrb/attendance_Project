@@ -1,151 +1,177 @@
-<?php include('authentication.php');?>
-<?php
-  
-include_once('config/db_connect.php');
-
-$sql = 'SELECT * FROM event_list WHERE archived = 0 ORDER BY created_At';
-$result = mysqli_query($conn, $sql);
-$eventLists= mysqli_fetch_all($result, MYSQLI_ASSOC);
-mysqli_free_result($result);
+<?php include 'config/auth/auth_all.php'; ?>
  
-
-// eventName	eventHeaderImage	eventBackgroundImage	eventStart	eventEnd
-
-$errors = array(
-  'eventName' => '',
-  'eventHeaderImage' => '', 
-  'eventBackgroundImage' => '', 
-  'eventStart	' => '',
-  'eventEnd	' => ''
-);
-
-$required_fields =['eventName', 'eventHeaderImage', 'eventBackgroundImage', 'eventStart', 'eventEnd'];
-
-if(isset($_POST['submit'])){
-include_once('config/db_connect.php');
-
-  $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
-  $eventStart = mysqli_real_escape_string($conn, $_POST['eventStart']);
-  $eventEnd = mysqli_real_escape_string($conn, $_POST['eventEnd']);
-
-  $eventHeaderImage_Name =$_FILES['eventHeaderImage']['name'];
-  $eventHeaderImage_Size =$_FILES['eventHeaderImage']['size'];
-  $eventHeaderImage_Tmp = $_FILES['eventHeaderImage']['tmp_name'];
-  $eventHeaderImage_error = $_FILES['eventHeaderImage']['error']; 
- 
-  $eventBackgroundImage_Name =$_FILES['eventBackgroundImage']['name'];
-  $eventBackgroundImage_Size =$_FILES['eventBackgroundImage']['size'];
-  $eventBackgroundImage_Tmp = $_FILES['eventBackgroundImage']['tmp_name'];
-  $eventBackgroundImage_error = $_FILES['eventBackgroundImage']['error']; 
-  
-  $event_id_query = "SELECT COUNT(*) as count_id FROM event_list WHERE (LAST_DAY(CURDATE()) - LAST_DAY(CURDATE())+1) <= DAY(created_At) AND DAY(LAST_DAY(CURDATE())) >= DAY(created_At) AND MONTH(LAST_DAY(CURDATE())) = MONTH(created_At) AND YEAR(LAST_DAY(CURDATE())) = YEAR(created_At)";
-  $event_count_query = "SELECT COUNT(*) as count_event FROM event_list";
-
-  $event_count_result = mysqli_query($conn, $event_count_query);
-  $event_count_total = mysqli_fetch_assoc($event_count_result)['count_event'];
-  mysqli_free_result($event_count_result);
-
-  $event_id_result = mysqli_query($conn, $event_id_query);
-  $event_id_total = mysqli_fetch_assoc($event_id_result)['count_id'];
-  mysqli_free_result($event_id_result);
-  
-  $currentDateTime = date('my');
-  $event_count = $event_count_total + 1;
-  $event_id = $currentDateTime . $event_id_total + 1;
+<?php require 'config/Controller/event_list_controller.php'; ?>
 
 
-  // IMAGE - HEADER 
-  $image_header = strtolower(pathinfo($eventHeaderImage_Name, PATHINFO_EXTENSION));
-  $eventHeaderImage = "HD".$event_id.'.'.$image_header;
-  $header_uploadpath ='Image/Header/'.$eventHeaderImage;
-
-  // IMAGE - BACKGROUND
-  $image_background = strtolower(pathinfo($eventBackgroundImage_Name, PATHINFO_EXTENSION));
-  $eventBackgroundImage = "BG".$event_id.'.'.$image_background;
-  $Background_uploadpath ='Image/Background/'.$eventBackgroundImage;
-
-  move_uploaded_file($eventHeaderImage_Tmp, $header_uploadpath);
-  move_uploaded_file($eventBackgroundImage_Tmp, $Background_uploadpath);
-
-  $sql = "INSERT INTO event_list(eventName, eventHeaderImage, eventBackgroundImage, eventStart, eventEnd, event_id, event_count) 
-  VALUES ('$eventName', '$eventHeaderImage','$eventBackgroundImage','$eventStart','$eventEnd','$event_id', '$event_count')";
-
-      // save to db and check
-      if(mysqli_query($conn, $sql)){
-        mysqli_close($conn);
-        header('Location: event_List.php');
-      } else {
-        // error
-        echo 'query error: ' . mysqli_error($conn);
-      }
- 
-} 
-
- 
+<?php $title ="Events"?>
+<?php include 'template/header.php'; ?>
 
 
-?>
+<!-- Modal -->
+<div class="modal" id="create_event" tabindex="-1" aria-labelledby="create_eventLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="create_eventLabel">Create Event</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="event_List.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
 
-<?php include('template/header.php')?>
- 
 
 
- 
-<!--  -->
-    <h3  >Create Event</h3>
+                    <label for="eventName" class="form-label">Event Name:</label>
+                    <?php if(isset($errors['eventName'])): ?><span class="text-danger ">*</span><?php endif;?>
+                    <input type="text" id="eventName"
+                        class="form-control  <?php if(isset($errors['eventName'])): ?>border-danger<?php endif;?>" name="eventName"
+                        value="<?php echo htmlspecialchars($eventData['eventName'] ?? ''); ?>"><br>
+                    <label for="TableBackground" class="form-label">Background Image</label>
+                    <input type="file" id="TableBackground" class="form-control" name="eventBackgroundImage"
+                        accept=".jpg, .png, .jpeg, .gif,"> <br>
+                    <label for="bannerImage" class="form-label">Banner Image</label>
+                    <input type="file" id="bannerImage" class="form-control" name="eventHeaderImage"
+                        accept=".jpg, .png, .jpeg, .gif,"> <br>
+                    <label for="eventStart" class="form-label">Start of Event</label>
+                    <?php if(isset($errors['eventStart'])): ?><span class="text-danger ">*</span><?php endif;?>
+                    <input type="date" id="eventStart" value="<?php echo htmlspecialchars($eventData['eventStart'] ?? ''); ?>"
+                        class="form-control  <?php if(isset($errors['eventStart'])): ?>border-danger<?php endif;?>" name="eventStart"
+                        min="<?php echo date('Y-m-d'); ?>"><br>
+                    <label for="eventEnd" class="form-label">End of Event</label>
+                    <?php if(isset($errors['eventEnd'])): ?><span class="text-danger ">*</span><?php endif;?>
+                    <input type="date" id="eventEnd" value="<?php echo htmlspecialchars($eventData['eventEnd'] ?? ''); ?>"
+                        class="form-control  <?php if(isset($errors['eventEnd'])): ?>border-danger<?php endif;?>" name="eventEnd"
+                        min="<?php echo date('Y-m-d'); ?>">
+                    <br>
 
-    <form action="event_List.php"   method="POST" enctype="multipart/form-data">
-     
-    <?php echo $errors['eventName']?>
-     Event Name: <input type="text" name="eventName"><br>
-     Background image: <input type="file" name="eventBackgroundImage" accept=".jpg, .png, .jpeg, .gif," > <br>
-     Header Image: <input type="file" name="eventHeaderImage" accept=".jpg, .png, .jpeg, .gif,"> <br>
-     Event Start: <input type="date" name="eventStart" ><br>
-     Event End <input type="date" name="eventEnd" >
-     <br>
-     <input type="submit"  value="submit" name="submit">
-     </form>
- 
-    <h3 >Event List</h3>
-    <?php if($eventLists):?>
-        <?php $orderNumber = 1; ?> 
- 
-    <table>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Event ID</th>
-        <th>Event Name</th>
-        <th>Start Date</th>
-        <th>End Date</th>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="submit" name="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid   ">
+    <div>
+        <?php if (isset($errors)):
+            echo "<script>
+             // This script can be removed if you want to open the modal only using Bootstrap data attributes
+             var myModal = new bootstrap.Modal(document.getElementById('create_event'));
+             myModal.show();
+         </script>";
+        
+            unset($errors['eventName']);
+        endif; ?>
+        <div class="container-fluid">
+            <div class="row d-flex align-items-start py-2  ">
+                <div class="col-md col-6  p-1 ">
+                    <h3>Events</h3>
+                </div>
+                <?php if( $_SESSION['role'] == 1   ): ?>
+                <div class=" col-md col-6 d-flex justify-content-end order-1 order-md-2  p-1 ">
+                    <div>
+                        <button type="button" class="btn btn-primary w-100 " data-bs-toggle="modal"
+                            data-bs-target="#create_event">
+                            <i class="bi bi-plus-lg"></i> Create Event </button>
+                    </div>
+                </div>
+                <?php endif;?>
+
+            </div>
+
+        </div>
+        <div class="row mx-1">
+        <div class="card card-header p-0 px-2 rounded-1 border-0 bg-white">
+                    <form action="event_List.php" method="GET" class="d-md-flex   align-items-center"
+                        role="search">
+
+
+                        <label for="nameSearch" class="form-label mx-1 m-0 fw-medium">Name</label>
+                        <input class="form-control mx-md-2" type="search" id="nameSearch"
+                            value="<?php echo htmlspecialchars($name ?? ''); ?>" name="name" aria-label="Search">
+
+
+                        <label for="eventStart" class="form-label mx-1 m-0 fw-medium">Start</label>
+                        <input type="date" id="eventStart" class="form-control mx-md-2"
+                            value="<?php echo htmlspecialchars($startRange ?? ''); ?>" name="startRange">
+
+
+                        <label for="eventEnd" class="form-label mx-1 m-0 fw-medium">End</label>
+                        <input type="date" id="eventEnd" class="form-control mx-md-2"
+                            value="<?php echo htmlspecialchars($endRange ?? ''); ?>" name="endRange">
+
+
+                        <div class=" w-100 my-2">
+                            <input class="btn btn-outline-secondary w-100 " value="search" type="submit"
+                                name="search">
+                        </div>
+
+
+                    </form>
+                </div>
+        </div>
+        <?php if ($eventLists): ?>
+        <?php $orderNumber = 1; ?>
+
+        <table class="table">
+            <tr>
+                <th scope="col">#</th>
+                <th>Name</th>
+                <th>Date</th>
+                <?php if( $_SESSION['role'] == 1   ): ?>
+                <th>Action</th>
+                <?php endif;?>
+            </tr>
+
+
+            <?php echo '<tr>';
+        foreach ($eventLists as $eventLists): ?>
+
+            <th scope="row"><?php echo $orderNumber . '.'; ?></th>
          
-        <th></th>
-        <th></th>
-    </tr>
+            <td><a target="_blank" href="attendance_List.php?id=<?php echo $eventLists['event_id']; ?>"><?php echo htmlspecialchars($eventLists['eventName']); ?></a></td>
+            <td><?php echo htmlspecialchars($eventLists['eventStart']); ?> <b>-</b> <?php echo htmlspecialchars($eventLists['eventEnd']); ?></td>
+        
 
+            <?php if( $_SESSION['role'] == 1   ): ?>
+            <td>
+          
+                <a href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-pencil-fill"></i></a>
+                <a href="view_list.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-eye-fill"></i></a>
+           
+            </td>
+            <?php endif;?>
+            <?php $orderNumber++; ?>
+            <?php echo '<tr>'; endforeach; ?>
+        </table>
+        <div class="row">
  
-    <?php  echo '<tr>'; foreach( $eventLists as $eventLists):?>
-      
-    <th scope="row"><?php echo $orderNumber . ".";  ?></th>
-    <td ><?php echo htmlspecialchars($eventLists['event_id']);?></td>
-    <td><?php echo htmlspecialchars($eventLists['eventName']);  ?></td>
-    <td><?php echo htmlspecialchars($eventLists['eventStart']);  ?></td>
-    <td><?php echo htmlspecialchars($eventLists['eventEnd']);  ?></td>
-    
-    <td><a href="attendance_List.php?id=<?php echo $eventLists['event_id'];  ?>"><i class="bi bi-eye"></i> List</a> </td>
-    <td><a href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>">
-    <i > </i>Details</a></td>
-    <?php $orderNumber++;?>
-    <?php echo '<tr>';   endforeach;?>
-    </table>
-    <?php else: ?>
-    <h1>No Data Found, Create Event</h1>
-
-    <?php endif ?>
-<!--  -->
-
-      
-
-
-<?php include('template/footer.php')?>
-
  
+        <?php else: ?>
+ 
+            <div class=" text-center  my-5">
+            <div class="  mx-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+            </div>  
+            <h class="display-6">No Data Found</h>
+             <div>
+             <small class="text-primary">Create new event</small>
+            </div>
+            </div>
+ 
+        <?php endif ?>
+        <div class="col">
+              
+            </div>
+
+        </div>
+
+        <!--  -->
+
+    </div>
+</div>
+
+<?php include 'template/footer.php'; ?>

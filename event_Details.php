@@ -1,73 +1,97 @@
-<?php include('authentication.php');?>
-<?php
-if(isset($_GET['id'])){
-    include_once('config/db_connect.php');
-    $event_id = mysqli_real_escape_string($conn, $_GET['id']);
-    $sql = "SELECT * FROM event_list WHERE event_id = $event_id";
-    $result = mysqli_query($conn, $sql);
-    $eventList = mysqli_fetch_assoc($result);
-    mysqli_free_result($result);
-    mysqli_close($conn);
+<?php include 'config/auth/auth_all.php'; ?>
+<?php include('config/auth/auth_admin.php');?>
+<?php require 'config/Controller/event_details_controller.php'; ?>
 
-}
+<?php $title = "DETAILS | 
+" . htmlspecialchars($eventList['eventName']);?>
+<?php include 'template/header.php'; ?>
+<div class="container-fluid  ">
 
-if(isset($_POST['delete'])){
-    include_once('config/db_connect.php');
-    $event_id= mysqli_real_escape_string($conn, $_POST['event_id']);
-    $sql = "UPDATE event_list SET archived = 1 WHERE event_id = $event_id";
-    if(mysqli_query($conn, $sql)){
-        mysqli_close($conn);  
-        header('Location: event_List.php');
-    }else{
-        echo 'query error: ' . mysqli_error($conn);
-        mysqli_close($conn);  
-    }
 
-}
+ 
 
-if(isset($_POST['submit'])){
-    include_once('config/db_connect.php');
-    $event_id = mysqli_real_escape_string($conn, $_POST['event_id']);
-    $eventName = mysqli_real_escape_string($conn, $_POST['eventName']);
-    $sql = "UPDATE event_list SET eventName = '$eventName' WHERE event_id = $event_id";
-    $update_query = mysqli_query($conn, $sql);
-    mysqli_close($conn);
-    header("Location: event_Details.php?id=". htmlspecialchars($event_id) );
+    <div class="card border-0 rounded-0 py-4 ">
+        
+        <div class="card card-header bg-white border-0 p-0">
     
+               
+                <div class="d-flex justify-content-between">
+                        <div>
+                            <a href="event_List.php" type="input" class="btn btn-secondary  rounded-0"><i class="fa-solid fa-arrow-left"></i></a>
+                            <a href="view_list.php?id=<?php echo htmlspecialchars($event_id);  ?>" type="input" class="btn btn-primary rounded-0 mx-1"> <i class="bi bi-eye-fill"></i></a>
+                        </div>
+                        <div class="d-flex"> 
+                            <div class="order-2 "> 
+                                <form action="event_Details.php?id='<?php echo htmlspecialchars($eventList['event_id']); ?>'" method="POST">
+                                    <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($eventList['event_id']); ?>">
+                                    <button type="submit" class="btn btn-danger  rounded-0  " onclick="return confirm('Are you sure you want to delete?');" name="delete" value="Yes" >
+                                    <i class="fa-solid fa-trash"></i></button>
+                                </form> 
+                            </div>
+                            <div class="order-1"> 
+                                <form action="event_Details.php?id=<?php echo $event_id; ?>" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($eventList['event_id']); ?>">
+                                    <button type="submit" class="mx-1 btn btn-success rounded-0  " value="Save" name="submit"><i class="fa-solid fa-floppy-disk"></i></button>
+                            </div>
+                        </div>
+                    
+                </div>
+  
+        </div>
+        <div class="card card-body border-0 p-0 rounded-0 mt-4">
+            <h3>Details</h3>
+            <hr>
+
+            <div class="row mb-3">
+                <label for="eventName" class="col-sm-5  col-form-label col-form-label-sm">Event Name:</label>
+                <div class="col-sm-7 d-flex justify-content-end">
+                    <input name="eventName" class="col-sm-5 form-control  form-control-sm <?php if (isset($errors['eventName'])) : ?>border-danger <?php endif ?>" id="eventName" value="<?php echo htmlspecialchars($eventList['eventName']) ?? ''; ?>" type="text">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="eventStart" class="col-sm-5 col-form-label col-form-label-sm">Event Start</label>
+
+                <div class="col-sm-7">
+                    <input type="date" class="col-sm-5 form-control form-control-sm <?php if (isset($errors['eventStart'])) : ?>border-danger <?php endif ?>" id="eventStart" name="eventStart" value="<?php echo htmlspecialchars($eventList['eventStart']); ?>">
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <label for="eventEnd" class="col-sm-5 col-form-label col-form-label-sm">Event End</label>
+                <div class="col-sm-7">
+ 
+                    <input type="date" class="col-sm-5 form-control form-control-sm <?php if (isset($errors['eventEnd'])) : ?>border-danger <?php endif ?>" id="eventEnd" name="eventEnd" value="<?php echo htmlspecialchars($eventList['eventEnd']); ?>">
+                </div>
+            </div>
+
+            <h3>Banner</h3>
+            <hr>
+            <div class="row d-flex  " style="background-image:url( image/header/<?php echo htmlspecialchars($eventList['eventHeaderImage']) ?? ''; ?> ) ;  background-size: cover; height:20vh;">
+ 
+                <div class="col-sm-5  "> <input type="file" name="eventHeaderImage" class="form-control bg-white" accept=".jpg, .png, .jpeg, .gif,"></div>
+      
+            </div>
+            <div class="row mb-3 " style="background-image:url(image/background/<?php echo htmlspecialchars($eventList['eventBackgroundImage']) ?? ''; ?>) ;  background-size: cover; height:100vh;">
+ 
+                <div class="col-sm-5  "> <input type="file" name="eventBackgroundImage" class="form-control bg-white" accept=".jpg, .png, .jpeg, .gif,"></div>
+             
+            </div>
+
+            <input type="hidden" name="old_header_path" value="<?php echo htmlspecialchars($eventList['eventHeaderImage']) ?? ''; ?>">
+            <input type="hidden" name="old_background_path" value="<?php echo htmlspecialchars($eventList['eventBackgroundImage']) ?? ''; ?>">
+
+            </form>
      
-}
-
- 
-
-// $eventName
-// $eventBackgroundImage
-// $eventHeaderImage
-// $eventStart
-// $eventEnd
-// $archived 
-
-?>
 
 
-<?php include('template/header.php');?>
-        <h4>Edit Event</h4>
-<form action="event_Details.php" method="POST"> 
-    <label for="eventName">Event Name</label><br>
-<input name="eventName"  value="<?php echo htmlspecialchars($eventList['eventName']); ?> " type="text"> 
-<input type="hidden" name="event_id"  value="<?php echo htmlspecialchars($eventList['event_id']); ?>">
-<input type="submit"   value="submit" name="submit">
- 
- 
-</form>
-<form action="event_Details.php" method="POST">
- 
-<input type="hidden" name="event_id" value="<?php echo htmlspecialchars($eventList['event_id']);?>">
-<input type="submit" name="delete" value="delete" >  
-</form>
 
-<a href="event_List.php">BACK</a>
- 
 
-<?php include('template/footer.php');?>
- 
- 
+
+        </div>
+
+    </div>
+
+</div>
+<?php include 'template/footer.php'; ?>
