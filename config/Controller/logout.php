@@ -20,9 +20,9 @@ if(isset($_SESSION['username'])  && isset($_SESSION['password'])):
         // }else{
         //     echo 'query error: ' . mysqli_error($conn);
         // }
-    header('Location:index.php');   
+    header('Location:../../index.php');   
 else:
-    header('Location:index.php');
+    header('Location:../../index.php');
 
 endif;
 ?>

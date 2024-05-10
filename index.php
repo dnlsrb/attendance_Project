@@ -38,11 +38,11 @@ else:
         <form action="index.php" method="POST" class="bg-light p-5">
     
             <div class="d-flex align-items-center justify-content-center">
-                <img src="storage/logo2.png" alt="gx-i logo"   style=" width: 55px;  ">
+                <img src="storage/logo1.png" alt="gx-i logo"   style=" width: 55px;  ">
             </div>
  
             <div class="d-flex flex-column align-items-start justify-content-center p-2">
-                <input type="text" placeholder="Username" name="username"
+                <input type="text" placeholder="Username" name="username" 
                     class="my-2 form-control border-0 border-bottom rounded-0 border-2 border-primary-subtle">
                 <input type="password" placeholder="Password"  name="password"
                     class="mb-2 form-control border-0 border-bottom rounded-0 border-2 border-primary-subtle">

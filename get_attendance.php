@@ -21,7 +21,10 @@ class AjaxAttendanceController{
          
             
             if(mysqli_num_rows($timeOut_result) === 1){
-                $name_message['message'] = "<i class='fa-solid fa-circle-check text-success me-1'></i><span class='text-success'>Goodbye!</span> <b><u>{$attendeesData['attendeesName']}</u></b>, ($date) ";
+                $name_message['message'] = "<i class='fa-solid fa-circle-check text-success me-1'></i><span class='text-success'>Goodbye!</span> <b><u>{$attendeesData['attendeesName']}</u></b>, ($date) 
+                <audio autoplay='true' style='display:none;'> <style> #message { background-color: 2px solid darkgreen;  } </style>
+         <source src='storage/notification.mp3' type='audio/wav'>
+      </audio>";
                 $sql_update = "UPDATE attendance_records SET time_OUT = '$date' WHERE attendeesName = '{$attendeesData['attendeesName']}'
                 AND event_id = '{$attendeesData['event_id']}'";
                 if(mysqli_query($this->conn, $sql_update)){ 
@@ -37,7 +40,10 @@ class AjaxAttendanceController{
             else{ 
              
             $time_IN = date('Y-m-d H:i:s'); // Format: YYYY-MM-DD;
-            $name_message['message'] = "<i class='fa-solid fa-circle-check text-success me-1'></i><span class='text-success'>Thankyou for attending!</span> <b><u>{$attendeesData['attendeesName']}</u></b>, ($date)";
+            $name_message['message'] = "<i class='fa-solid fa-circle-check text-success me-1'></i><span class='text-success'>Thankyou for attending!</span> <b><u>{$attendeesData['attendeesName']}</u></b>, ($date)
+            <audio autoplay='true' style='display:none;'>
+            <source src='storage/notification.mp3' type='audio/wav'>
+         </audio>";
 
             $total = "SELECT COUNT(*) as count FROM attendance_records WHERE (LAST_DAY(CURDATE()) - LAST_DAY(CURDATE())+1) <= DAY(created_At) AND DAY(LAST_DAY(CURDATE())) >= DAY(created_At) AND MONTH(LAST_DAY(CURDATE())) = MONTH(created_At) AND YEAR(LAST_DAY(CURDATE())) = YEAR(created_At)";
             $submit_result = mysqli_query($this->conn, $total);
@@ -90,15 +96,24 @@ class AjaxAttendanceController{
         $user_existed_result = mysqli_query($this->conn, $user_existed);
         
         if(preg_match('/[0-9]/', $attendeesData['attendeesName'])) {
-            $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>No Numbers Allowed";
+            $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>No Numbers Allowed
+            <audio autoplay='true' style='display:none;'>
+            <source src='storage/alert.mp3' type='audio/wav'>
+            </audio>";
         } 
         elseif(empty($attendeesData['attendeesName'])){
-            $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>Name is empty";
+            $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>Name is empty
+            <audio autoplay='true' style='display:none;'>
+            <source src='storage/alert.mp3' type='audio/wav'>
+            </audio>";
         }
         elseif(mysqli_num_rows($user_existed_result) >= 1){
         
             mysqli_free_result($user_existed_result);
-            $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i><u><b>{$attendeesData['attendeesName']}</b></u> <span class='text-warning'>already existed</span> in this day of event.";
+            $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i><u><b>{$attendeesData['attendeesName']}</b></u> <span class='text-warning'>already existed</span> in this day of event.
+            <audio autoplay='true' style='display:none;'>
+            <source src='storage/alert.mp3' type='audio/wav'>
+            </audio>";
         }
 
         return $name_message;

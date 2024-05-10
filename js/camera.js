@@ -29,4 +29,5 @@ setTimeout(function() {
             document.getElementById('btnsubmit').click();
         }
     });
-}, 1000);
+}, 2000);
+// time out per scan of camera

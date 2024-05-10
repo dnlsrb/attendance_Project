@@ -27,8 +27,8 @@
                 <th>Designation</th>
                 <th>Action</th>
             </tr>
-        <?php endif;?> 
-      
+        <?php endif;?>
+     
        
 
         <?php if($archiveEvent): ?>     

@@ -40,7 +40,7 @@
                     <div class="d-flex align-items-center">
                         <div>
                         <a class="navbar-brand" href="#">
-                        <img src="storage/logo2.png" alt="GXII" width="30"   >
+                        <img src="storage/logo1.png" alt="GXII" width="30"   >
                         </a>             
                         </div>
                     </div>
