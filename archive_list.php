@@ -6,8 +6,8 @@
 <?php $title ="Archive"?>
 <?php include('template/header.php')?>
 
-<div class="container-fluid"> 
-<h3 class="mt-3">Archive</h3>
+<div class="container-fluid  mt-3  "> 
+ 
 
 <?php $orderNumber = 1; ?>
  
@@ -20,11 +20,11 @@
       
         </div>
             <?php else:?>
-                <table class="table">
+                <table class="table table-warning border-warning table-hover">
             <tr>
-                <th>#</th>
+                <th> </th>
                 <th>Name</th>
-                <th>Designation</th>
+                <th>Type</th>
                 <th>Action</th>
             </tr>
         <?php endif;?>
@@ -33,16 +33,16 @@
 
         <?php if($archiveEvent): ?>     
         <?php foreach ($archiveEvent as $Event): ?>
-            <?php echo '<tr>';?>
+            <?php echo '<tr  >';?>
             <td><?php echo $orderNumber;?></td>
-            <td> <?php echo htmlspecialchars($Event['eventName']); ?></td>
-            <td>Events</td>
+            <td  ><span class="text-truncate d-inline-block" style="max-width:200px;"> <?php echo htmlspecialchars($Event['eventName']); ?></span></td>
+            <td><span class="badge text-bg-success">Events</span></td>
             <td>
 
             <form   action="archive_list.php" method="POST">
  
             <input type="hidden" name="id" value="<?php echo $Event['event_id'];?>">
-            <input type="submit" name="unarchiveEvent" value="Unarchive" >  
+            <input type="submit" name="unarchiveEvent" class="btn btn-warning" value="Unarchive" >  
             </form>
 
             </td>
@@ -57,17 +57,17 @@
 
         <?php if ($archiveUser): ?>     
         <?php foreach ($archiveUser as $User): ?>
-            <?php echo '<tr>';?>
+            <?php echo '<tr  >';?>
             
             <td><?php echo $orderNumber;?></td>
-            <td> <?php echo htmlspecialchars($User['user_name']); ?></td>
-            <td>Account</td>
+            <td  > <span class="text-truncate d-inline-block" style="max-width:200px;"><?php echo htmlspecialchars($User['user_name']); ?></span></td>
+            <td><span class="badge text-bg-secondary">Account</span></td>
             <td>
 
             <form   action="archive_list.php" method="POST">
  
             <input type="hidden" name="id" value="<?php echo $User['user_id'];?>">
-            <input type="submit" name="unarchiveUser" value="Unarchive" >  
+            <input type="submit" name="unarchiveUser" class="btn btn-warning" value="Unarchive" >  
             </form>
 
             </td>

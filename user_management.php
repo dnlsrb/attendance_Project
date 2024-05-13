@@ -9,48 +9,75 @@
 
 
 <div class="container-fluid  ">
-<h3 class="mt-3">User</h3>
-  <div class="row d-flex align-items-start justify-content-center  ">
-    <div class="col-md-3 col-12  my-auto ">
-      <div class="card rounded-0  ">
-        <div class="card-header">
-          <div class="card-title">Create User</div>
-        </div>
-        <div class="card-body">
-          <form action="user_management.php" method="POST">
-            <span class="text-danger"><?php echo htmlspecialchars($errors['user_name'] ?? ''); ?></span><br>
-            <input type="text" class="form-control" name="user_name" placeholder="username" value="<?php echo $userData['user_name'] ?? '' ?>"><br>
-            <span class="text-danger"><?php echo htmlspecialchars($errors['user_password']  ?? ''); ?></span>
-            <input type="password" class="form-control" name="user_password" placeholder="password"><br>
-            <input type="password" class="form-control" name="confirm_password" placeholder="confirm password">
+ 
+  <div class="row d-flex mt-2 align-items-start justify-content-center  ">
+  
+    <!-- Modal -->
+<div class="modal " id="createNewUser" tabindex="-1" aria-labelledby="createNewUserLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createNewUserLabel">Create User</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form action="user_management.php" id="user" method="POST"  autocomplete="off" >
+             
+            <input type="text" class="form-control border-secondary" name="user_name" placeholder="username" value="<?php echo $userData['user_name'] ?? '' ?>"> 
+            <?php if (isset($errors['user_name'])):?>
+            <div class="alert alert-danger p-0 m-0 rounded-0 w-100" role="alert"><i class="fa-solid fa-circle-exclamation me-1"></i><?php echo htmlspecialchars($errors['user_name'] ?? ''); ?></div> 
+            <?php endif;?>
+            <br>
+            
+            <input type="password" class="form-control border-secondary" name="user_password" placeholder="password"> 
+            <?php if (isset($errors['user_password'])):?>
+            <div class="alert alert-danger p-0 m-0 rounded-0 w-100" role="alert"><i class="fa-solid fa-circle-exclamation me-1"></i><?php echo htmlspecialchars($errors['user_password']  ?? ''); ?></div> 
+            <?php endif;?>
+             <br>
+            <input type="password" class="form-control border-secondary" name="confirm_password" placeholder="confirm password">
             <br>
 
 
-            <span class="text-danger"><?php echo htmlspecialchars($errors['user_remark']  ?? ''); ?></span>
-            <div class="form-floating">
-              <textarea class="form-control" id="user_remark" type="text" name="user_remark"><?php echo htmlspecialchars($userData['user_remark']  ?? '') ?></textarea>
+ 
+            <div class="form-floating ">
+              <textarea class="form-control border-secondary" id="user_remark" type="text" name="user_remark"><?php echo htmlspecialchars($userData['user_remark']  ?? '') ?></textarea>
               <label for="floatingTextarea">Remarks (optional)</label>
             </div>
-
+            <?php if (isset($errors['user_remark'])):?>
+            <div class="alert alert-danger p-0 m-0 rounded-0 w-100" role="alert"><i class="fa-solid fa-circle-exclamation me-1"></i><?php echo htmlspecialchars($errors['user_remark']  ?? ''); ?></div>
+            <?php endif;?>
             <br>
-            <input type="submit" class="  form-control" name="createSubmit" value="Confirm">
+            <input type="submit" class="btn btn-primary border-secondary form-control" name="createSubmit" value="Confirm">
           </form>
-        </div>
       </div>
-
-
+ 
     </div>
-    <?php if ($userList) : ?>
-    <div class="col mt-2    ">
+  </div>
+</div>
 
-    
-        <form action="user_management.php" method="POST">
-          <div class="d-flex  ">
-            <input type="submit" name="editSubmit" value="Save" class="btn btn-primary mb-3 rounded-0  ">
+<?php if (isset($errors)):
+            echo "<script>
+             // This script can be removed if you want to open the modal only using Bootstrap data attributes
+             var myModal = new bootstrap.Modal(document.getElementById('createNewUser'));
+             myModal.show();
+         </script>";
+        
+            unset($errors['eventName']);
+        endif; ?>
+
+    <?php if ($userList) : ?>
+    <div class="col    ">
+
+        <form action="user_management.php" id="userform" method="POST">
+          <div class="d-flex justify-content-between ">
+            <input type="submit" name="editSubmit" value="Save" class="btn btn-primary mb-3 rounded-0  "> 
+            <div> 
+            <a type="button" class="btn btn-primary rounded-0" data-bs-toggle="modal" data-bs-target="#createNewUser">Create New User</a>
+            </div>
           </div>
 
           <div class="overflow-x-auto">
-            <table class="table border border-1   rounded ">
+            <table class="table  table-borderless  rounded ">
               <tr>
                 <th>Username</th>
                 <th class="text-center">Remarks</th>
@@ -59,13 +86,13 @@
               </tr>
               <?php foreach ($userList as $user) : ?>
                 <tr>
-                  <td><?php echo htmlspecialchars($user['user_name']); ?></td>
+                  <td class="text-truncate d-inline-block" style="max-width:150px;"><?php echo htmlspecialchars($user['user_name']); ?></td>
         
-                  <td class="text-center">
-                    <textarea class="form-control" name="user_remark[]"><?php echo htmlspecialchars($user['user_remark'] ?? ''); ?></textarea>
+                  <td class="text-center" style="min-width:150px;">
+                    <textarea class="form-control border-secondary rounded-0" name="user_remark[]"><?php echo htmlspecialchars($user['user_remark'] ?? ''); ?></textarea>
                   </td>
-                  <td class="text-center">
-                    <select class="form-control" name="user_role[]">
+                  <td class="text-center" style="min-width:90px;">
+                    <select class="form-control border-secondary rounded-0" name="user_role[]">
                       <option <?php if ($user['user_role'] == 0) echo 'selected'; ?> value="0">User</option>
                       <option <?php if ($user['user_role'] == 1) echo 'selected'; ?> value="1">Admin</option>
 

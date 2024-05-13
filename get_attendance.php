@@ -50,16 +50,21 @@ class AjaxAttendanceController{
             $count = mysqli_fetch_assoc($submit_result)['count'];
             $currentDateTime = date('my');
             
-            // IF SIMILAR
+ 
+            
             $record_id = $currentDateTime  . $count + 1 ;
 
-            $sql_similar = "SELECT * FROM attendance_records WHERE record_id = '$record_id' ";
+            $sql_similar = "SELECT * FROM attendance_records WHERE record_id = '$record_id'";
             $sql_similar_result = mysqli_query($this->conn, $sql_similar);
 
-            if(mysqli_num_rows($sql_similar_result) > 1){
-            $record_id = $currentDateTime  .'0'. $count + 1 ;
+            while(mysqli_num_rows($sql_similar_result) > 0){
+                $count++;
+                $record_id = $currentDateTime . $count + 1;
+                $sql_similar = "SELECT * FROM attendance_records WHERE record_id = '$record_id'";
+                $sql_similar_result = mysqli_query($this->conn, $sql_similar);
             }
-            
+
+
             mysqli_free_result($sql_similar_result);
             mysqli_free_result($submit_result);
 
@@ -98,13 +103,13 @@ class AjaxAttendanceController{
         if(preg_match('/[0-9]/', $attendeesData['attendeesName'])) {
             $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>No Numbers Allowed
             <audio autoplay='true' style='display:none;'>
-            <source src='storage/alert.mp3' type='audio/wav'>
+            <source src='storage/error.mp3' type='audio/wav'>
             </audio>";
         } 
         elseif(empty($attendeesData['attendeesName'])){
             $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>Name is empty
             <audio autoplay='true' style='display:none;'>
-            <source src='storage/alert.mp3' type='audio/wav'>
+            <source src='storage/error.mp3' type='audio/wav'>
             </audio>";
         }
         elseif(mysqli_num_rows($user_existed_result) >= 1){
@@ -112,7 +117,7 @@ class AjaxAttendanceController{
             mysqli_free_result($user_existed_result);
             $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i><u><b>{$attendeesData['attendeesName']}</b></u> <span class='text-warning'>already existed</span> in this day of event.
             <audio autoplay='true' style='display:none;'>
-            <source src='storage/alert.mp3' type='audio/wav'>
+            <source src='storage/error.mp3' type='audio/wav'>
             </audio>";
         }
 

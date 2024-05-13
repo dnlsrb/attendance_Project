@@ -80,7 +80,7 @@ class UserManagementController {
 
         // USERNAME
         if(empty($userData['user_name'])){
-            $errors['user_name'] = " username is required!";
+            $errors['user_name'] = "username is required!";
         } else {
             $query =  "SELECT user_name FROM user WHERE user_name='".$userData['user_name']."'";
             $result_user = mysqli_query($this->conn, $query);

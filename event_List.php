@@ -15,33 +15,45 @@
                 <h1 class="modal-title fs-5" id="create_eventLabel">Create Event</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="event_List.php" method="POST" enctype="multipart/form-data">
+            <form action="event_list.php" method="POST" enctype="multipart/form-data"  autocomplete="off" >
                 <div class="modal-body">
 
 
 
                     <label for="eventName" class="form-label">Event Name:</label>
-                    <?php if(isset($errors['eventName'])): ?><span class="text-danger ">*</span><?php endif;?>
+  
                     <input type="text" id="eventName"
-                        class="form-control  <?php if(isset($errors['eventName'])): ?>border-danger<?php endif;?>" name="eventName"
-                        value="<?php echo htmlspecialchars($eventData['eventName'] ?? ''); ?>"><br>
+                        class="form-control  border-secondary " name="eventName"
+                        value="<?php echo htmlspecialchars($eventData['eventName'] ?? ''); ?>"> 
+                        <?php if (isset($errors['eventName'])):?>
+                        <div class="alert alert-danger p-0 m-0 rounded-0 w-100" role="alert"><i class="fa-solid fa-circle-exclamation me-1"></i><?php echo htmlspecialchars($errors['eventName'] ?? ''); ?></div> 
+                        <?php endif;?>
+                        <br>
+
+
                     <label for="TableBackground" class="form-label">Background Image</label>
-                    <input type="file" id="TableBackground" class="form-control" name="eventBackgroundImage"
+                    <input type="file" id="TableBackground" class="form-control  border-secondary" name="eventBackgroundImage"
                         accept=".jpg, .png, .jpeg, .gif,"> <br>
                     <label for="bannerImage" class="form-label">Banner Image</label>
-                    <input type="file" id="bannerImage" class="form-control" name="eventHeaderImage"
+                    <input type="file" id="bannerImage" class="form-control  border-secondary" name="eventHeaderImage"
                         accept=".jpg, .png, .jpeg, .gif,"> <br>
                     <label for="eventStart" class="form-label">Start of Event</label>
-                    <?php if(isset($errors['eventStart'])): ?><span class="text-danger ">*</span><?php endif;?>
+                   
                     <input type="date" id="eventStart" value="<?php echo htmlspecialchars($eventData['eventStart'] ?? ''); ?>"
-                        class="form-control  <?php if(isset($errors['eventStart'])): ?>border-danger<?php endif;?>" name="eventStart"
-                        min="<?php echo date('Y-m-d'); ?>"><br>
+                        class="form-control   border-secondary" name="eventStart" min="<?php echo date('Y-m-d'); ?>"> 
+                        <?php if (isset($errors['eventStart'])):?>
+                        <div class="alert alert-danger p-0 m-0 rounded-0 w-100" role="alert"><i class="fa-solid fa-circle-exclamation me-1"></i><?php echo htmlspecialchars($errors['eventStart'] ?? ''); ?></div> 
+                        <?php endif;?>
+                        <br>
+
                     <label for="eventEnd" class="form-label">End of Event</label>
-                    <?php if(isset($errors['eventEnd'])): ?><span class="text-danger ">*</span><?php endif;?>
+                     
                     <input type="date" id="eventEnd" value="<?php echo htmlspecialchars($eventData['eventEnd'] ?? ''); ?>"
-                        class="form-control  <?php if(isset($errors['eventEnd'])): ?>border-danger<?php endif;?>" name="eventEnd"
-                        min="<?php echo date('Y-m-d'); ?>">
-                    <br>
+                        class="form-control  border-secondary " name="eventEnd" min="<?php echo date('Y-m-d'); ?>">
+                        <?php if (isset($errors['eventEnd'])):?>
+                        <div class="alert alert-danger p-0 m-0 rounded-0 w-100" role="alert"><i class="fa-solid fa-circle-exclamation me-1"></i><?php echo htmlspecialchars($errors['eventEnd'] ?? ''); ?></div> 
+                        <?php endif;?>
+                        <br>
 
 
                 </div>
@@ -68,12 +80,12 @@
         <div class="container-fluid">
             <div class="row d-flex align-items-start py-2  ">
                 <div class="col-md col-6  p-1 ">
-                    <h3>Events</h3>
+           
                 </div>
                 <?php if( $_SESSION['role'] == 1   ): ?>
                 <div class=" col-md col-6 d-flex justify-content-end order-1 order-md-2  p-1 ">
                     <div>
-                        <button type="button" class="btn btn-primary w-100 " data-bs-toggle="modal"
+                        <button type="button" class="btn btn-primary w-100 rounded-0" data-bs-toggle="modal"
                             data-bs-target="#create_event">
                             <i class="bi bi-plus-lg"></i> Create Event </button>
                     </div>
@@ -85,27 +97,27 @@
         </div>
         <div class="row mx-1">
         <div class="card card-header p-0 px-2 rounded-1 border-0 bg-white">
-                    <form action="event_List.php" method="GET" class="d-md-flex   align-items-center"
+                    <form action="event_list.php" method="GET" class="d-md-flex   align-items-center"
                         role="search">
 
 
                         <label for="nameSearch" class="form-label mx-1 m-0 fw-medium">Name</label>
-                        <input class="form-control mx-md-2" type="search" id="nameSearch"
+                        <input class="form-control mx-md-2 border-secondary rounded-0" type="search" id="nameSearch"
                             value="<?php echo htmlspecialchars($name ?? ''); ?>" name="name" aria-label="Search">
 
 
                         <label for="eventStart" class="form-label mx-1 m-0 fw-medium">Start</label>
-                        <input type="date" id="eventStart" class="form-control mx-md-2"
+                        <input type="date" id="eventStart" class="form-control mx-md-2 border-secondary rounded-0"
                             value="<?php echo htmlspecialchars($startRange ?? ''); ?>" name="startRange">
 
 
                         <label for="eventEnd" class="form-label mx-1 m-0 fw-medium">End</label>
-                        <input type="date" id="eventEnd" class="form-control mx-md-2"
+                        <input type="date" id="eventEnd" class="form-control mx-md-2 border-secondary rounded-0"
                             value="<?php echo htmlspecialchars($endRange ?? ''); ?>" name="endRange">
 
 
                         <div class=" w-100 my-2">
-                            <input class="btn btn-outline-secondary w-100 " value="search" type="submit"
+                            <input class="btn btn-outline-secondary w-100 rounded-0 text-dark " value="search" type="submit"
                                 name="search">
                         </div>
 
@@ -116,18 +128,18 @@
         <?php if ($eventLists): ?>
         <?php $orderNumber = 1; ?>
 
-        <table class="table">
+        <table class="table mt-3 table-borderless table table-hover">
+ 
             <tr>
-                <th scope="col">#</th>
+                <th scope="col"> </th>
                 <th>Name</th>
                 <th>Date</th>
                 <?php if( $_SESSION['role'] == 1   ): ?>
                 <th>Action</th>
                 <?php endif;?>
             </tr>
-
-
-            <?php echo '<tr>';
+   
+            <?php echo '<tr >';
         foreach ($eventLists as $eventLists): ?>
 
             <th scope="row"><?php echo $orderNumber . '.'; ?></th>
@@ -143,6 +155,7 @@
                 <a href="view_list.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-eye-fill"></i></a>
            
             </td>
+      
             <?php endif;?>
             <?php $orderNumber++; ?>
             <?php echo '<tr>'; endforeach; ?>

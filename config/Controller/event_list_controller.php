@@ -94,7 +94,7 @@ class eventListController{
   
         // save to db and check
         if(mysqli_query($this->conn, $sql)){
-          header('Location: event_List.php');
+          header('Location: event_list.php');
         } else {
           // error
           echo 'query error: ' . mysqli_error($this->conn);

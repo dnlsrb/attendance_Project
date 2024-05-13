@@ -62,7 +62,7 @@ class loginController{
          
             $this->rememberMe($username, $password, $remember_me);
             
-            header("Location: event_List.php");
+            header("Location: event_list.php");
             exit();
         } else {
             mysqli_free_result($login_result);

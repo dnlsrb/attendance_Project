@@ -102,10 +102,20 @@ class ViewController{
     $id= mysqli_real_escape_string($conn, $_GET['id']);
     $eventLists = $ViewManagement->getEvent("SELECT * FROM event_list WHERE event_id = $id");
      $count_display = $ViewManagement->getCount("SELECT COUNT(*) as count FROM attendance_records WHERE event_id = '$id' AND archived = 0");
+     
+     
+     if(isset($_POST['search'])){ 
+        $name =  mysqli_real_escape_string($conn, $_POST['name']);
+        $searchSql = "attendeesName LIKE '%" . $name . "%' AND ";
+     }
+     else{
+        $searchSql = '';
+     }
+     
      $attendees_Records = $ViewManagement->getList(
         "SELECT record_id, attendance_records.event_id, attendeesName, attendeesEmail, time_IN, time_OUT, eventName, attendance_records.archived
         FROM attendance_records INNER JOIN event_list ON event_list.event_id = attendance_records.event_id 
-        WHERE attendance_records.event_id = $id  
+        WHERE $searchSql attendance_records.event_id = $id  
         ORDER BY attendance_records.created_At DESC");
       
  
