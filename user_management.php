@@ -8,11 +8,15 @@
 
 
 
-<div class="container-fluid  ">
+<div class="container-fluid ">
  
-  <div class="row d-flex mt-2 align-items-start justify-content-center  ">
-  
-    <!-- Modal -->
+  <div class="row mt-2  ">
+  <div class=" d-flex align-items-center justify-content-between   "> 
+  <h2 class="p-0 m-0">User Management</h2>
+  <a type="button" class="btn btn-primary"
+        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal" data-bs-target="#createNewUser">Create New User</a>
+  </div>
+  <!-- Modal -->
 <div class="modal " id="createNewUser" tabindex="-1" aria-labelledby="createNewUserLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -48,7 +52,8 @@
             <?php endif;?>
             <br>
             <input type="submit" class="btn btn-primary border-secondary form-control" name="createSubmit" value="Confirm">
-          </form>
+        
+      </form>
       </div>
  
     </div>
@@ -69,16 +74,17 @@
     <div class="col    ">
 
         <form action="user_management.php" id="userform" method="POST">
-          <div class="d-flex justify-content-between ">
-            <input type="submit" name="editSubmit" value="Save" class="btn btn-primary mb-3 rounded-0  "> 
+          <div class="d-flex justify-content-between align-items-center py-3">
+            <input type="submit"  class="btn btn-primary"
+        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" name="editSubmit" value="Save" class="btn btn-primary mb-3 rounded-0  "> 
             <div> 
-            <a type="button" class="btn btn-primary rounded-0" data-bs-toggle="modal" data-bs-target="#createNewUser">Create New User</a>
+             
             </div>
           </div>
 
-          <div class="overflow-x-auto">
+          <div class="overflow-x-auto   rounded">
             <table class="table  table-borderless  rounded ">
-              <tr>
+              <tr class="table-secondary">
                 <th>Username</th>
                 <th class="text-center">Remarks</th>
                 <th class="text-center">Role</th>
@@ -89,12 +95,12 @@
                   <td class="text-truncate d-inline-block" style="max-width:150px;"><?php echo htmlspecialchars($user['user_name']); ?></td>
         
                   <td class="text-center" style="min-width:150px;">
-                    <textarea class="form-control border-secondary rounded-0" name="user_remark[]"><?php echo htmlspecialchars($user['user_remark'] ?? ''); ?></textarea>
+                    <textarea class="form-control border rounded-0 bg-body-secondary" name="user_remark[]"><?php echo htmlspecialchars($user['user_remark'] ?? ''); ?></textarea>
                   </td>
                   <td class="text-center" style="min-width:90px;">
-                    <select class="form-control border-secondary rounded-0" name="user_role[]">
-                      <option <?php if ($user['user_role'] == 0) echo 'selected'; ?> value="0">User</option>
-                      <option <?php if ($user['user_role'] == 1) echo 'selected'; ?> value="1">Admin</option>
+                    <select class="form-control border bg-body-secondary" name="user_role[]">
+                      <option class="rounded-0" <?php if ($user['user_role'] == 0) echo 'selected'; ?> value="0">User</option>
+                      <option  class="rounded-0" <?php if ($user['user_role'] == 1) echo 'selected'; ?> value="1">Admin</option>
 
                     </select> 
                   </td>
@@ -114,7 +120,7 @@
     </form>
   <?php else : ?>
   
-    <div class=" text-center order-1 my-5">
+    <div class=" text-center order-1 my-5 ">
           
             <h class="display-6">No User Found</h>
         

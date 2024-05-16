@@ -25,7 +25,9 @@ class AjaxAttendanceController{
                 <audio autoplay='true' style='display:none;'> <style> #message { background-color: 2px solid darkgreen;  } </style>
          <source src='storage/notification.mp3' type='audio/wav'>
       </audio>";
-                $sql_update = "UPDATE attendance_records SET time_OUT = '$date' WHERE attendeesName = '{$attendeesData['attendeesName']}'
+                $sql_update = "UPDATE attendance_records SET time_OUT = '$date' 
+                WHERE attendeesName = '{$attendeesData['attendeesName']}'
+                AND time_OUT = ''
                 AND event_id = '{$attendeesData['event_id']}'";
                 if(mysqli_query($this->conn, $sql_update)){ 
                 mysqli_free_result($timeOut_result);
@@ -54,6 +56,8 @@ class AjaxAttendanceController{
             
             $record_id = $currentDateTime  . $count + 1 ;
 
+            // IF SIMILAR ID TO AVOID ERROR
+
             $sql_similar = "SELECT * FROM attendance_records WHERE record_id = '$record_id'";
             $sql_similar_result = mysqli_query($this->conn, $sql_similar);
 
@@ -63,10 +67,8 @@ class AjaxAttendanceController{
                 $sql_similar = "SELECT * FROM attendance_records WHERE record_id = '$record_id'";
                 $sql_similar_result = mysqli_query($this->conn, $sql_similar);
             }
-
-
-            mysqli_free_result($sql_similar_result);
-            mysqli_free_result($submit_result);
+ 
+ 
 
             $sql = "INSERT INTO attendance_records(record_id, event_id, attendeesName, time_IN) 
             VALUES ('$record_id','{$attendeesData['event_id']}', '{$attendeesData['attendeesName']}', '$date' )"   ;

@@ -6,9 +6,11 @@
 <?php $title ="Archive"?>
 <?php include('template/header.php')?>
 
-<div class="container-fluid  mt-3  "> 
+<div class="container-fluid rounded py-2 "> 
  
-
+ 
+                    <h2 class="m-0 p-0">Archive</h2>
+ 
 <?php $orderNumber = 1; ?>
  
     
@@ -20,7 +22,7 @@
       
         </div>
             <?php else:?>
-                <table class="table table-warning border-warning table-hover">
+                <table class="table table-hover">
             <tr>
                 <th> </th>
                 <th>Name</th>
@@ -33,7 +35,7 @@
 
         <?php if($archiveEvent): ?>     
         <?php foreach ($archiveEvent as $Event): ?>
-            <?php echo '<tr  >';?>
+            <?php echo '<tr>';?>
             <td><?php echo $orderNumber;?></td>
             <td  ><span class="text-truncate d-inline-block" style="max-width:200px;"> <?php echo htmlspecialchars($Event['eventName']); ?></span></td>
             <td><span class="badge text-bg-success">Events</span></td>

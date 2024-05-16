@@ -27,7 +27,7 @@ class ViewController{
             if($validating == 1){
                
                 mysqli_free_result($result);
-                header('Location: error/404.php');
+                header('Location: error/403.php');
             }
             else{
                

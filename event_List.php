@@ -12,7 +12,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="create_eventLabel">Create Event</h1>
+                <h3 class="modal-title p-0 m-0" id="create_eventLabel">Create Event</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="event_list.php" method="POST" enctype="multipart/form-data"  autocomplete="off" >
@@ -66,7 +66,7 @@
 </div>
 
 
-<div class="container-fluid   ">
+<div class="container-fluid">
     <div>
         <?php if (isset($errors)):
             echo "<script>
@@ -78,46 +78,48 @@
             unset($errors['eventName']);
         endif; ?>
         <div class="container-fluid">
-            <div class="row d-flex align-items-start py-2  ">
+            <div class="row d-flex align-items-center  py-2  ">
                 <div class="col-md col-6  p-1 ">
-           
+                    <h2>Events</h2>
                 </div>
                 <?php if( $_SESSION['role'] == 1   ): ?>
                 <div class=" col-md col-6 d-flex justify-content-end order-1 order-md-2  p-1 ">
                     <div>
-                        <button type="button" class="btn btn-primary w-100 rounded-0" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-primary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" data-bs-toggle="modal"
                             data-bs-target="#create_event">
-                            <i class="bi bi-plus-lg"></i> Create Event </button>
+                          Create Event 
+                        </button>
                     </div>
                 </div>
                 <?php endif;?>
 
             </div>
 
-        </div>
-        <div class="row mx-1">
-        <div class="card card-header p-0 px-2 rounded-1 border-0 bg-white">
-                    <form action="event_list.php" method="GET" class="d-md-flex   align-items-center"
+        </div>  
+ 
+        <div class="row mx-1 ">
+        <div class="card card-header p-0 px-2 rounded-1 border-0 bg-white ">
+                    <form action="event_list.php" method="GET" autocomplete="off" class="d-md-flex   align-items-center"
                         role="search">
 
 
                         <label for="nameSearch" class="form-label mx-1 m-0 fw-medium">Name</label>
-                        <input class="form-control mx-md-2 border-secondary rounded-0" type="search" id="nameSearch"
+                        <input class="form-control mx-md-2  bg-body-secondary rounded" type="search" id="nameSearch"
                             value="<?php echo htmlspecialchars($name ?? ''); ?>" name="name" aria-label="Search">
 
 
                         <label for="eventStart" class="form-label mx-1 m-0 fw-medium">Start</label>
-                        <input type="date" id="eventStart" class="form-control mx-md-2 border-secondary rounded-0"
+                        <input type="date" id="eventStart" class="form-control mx-md-2  bg-body-secondary  rounded"
                             value="<?php echo htmlspecialchars($startRange ?? ''); ?>" name="startRange">
 
 
                         <label for="eventEnd" class="form-label mx-1 m-0 fw-medium">End</label>
-                        <input type="date" id="eventEnd" class="form-control mx-md-2 border-secondary rounded-0"
+                        <input type="date" id="eventEnd" class="form-control mx-md-2  bg-body-secondary  rounded"
                             value="<?php echo htmlspecialchars($endRange ?? ''); ?>" name="endRange">
 
 
                         <div class=" w-100 my-2">
-                            <input class="btn btn-outline-secondary w-100 rounded-0 text-dark " value="search" type="submit"
+                            <input class="btn btn-outline-secondary w-100 rounded text-dark " value="search" type="submit"
                                 name="search">
                         </div>
 
@@ -126,38 +128,52 @@
                 </div>
         </div>
         <?php if ($eventLists): ?>
-        <?php $orderNumber = 1; ?>
+   
 
-        <table class="table mt-3 table-borderless table table-hover">
+        <table class="table mt-3 table-borderless table rounded">
  
-            <tr>
-                <th scope="col"> </th>
-                <th>Name</th>
-                <th>Date</th>
-                <?php if( $_SESSION['role'] == 1   ): ?>
-                <th>Action</th>
-                <?php endif;?>
+            <tr class="table-secondary ">
+ 
+                <th>Event</th>
+                <th>Date <span class="text-secondary">(Start/End)</span></span></th>
+          
+                <th  > </th>
+          
             </tr>
    
             <?php echo '<tr >';
         foreach ($eventLists as $eventLists): ?>
 
-            <th scope="row"><?php echo $orderNumber . '.'; ?></th>
-         
-            <td><a target="_blank" href="attendance_List.php?id=<?php echo $eventLists['event_id']; ?>"><?php echo htmlspecialchars($eventLists['eventName']); ?></a></td>
-            <td><?php echo htmlspecialchars($eventLists['eventStart']); ?> <b>-</b> <?php echo htmlspecialchars($eventLists['eventEnd']); ?></td>
-        
-
-            <?php if( $_SESSION['role'] == 1   ): ?>
+            <td> <?php echo htmlspecialchars($eventLists['eventName']); ?> </td>
             <td>
-          
-                <a href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-pencil-fill"></i></a>
-                <a href="view_list.php?id=<?php echo $eventLists['event_id']; ?>" class="mx-1"> <i class="bi bi-eye-fill"></i></a>
-           
+                <span class="badge text-info-emphasis bg-primary-subtle"> 
+                <?php echo htmlspecialchars($eventLists['eventStart']); ?> 
+                </span>
+                <span class="badge text-info-emphasis bg-primary-subtle"> 
+                <?php echo htmlspecialchars($eventLists['eventEnd']); ?>
+                </span>
             </td>
-      
+            <td class="width:3.5em">
+            <?php if( $_SESSION['role'] == 1   ): ?>
+            <div class="dropdown">
+            <button class="  btn btn-transparent border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a  class="dropdown-item" target="_blank" href="attendance_list.php?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-book me-3"></i>Attendance</a></li>
+                <li><a  class="dropdown-item " href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-pencil me-3"></i>Edit Details</a></li>
+                <li><a  class="dropdown-item  text-start  " href="view_list.php?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-users  me-3"></i>Guestlist</a> </li>
+            </ul>
+            </div>
+
+            <?php else:?>
+            <a  class="dropdown-item" target="_blank" href="attendance_list.php?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-book me-3"></i>Attendance</a>
+            
+                 
             <?php endif;?>
-            <?php $orderNumber++; ?>
+            </td>
+            
+ 
             <?php echo '<tr>'; endforeach; ?>
         </table>
         <div class="row">
@@ -171,7 +187,7 @@
             </div>  
             <h class="display-6">No Data Found</h>
              <div>
-             <small class="text-primary">Create new event</small>
+      
             </div>
             </div>
  
@@ -184,7 +200,7 @@
 
         <!--  -->
 
-    </div>
+ 
 </div>
-
+</div>
 <?php include 'template/footer.php'; ?>

@@ -51,7 +51,6 @@ if(isset($_POST['unarchiveUser'])){
     $user_id =  mysqli_real_escape_string($conn, $_POST['id']);
     
     $archiveManager->unarchive($user_id, 'user', 'user_id');  
-    echo 'sadsad';
 }
 
 $archiveManager->closeConnection();

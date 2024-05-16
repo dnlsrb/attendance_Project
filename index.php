@@ -2,7 +2,7 @@
 
 <?php
 if (isset($_SESSION['username']) && isset($_SESSION['password'])):
-    header('Location: event_List.php');
+    header('Location: event_list.php');
 else:
     ?>
     

@@ -34,7 +34,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     if ($authenticator->authenticate($_SESSION['username'], $_SESSION['password'])) {
      
     } else {
-        header("Location: config/Controller/logout.php");
+        header("Location: ./logout.php");
         exit(); // Stop further execution
     }
 } else {
@@ -42,3 +42,4 @@ if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
     exit(); // Stop further execution
 }
 ?>
+ 

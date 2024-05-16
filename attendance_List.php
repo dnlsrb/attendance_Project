@@ -3,7 +3,9 @@
 <?php require('config/Controller/attendance_controller.php');?>
  
  
- 
+<?php $header= 'background-image:url( image/header/' . htmlspecialchars($eventLists['eventHeaderImage']) . ' ) ;  background-size: cover; height:20vh;'?>
+<?php $title = htmlspecialchars($eventLists['eventName']);?>
+<?php include('template/header.php')?>
  
 <!-- SCRIPT -->
 <script src="js/instascan.js"></script>
@@ -24,15 +26,13 @@
 
 <div class="position-relative"> 
 
-<?php $header= 'background-image:url( image/header/' . htmlspecialchars($eventLists['eventHeaderImage']) . ' ) ;  background-size: cover; height:20vh;'?>
-<?php $title = htmlspecialchars($eventLists['eventName']);?>
-<?php include('template/header.php')?>
  
  
  
  
-<div class="container-fluid position-relative">
-<div id="message" class="alert alert-light  shadow-sm mt-2 rounded-0 fw-bold position-fixed top-0 end-0 mx-2 border-black z-3  " role="alert">
+ 
+<div class="container-fluid  position-relative">
+<div id="message" class="alert alert-light  shadow-sm mt-2 rounded-0 fw-bold position-fixed top-0 end-0 mx-2 border-black z-2  " role="alert">
     WELCOME TO <?php echo  strtoupper(htmlspecialchars($eventLists['eventName']));?>
 </div>
 <?php if(isset($name_error)):
@@ -134,13 +134,9 @@ $(function() {
  
  
 <br>
- 
 </div>
 </div>
- 
-<div class="position-absolute top-0 start-0">
-<button type="button" id="click" class="btn border-0"><i   id="icon" class="fa-solid fa-caret-down"></i></button>
-</div>
+  
 
 <script>
  
@@ -172,24 +168,34 @@ $(function() {
 });
 
 </script>
-<script>
-  document.getElementById('click').addEventListener('click', function() {
-    var icon = document.getElementById("icon");
-        if (icon.classList.contains("fa-caret-down")) {
-            icon.classList.remove("fa-caret-down");
-            icon.classList.add("fa-caret-up");
-        } else {
-            icon.classList.remove("fa-caret-up");
-            icon.classList.add("fa-caret-down");
-        }
-    var hiddenElement = document.getElementById('hidden-class-2');
-    hiddenElement.classList.toggle('d-none');
-  });
-</script>
+ 
 </div>
 </div>
 </div>
 </div>
+
+ 
+<footer class="d-flex flex-wrap  bottom-0 w-100  justify-content-center align-items-center py-3 my-4 border-top">
+ 
+ 
+       
+ <div class="text-center"> 
+ <!-- <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+ <img src="storage/logo2.png" alt="GXII" width="30"   >
+ </a> -->
+ <figure>
+ <blockquote class="blockquote">
+ <p>"A vision to seek for options so that quality medical treatment may not have to be expensive"</p>
+ </blockquote>
+   <figcaption class="blockquote-footer">
+   Rodolfo I. Gracia
+ </figcaption>
+ </figure>
+ </div>
+
+
+
+</footer>
 <?php include('template/footer.php')?>
 
  

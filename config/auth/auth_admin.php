@@ -4,7 +4,7 @@
     
   
 } else {
-    header("Location: error/404.php");
+    header("Location: error/403.php");
     exit(); // Stop further execution
 }
 ?> 

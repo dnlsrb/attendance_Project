@@ -79,7 +79,15 @@ if(mysqli_num_rows($result)>0)
 	 
 	<td width="34%"><strong><?php echo htmlspecialchars($row['attendeesName']); ?></strong></td>
 	<td width="33%" style="color:blue"><center><?php echo date('M d, Y h:i:s: A', $date_IN) ; ?></center></td>
-	<td width="33%" style="color:red"><center><?php if($row['time_OUT'] != ""){echo date('M d, Y h:i:s: A', $date_OUT);}else{ } ?></center></td>
+	<td width="33%" style="color:red"><center><?php
+
+	if ($row['time_OUT'] !== 'NO DATA') {
+		echo date('M d, Y h:i:s A', $date_OUT);
+	} else {
+		echo $row['time_OUT'];
+	} 
+ 
+		 ?></center></td>
 	
 	</tr>
 <?php

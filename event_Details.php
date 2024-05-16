@@ -5,7 +5,7 @@
 <?php $title = "DETAILS | 
 " . htmlspecialchars($eventList['eventName']);?>
 <?php include 'template/header.php'; ?>
-<div class="container-fluid  ">
+<div class="container-fluid ">
 
 
  
@@ -14,12 +14,17 @@
         
         <div class="card card-header bg-transparent   border-0 p-0">
     
-               
+                <div>
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item "   aria-current="page"  ><a href="event_list.php"><span class="fw-bold  "  >Events</span></a> </li>
+                    <li class="breadcrumb-item active" aria-current="page"><span class="fw-bold text-truncate" style="max-width:100px;"><?php echo htmlspecialchars($eventList['eventName']) ?? ''; ?></span></li>
+                    <li class="breadcrumb-item active" aria-current="page">Details</li>
+                </ol>
+                </nav>
+                </div>
                 <div class="d-flex justify-content-between ">
-                        <div>
-                            <a href="event_list.php" type="input" class="btn btn-secondary   rounded-0"><i class="fa-solid fa-arrow-left"></i></a>
-                            <a href="view_list.php?id=<?php echo htmlspecialchars($event_id);  ?>" type="input" class="btn btn-primary rounded-0 mx-1"> <i class="bi bi-eye-fill"></i></a>
-                        </div>
+                         
                         <div class="d-flex"> 
                             <div class="order-2 "> 
                                 <form action="event_Details.php?id='<?php echo htmlspecialchars($eventList['event_id']); ?>'" method="POST">
