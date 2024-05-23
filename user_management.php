@@ -25,7 +25,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <form action="user_management.php" id="user" method="POST"  autocomplete="off" >
+      <form action="user_management" id="user" method="POST"  autocomplete="off" >
              
             <input type="text" class="form-control border-secondary" name="user_name" placeholder="username" value="<?php echo $userData['user_name'] ?? '' ?>"> 
             <?php if (isset($errors['user_name'])):?>
@@ -73,7 +73,7 @@
     <?php if ($userList) : ?>
     <div class="col    ">
 
-        <form action="user_management.php" id="userform" method="POST">
+        <form action="user_management" id="userform" method="POST">
           <div class="d-flex justify-content-between align-items-center py-3">
             <input type="submit"  class="btn btn-primary"
         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" name="editSubmit" value="Save" class="btn btn-primary mb-3 rounded-0  "> 

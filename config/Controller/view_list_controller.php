@@ -113,7 +113,7 @@ class ViewController{
      }
      
      $attendees_Records = $ViewManagement->getList(
-        "SELECT record_id, attendance_records.event_id, attendeesName, attendeesEmail, time_IN, time_OUT, eventName, attendance_records.archived
+        "SELECT record_id, attendance_records.event_id, attendeesName, time_IN, time_OUT, eventName, attendance_records.archived
         FROM attendance_records INNER JOIN event_list ON event_list.event_id = attendance_records.event_id 
         WHERE $searchSql attendance_records.event_id = $id  
         ORDER BY attendance_records.created_At DESC");

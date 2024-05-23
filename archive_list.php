@@ -41,7 +41,7 @@
             <td><span class="badge text-bg-success">Events</span></td>
             <td>
 
-            <form   action="archive_list.php" method="POST">
+            <form   action="archive_list" method="POST">
  
             <input type="hidden" name="id" value="<?php echo $Event['event_id'];?>">
             <input type="submit" name="unarchiveEvent" class="btn btn-warning" value="Unarchive" >  
@@ -66,7 +66,7 @@
             <td><span class="badge text-bg-secondary">Account</span></td>
             <td>
 
-            <form   action="archive_list.php" method="POST">
+            <form   action="archive_list" method="POST">
  
             <input type="hidden" name="id" value="<?php echo $User['user_id'];?>">
             <input type="submit" name="unarchiveUser" class="btn btn-warning" value="Unarchive" >  

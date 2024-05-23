@@ -40,20 +40,7 @@ class eventListController{
     return $bannerNewName;
 }
 
-  public function NoTimeOutWithinTheDay(){
-
-    $sql_no_timeOut = "UPDATE attendance_records SET time_OUT = 'NO DATA' 
-    WHERE created_at < DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY) 
-    AND time_OUT = '' 
-    AND archived = 0";
-
-    if(mysqli_query($this->conn, $sql_no_timeOut)){ 
-     
-    }
-    else{
-        echo 'query error: ' . mysqli_error($this->conn);
-    }
-  }
+ 
   private function validateCreatedEvent($eventData){
         $errors = [];
 
@@ -127,7 +114,7 @@ class eventListController{
 }
 
 $eventListManager = new eventListController($conn);
-$eventListManager->NoTimeOutWithinTheDay();
+ 
 if(!isset($_POST['search'])){ 
 $eventLists = $eventListManager->displayEventList('');
 }

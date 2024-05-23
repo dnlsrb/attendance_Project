@@ -42,7 +42,7 @@ $Banner = $getListAjax->getList("SELECT * FROM event_list WHERE event_id = '$id'
 $count_display = $getListAjax->getCount("SELECT COUNT(*) as count FROM attendance_records WHERE event_id = '$id' AND archived = 0");
  
 $attendees_Records = $getListAjax->getList(
-    "SELECT record_id, attendance_records.event_id, attendeesName, attendeesEmail, time_IN, time_OUT,  eventName
+    "SELECT record_id, attendance_records.event_id, attendeesName, time_IN, time_OUT,  eventName
     FROM attendance_records INNER JOIN event_list ON event_list.event_id = attendance_records.event_id 
     WHERE attendance_records.event_id = $id AND attendance_records.archived = 0
     ORDER BY attendance_records.created_At DESC");

@@ -27,14 +27,14 @@
                          
                         <div class="d-flex"> 
                             <div class="order-2 "> 
-                                <form action="event_Details.php?id='<?php echo htmlspecialchars($eventList['event_id']); ?>'" method="POST">
+                                <form action="event_Details?id='<?php echo htmlspecialchars($eventList['event_id']); ?>'" method="POST">
                                     <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($eventList['event_id']); ?>">
                                     <button type="submit" class="btn btn-danger  rounded-0   " onclick="return confirm('Are you sure you want to delete?');" name="delete" value="Yes" >
                                     <i class="fa-solid fa-trash"></i></button>
                                 </form> 
                             </div>
                             <div class="order-1"> 
-                                <form action="event_Details.php?id=<?php echo $event_id; ?>" method="POST" enctype="multipart/form-data">
+                                <form action="event_Details?id=<?php echo $event_id; ?>" method="POST" enctype="multipart/form-data">
                                     <input type="hidden" name="event_id" value="<?php echo htmlspecialchars($eventList['event_id']); ?>">
                                     <button type="submit" class="mx-1 btn btn-success rounded-0   " value="Save" name="submit"><i class="fa-solid fa-floppy-disk"></i></button>
                             </div>

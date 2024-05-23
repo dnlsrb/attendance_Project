@@ -28,7 +28,7 @@
         </div>
 
                
-    <form action="view_list.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST" class="d-flex" role="search" autocomplete="off">
+    <form action="view_list?id=<?php echo htmlspecialchars($id);  ?>" method="POST" class="d-flex" role="search" autocomplete="off">
         <input class="form-control mx-md-2  rounded  bg-body-secondary" type="search" id="nameSearch" value="<?php echo htmlspecialchars($name ?? ''); ?>" name="name" aria-label="Search">
         <div> 
         <input class="btn btn-outline-secondary w-100  rounded text-dark " value="search" type="submit" name="search">
@@ -46,10 +46,10 @@
         <table class=" table  shadow-sm mt-2 table-hover ">
             <tr class="table-secondary">
                 <th> </th>
-                <th>NAME</th>
+                <th>PARTICIPANT'S LIST</th>
                 <th>TIME IN</th>
                 <th>TIME OUT</th>
-                <th> </th>
+                <!-- <th> </th> -->
             </tr>   
             <?php $count = 1;?> 
             <?php foreach($attendees_Records as $Attendees):?>
@@ -58,24 +58,24 @@
             <td class="fw-bold  text-truncate <?php if($Attendees['archived'] == 1): echo 'opacity-50'; endif; ?>" style="max-width: 250px;"><?php echo htmlspecialchars($Attendees['attendeesName']);  ?></td>
             <td class="fw-bold text-success <?php if($Attendees['archived'] == 1): echo 'opacity-50'; endif; ?>"><?php echo htmlspecialchars( $Attendees['time_IN']);?></td>
             <td class="fw-bold text-primary <?php if($Attendees['archived'] == 1): echo 'opacity-50'; endif; ?>"><?php echo htmlspecialchars($Attendees['time_OUT']);  ?></td>
-            <td>
+            <!-- <td>
 
             <?php if($Attendees['archived'] == 0):?>
-            <form   action="view_list.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
+            <form   action="view_list?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
             <input type="hidden" name="archive_record" value="<?php echo htmlspecialchars($Attendees['record_id']);?>">
             <input type="hidden" name="event_id"  value="<?php echo htmlspecialchars($Attendees['event_id']);?>">
             <input type="submit" name="archive" class="btn btn-success w-100  " value="Archive" >  
             </form>
             
             <?php else: ?>
-            <form   action="view_list.php?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
+            <form   action="view_list?id=<?php echo htmlspecialchars($id);  ?>" method="POST">
             <input type="hidden" name="unarchive_record" value="<?php echo htmlspecialchars($Attendees['record_id']);?>">
             <input type="hidden" name="event_id"  value="<?php echo htmlspecialchars($Attendees['event_id']);?>">
             <input type="submit" name="unarchive"  class="btn btn-warning w-100 rounded-0" value="Unarchive" >  
             </form>
             
             <?php endif;?>
-            </td>  
+            </td>   -->
             <?php $count++;?>
             <?php 
             echo '<tr>';   

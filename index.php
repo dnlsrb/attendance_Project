@@ -2,7 +2,7 @@
 
 <?php
 if (isset($_SESSION['username']) && isset($_SESSION['password'])):
-    header('Location: event_list.php');
+    header('Location: event_List.php');
 else:
     ?>
     
@@ -35,7 +35,7 @@ else:
 
 
  
-        <form action="index.php" method="POST" class="bg-light p-5">
+        <form action="index" method="POST" class="bg-light p-5">
     
             <div class="d-flex align-items-center justify-content-center">
                 <img src="storage/logo1.png" alt="gx-i logo"   style=" width: 55px;  ">

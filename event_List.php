@@ -15,7 +15,7 @@
                 <h3 class="modal-title p-0 m-0" id="create_eventLabel">Create Event</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="event_list.php" method="POST" enctype="multipart/form-data"  autocomplete="off" >
+            <form action="event_list" method="POST" enctype="multipart/form-data"  autocomplete="off" >
                 <div class="modal-body">
 
 
@@ -99,7 +99,7 @@
  
         <div class="row mx-1 ">
         <div class="card card-header p-0 px-2 rounded-1 border-0 bg-white ">
-                    <form action="event_list.php" method="GET" autocomplete="off" class="d-md-flex   align-items-center"
+                    <form action="event_list" method="GET" autocomplete="off" class="d-md-flex   align-items-center"
                         role="search">
 
 
@@ -129,7 +129,9 @@
         </div>
         <?php if ($eventLists): ?>
    
+    
 
+         
         <table class="table mt-3 table-borderless table rounded">
  
             <tr class="table-secondary ">
@@ -160,14 +162,14 @@
             <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <ul class="dropdown-menu">
-                <li><a  class="dropdown-item" target="_blank" href="attendance_list.php?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-book me-3"></i>Attendance</a></li>
-                <li><a  class="dropdown-item " href="event_Details.php?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-pencil me-3"></i>Edit Details</a></li>
-                <li><a  class="dropdown-item  text-start  " href="view_list.php?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-users  me-3"></i>Guestlist</a> </li>
+                <li><a  class="dropdown-item" target="_blank" href="attendance_list?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-book me-3"></i>Attendance</a></li>
+                <li><a  class="dropdown-item " href="event_Details?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-pencil me-3"></i>Edit Details</a></li>
+                <li><a  class="dropdown-item  text-start  " href="view_list?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-users  me-3"></i>Guestlist</a> </li>
             </ul>
             </div>
 
             <?php else:?>
-            <a  class="dropdown-item" target="_blank" href="attendance_list.php?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-book me-3"></i>Attendance</a>
+            <a  class="dropdown-item d-flex justify-content-center align-items-center" target="_blank" href="attendance_list?id=<?php echo $eventLists['event_id']; ?>"><i class="fa-solid fa-book me-3"></i><span class="d-sm-block d-none">Attendance</span> </a>
             
                  
             <?php endif;?>
@@ -176,6 +178,7 @@
  
             <?php echo '<tr>'; endforeach; ?>
         </table>
+    
         <div class="row">
  
  

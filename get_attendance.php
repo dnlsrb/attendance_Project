@@ -98,30 +98,30 @@ class AjaxAttendanceController{
     public function validateAttendees($attendeesData){
         $name_message = [];
         
-        $user_existed = "SELECT * FROM attendance_records WHERE event_id  =  '{$attendeesData['event_id']}'  
-        && attendeesName = '{$attendeesData['attendeesName']}' && time_IN != '' && time_OUT != '' && archived = 0 && DATE(created_At) = CURDATE();";
-        $user_existed_result = mysqli_query($this->conn, $user_existed);
+        // $user_existed = "SELECT * FROM attendance_records WHERE event_id  =  '{$attendeesData['event_id']}'  
+        // && attendeesName = '{$attendeesData['attendeesName']}' && time_IN != '' && time_OUT != '' && archived = 0 && DATE(created_At) = CURDATE();";
+        // $user_existed_result = mysqli_query($this->conn, $user_existed);
         
-        if(preg_match('/[0-9]/', $attendeesData['attendeesName'])) {
-            $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>No Numbers Allowed
-            <audio autoplay='true' style='display:none;'>
-            <source src='storage/error.mp3' type='audio/wav'>
-            </audio>";
-        } 
-        elseif(empty($attendeesData['attendeesName'])){
+        // if(preg_match('/[0-9]/', $attendeesData['attendeesName'])) {
+        //     $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>No Numbers Allowed
+        //     <audio autoplay='true' style='display:none;'>
+        //     <source src='storage/error.mp3' type='audio/wav'>
+        //     </audio>";
+        // } 
+        if(empty($attendeesData['attendeesName'])){
             $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i>Name is empty
             <audio autoplay='true' style='display:none;'>
             <source src='storage/error.mp3' type='audio/wav'>
             </audio>";
         }
-        elseif(mysqli_num_rows($user_existed_result) >= 1){
+        // elseif(mysqli_num_rows($user_existed_result) >= 1){
         
-            mysqli_free_result($user_existed_result);
-            $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i><u><b>{$attendeesData['attendeesName']}</b></u> <span class='text-warning'>already existed</span> in this day of event.
-            <audio autoplay='true' style='display:none;'>
-            <source src='storage/error.mp3' type='audio/wav'>
-            </audio>";
-        }
+        //     mysqli_free_result($user_existed_result);
+        //     $name_message['message'] = "<i class='fa-solid fa-circle-exclamation text-danger me-1'></i><u><b>{$attendeesData['attendeesName']}</b></u> <span class='text-warning'>already existed</span> in this day of event.
+        //     <audio autoplay='true' style='display:none;'>
+        //     <source src='storage/error.mp3' type='audio/wav'>
+        //     </audio>";
+        // }
 
         return $name_message;
     }
