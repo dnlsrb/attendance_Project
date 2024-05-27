@@ -5,9 +5,7 @@
 </div>
 
 <hr>
-<h6 align=center><b>Attendance Management System</b> for GX International Inc during intership <b>(February 2024 - May 2024)</b></h6>
- 
-<br>
+<h6 align=center>**Attendance Management System** for GX International Inc during intership **(February 2024 - May 2024)**</h6>
 <hr>
 <div align=center> 
  
